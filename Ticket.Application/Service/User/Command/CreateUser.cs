@@ -37,15 +37,8 @@ namespace Azmoon.Application.Service.User.Command
 
             if (dto.Id!=null && dto.Id != "")
             {
-                var userexist = _context.Users.Where(p => p.Id == dto.Id).FirstOrDefault();
-                userexist.TypeDarajeh = dto.TypeDarajeh;
-                userexist.FirstName = dto.FirstName;
-                userexist.LastName = dto.LastName;
-                userexist.Phone = dto.Phone.ToString();
-                userexist.UserName = dto.personeli.ToString();
-                userexist.Email = dto.personeli + "@Saas.ir";
-                userexist.NormalizedEmail = dto.personeli + "@Saas.ir";
-                userexist.NormalizedUserName = dto.personeli.ToString();
+                var userexist = _context.Users.AsNoTracking().Where(p => p.Id == dto.Id).FirstOrDefault();
+                userexist = _mapper.Map<Domain.Entities.User>(dto);
                 userexist.LockoutEnabled = false;
                 userexist.SecurityStamp = Guid.NewGuid().ToString();
                 _context.SaveChanges();
@@ -58,8 +51,8 @@ namespace Azmoon.Application.Service.User.Command
             }
             else
             {
-                var ExistUser = _context.Users.Where(p => p.UserName == dto.personeli.ToString()).AsNoTracking().FirstOrDefault();
-                var RegisteredRole = _context.Roles.Where(p => p.Name == "User").FirstOrDefault();
+                var ExistUser = _context.Users.Where(p => p.UserName == dto.personeli.ToString() || p.melli == dto.melli).AsNoTracking().FirstOrDefault();
+       
                 if (ExistUser != null)
                 {
                     return new ResultDto<Domain.Entities.User>
@@ -69,28 +62,19 @@ namespace Azmoon.Application.Service.User.Command
                         Message = "کاربر با شماره پرسنلی وارد شده موجود می باشد!!!"
                     };
                 }
-                var user = new Domain.Entities.User
-                {
-                    TypeDarajeh=dto.TypeDarajeh,
-                    FirstName = dto.FirstName,
-                    LastName = dto.LastName,
-                    Phone = dto.melli.ToString(),
-                    UserName = dto.personeli.ToString(),
-                    Email = dto.personeli + "@Saas.ir",
-                    NormalizedEmail = dto.personeli + "@Saas.ir",
-                    NormalizedUserName = dto.personeli.ToString(),
-                    LockoutEnabled = false,
-                    SecurityStamp = Guid.NewGuid().ToString(),
+               
+              var user = _mapper.Map<Azmoon.Domain.Entities.User>(dto);
+                user.LockoutEnabled = false;
+                user.SecurityStamp = Guid.NewGuid().ToString();
 
-                };
-          
                 var result = _userManger.CreateAsync(user, dto.Password).Result;
                 if (result.Succeeded)
                 {
+                    _userManger.AddToRoleAsync(user, "User");
                     var person = _mapper.Map<persons>(dto);
                     _context.Persons.Add(person);
                    var savvved= _context.SaveChanges();
-                     _userManger.AddToRoleAsync(user, "User");
+                  
                     return new ResultDto<Domain.Entities.User>
                     {
                         Data = user,

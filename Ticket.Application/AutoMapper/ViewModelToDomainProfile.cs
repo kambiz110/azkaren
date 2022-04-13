@@ -32,7 +32,14 @@ namespace Azmoon.Application.AutoMapper
 
             CreateMap<AddQuizDto, Quiz>().ReverseMap();
 
-            CreateMap<RegisterUserDto, User>().ReverseMap();
+            CreateMap<RegisterUserDto, User>()
+                .ForMember(ds => ds.Email,
+            src => src.MapFrom(src => src.personeli + "@Saas.ir"))
+                .ForMember(ds => ds.NormalizedEmail,
+            src => src.MapFrom(src => src.personeli + "@Saas.ir"))
+                .ForMember(ds => ds.NormalizedUserName,
+            src => src.MapFrom(src => src.personeli.ToString()));
+                
             CreateMap<RegisterUserDto, persons>()
                 .ForMember(ds => ds.name,
             src => src.MapFrom(src => src.FirstName))

@@ -12,6 +12,7 @@ using Azmoon.Application.Service.User.Dto;
 using Azmoon.Application.Service.Group.Dto;
 using Azmoon.Domain.Entities;
 using Azmoon.Application.Service.Quiz.Dto;
+using Azmoon.Application.Service.WorkPlace.Dto;
 
 namespace Azmoon.Application.AutoMapper
 {
@@ -21,6 +22,7 @@ namespace Azmoon.Application.AutoMapper
         {
             //  CreateMap<Course, CourseViewModel>();
             CreateMap<Group, GetGroupViewModel>();
+            CreateMap<WorkPlace, GetWorkPlaceViewModel>().ReverseMap();
             CreateMap<User, UserShowAdminDto>();
             CreateMap<Role, GetRoleDto>();
             CreateMap<Quiz, GetQuizDto>().ReverseMap();

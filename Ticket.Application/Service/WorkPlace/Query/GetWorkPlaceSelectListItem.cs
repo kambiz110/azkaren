@@ -30,7 +30,7 @@ namespace Azmoon.Application.Service.WorkPlace.Query
             List<SelectList> CategoryList2 = new List<SelectList>();
             if (parentid != null)
             {
-                var Department = _context.Groups.Where(p => p.Status == 1 && p.Id == parentid)
+                var Department = _context.WorkPlaces.Where(p => p.Status == 1 && p.Id == parentid)
               .AsNoTracking()
               .Select(p => new GetShortDtoSelectItem
               {
@@ -48,7 +48,7 @@ namespace Azmoon.Application.Service.WorkPlace.Query
                     Message = "موفق"
                 };
             }
-            var Categories = _context.Groups.Where(p => p.Status == 1)
+            var Categories = _context.WorkPlaces.Where(p => p.Status == 1)
                 .AsNoTracking()
                 .Select(p => new GetShortDtoSelectItem
                 {
@@ -78,7 +78,7 @@ namespace Azmoon.Application.Service.WorkPlace.Query
                 }
                 else
                 {
-                    cat = _context.Groups.AsNoTracking().Where(o => o.Id == (Int64.Parse(parentId))).FirstOrDefault().Name;
+                    cat = _context.WorkPlaces.AsNoTracking().Where(o => o.Id == (Int64.Parse(parentId))).FirstOrDefault().Name;
                 }
                 var optionGroup = new SelectListGroup() { Name = cat };
                 foreach (var city in regionGroup.listOfCategory)

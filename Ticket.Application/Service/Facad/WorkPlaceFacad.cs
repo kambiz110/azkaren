@@ -9,6 +9,7 @@ using Azmoon.Application.Interfaces.Contexts;
 using Azmoon.Application.Interfaces.Facad;
 using Azmoon.Application.Interfaces.WorkPlace;
 using Azmoon.Application.Service.WorkPlace.Query;
+using Azmoon.Application.Service.WorkPlace.Command;
 
 namespace Azmoon.Application.Service.Facad
 {
@@ -50,6 +51,15 @@ namespace Azmoon.Application.Service.Facad
             get
             {
                 return _getChildrenWorkPlaces = _getChildrenWorkPlaces ?? new GetChildrenWorkPlacees(_context);
+            }
+
+        }
+        private ICreateWorkPlace _CreateWorkPlace;
+        public ICreateWorkPlace CreateWork
+        {
+            get
+            {
+                return _CreateWorkPlace = _CreateWorkPlace ?? new CreateWorkPlace(_context ,_mapper);
             }
 
         }

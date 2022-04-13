@@ -10,6 +10,7 @@ namespace Azmoon.Application.Interfaces.Facad
 {
    public interface IWorkPlaceFacad
     {
+        ICreateWorkPlace CreateWork { get; }
         IGetWorkPlace GetWorkPlace { get; }
         IGetWorkPlaceSelectListItem GetWorkPlaceSelectListItem { get; }
         IGetChildrenWorkPlace GetChildrenWorkPlaces { get; }

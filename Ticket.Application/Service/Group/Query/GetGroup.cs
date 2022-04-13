@@ -98,6 +98,35 @@ namespace Azmoon.Application.Service.Group.Query
             };
 
         }
+
+        public ResultDto<List<GetGroupViewModel>> OnlyDirectChildren(long? parentId)
+        {
+            var result = _context.Groups.Where(p => p.ParentId == parentId).AsQueryable();
+
+            if (result != null)
+            {
+                var model = _mapper.Map<List<GetGroupViewModel>>(result.ToList());
+                for (int i = 0; i < model.Count(); i++)
+                {
+                    if (_context.Groups.Where(p => p.ParentId == model[i].Id).Any())
+                    {
+                        model[i].IsChailren = true;
+                    }
+                }
+                return new ResultDto<List<GetGroupViewModel>>
+                {
+                    Data = model,
+                    IsSuccess = true,
+                    Message = "موفق"
+                };
+            }
+            return new ResultDto<List<GetGroupViewModel>>
+            {
+                Data = null,
+                IsSuccess = false,
+                Message = "ناموفق"
+            };
+        }
     }
    
    

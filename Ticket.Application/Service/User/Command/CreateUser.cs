@@ -64,8 +64,8 @@ namespace Azmoon.Application.Service.User.Command
                 }
                
               var user = _mapper.Map<Azmoon.Domain.Entities.User>(dto);
-                user.LockoutEnabled = false;
-                user.SecurityStamp = Guid.NewGuid().ToString();
+                //user.LockoutEnabled = false;
+                user.Id = Guid.NewGuid().ToString();
 
                 var result = _userManger.CreateAsync(user, dto.Password).Result;
                 if (result.Succeeded)

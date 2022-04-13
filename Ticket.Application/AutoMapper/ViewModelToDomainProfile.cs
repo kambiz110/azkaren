@@ -14,6 +14,7 @@ using Azmoon.Application.Service.User.Dto;
 using Azmoon.Application.Service.Group.Dto;
 using Azmoon.Domain.Entities;
 using Azmoon.Application.Service.Quiz.Dto;
+using Azmoon.Application.Service.WorkPlace.Dto;
 
 namespace Azmoon.Application.AutoMapper
 {
@@ -31,8 +32,17 @@ namespace Azmoon.Application.AutoMapper
             CreateMap<AddAnswerDto, Answer>();
 
             CreateMap<AddQuizDto, Quiz>().ReverseMap();
+            CreateMap<CreateWorkPlaceDto, WorkPlace>().ReverseMap();
 
             CreateMap<RegisterUserDto, User>()
+                .ForMember(ds => ds.LockoutEnabled,
+            src => src.MapFrom(src => false))
+                .ForMember(ds => ds.SecurityStamp,
+            src => src.MapFrom(src => Guid.NewGuid().ToString()))
+                .ForMember(ds => ds.Email,
+            src => src.MapFrom(src => src.personeli + "@Saas.ir"))
+                .ForMember(ds => ds.UserName,
+            src => src.MapFrom(src => src.personeli))
                 .ForMember(ds => ds.Email,
             src => src.MapFrom(src => src.personeli + "@Saas.ir"))
                 .ForMember(ds => ds.NormalizedEmail,

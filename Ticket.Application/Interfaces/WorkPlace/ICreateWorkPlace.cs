@@ -11,6 +11,6 @@ namespace Azmoon.Application.Interfaces.WorkPlace
 {
    public interface ICreateWorkPlace
     {
-        ResultDto<Domain.Entities.Group> Exequte(CreateWorkPlaceDto dto);
+        ResultDto<Domain.Entities.WorkPlace> Exequte(CreateWorkPlaceDto dto);
     }
 }

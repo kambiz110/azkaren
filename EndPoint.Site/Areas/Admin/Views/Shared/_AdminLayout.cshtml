@@ -116,9 +116,9 @@
 
 
 
-       
 
-                           
+
+
 
                                 <li class="nav-item">
                                     <a class="nav-link @Html.ActiveClass("Quiz")" href="#">
@@ -141,9 +141,9 @@
 
                                     </ul>
                                 </li>
-             
-                           
-                             
+
+
+
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="User" asp-action="Index">
                                         <i class="nav-icon fa fa-users"></i>
@@ -151,14 +151,31 @@
                                     </a>
                                 </li>
 
-                    
-                     
                                 <li class="nav-item has-treeview @Html.ActiveClass("WorkPlace",null,"menu-open")">
                                     <a class="nav-link @Html.ActiveClass("Categore")">
                                         <i class="fas fa-school nav-icon"></i>
                                         <p>
-                                            دسته بندی
+                                          دسته بندی سازمانی
                                             <span class="badge badge-danger badge-left">جدید</span>
+                                            <i class="right fa fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a class="nav-link @Html.ActiveClass("Index","WorkPlace")" asp-controller="WorkPlace" asp-action="Index">
+                                                <i class="fas fa-bars nav-icon"></i>
+                                                <p>لیست دسته بندی ها</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item has-treeview @Html.ActiveClass("Group",null,"menu-open")">
+                                    <a class="nav-link @Html.ActiveClass("Categore")">
+                                        <i class="nav-icon fa fa-object-group"></i>
+                                        <p>
+                                            گروه بندی
+
                                             <i class="right fa fa-angle-left"></i>
                                         </p>
                                     </a>
@@ -166,18 +183,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link @Html.ActiveClass("Index","Group")" asp-controller="Group" asp-action="Index">
                                                 <i class="fas fa-bars nav-icon"></i>
-                                                <p>لیست رده ها</p>
+                                                <p>لیست گروه ها</p>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link @Html.ActiveClass("Create","Group")"
-                                               asp-controller="Group" asp-action="Create">
-                                                <i class="fas fa-file-medical nav-icon"></i>
-                                                <p>دسته بندی جدید</p>
-                                            </a>
-                                        </li>
-
-
                                     </ul>
                                 </li>
                             </ul>

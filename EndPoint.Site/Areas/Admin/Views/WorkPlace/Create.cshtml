@@ -1,12 +1,12 @@
-﻿@model Azmoon.Application.Service.Group.Dto.CreateGroupDto
+﻿@model Azmoon.Application.Service.WorkPlace.Dto.CreateWorkPlaceDto
 @using Microsoft.AspNetCore.Mvc.Rendering;
 
 @{
     ViewData["Title"] = "Create";
-
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>گروه بندی </h1>
+<h1>رده سازمانی </h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ParentId" class="control-label"></label>
-                <select asp-for="ParentId" asp-items="@ViewData["ParentWorkPlace"] as SelectList" class="form-control">
+                <select asp-for="ParentId" asp-items="@Model.Parentes" class="form-control">
                     <option>لطفا انتخاب  نمائید</option>
                 </select>
                 <span asp-validation-for="ParentId" class="text-danger"></span>
@@ -36,7 +36,4 @@
         </form>
     </div>
 </div>
-
-
-
 

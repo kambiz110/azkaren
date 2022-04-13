@@ -37,7 +37,7 @@ namespace Azmoon.Application.Service.WorkPlace.Query
 
         public ResultDto<List<long>> ExequteById(long? workplaceId)
         {
-            var categores = _context.Groups.Where(p => p.Id == workplaceId).Select(p => p.Id).ToList();
+            var categores = _context.WorkPlaces.Where(p => p.Id == workplaceId).Select(p => p.Id).ToList();
             List<long> resultList = new List<long>();
             resultList.AddRange(categores);
 
@@ -55,14 +55,14 @@ namespace Azmoon.Application.Service.WorkPlace.Query
         private List<long> getChildren(long id, List<long> result)
         {
 
-            var query = _context.Groups.Where(p => p.ParentId == id).Select(p => p.Id).ToList();
+            var query = _context.WorkPlaces.Where(p => p.ParentId == id).Select(p => p.Id).ToList();
             if (query != null && query.Count() > 0)
             {
                 // result.AddRange(query);
                 EqulesTwoListAndAppend(query, result);
                 foreach (var item in query)
                 {
-                    if (_context.Groups.Where(p => p.ParentId == item).Any())
+                    if (_context.WorkPlaces.Where(p => p.ParentId == item).Any())
                     {
 
                         getChildren(item, result);

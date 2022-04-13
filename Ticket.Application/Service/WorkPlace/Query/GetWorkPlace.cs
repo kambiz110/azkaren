@@ -29,7 +29,7 @@ namespace Azmoon.Application.Service.WorkPlace.Query
         public ResultDto<List<GetWorkPlaceViewModel>> Execute(long? parentId)
         {
             GetChildrenWorkPlacees _getChildrenWorkPlaces = new GetChildrenWorkPlacees(_context); ;
-        var result = _context.Groups.AsQueryable();
+        var result = _context.WorkPlaces.AsQueryable();
             if (parentId == null)
             {
 
@@ -42,12 +42,13 @@ namespace Azmoon.Application.Service.WorkPlace.Query
                 result = result.Where(p => getChildre.Data.Contains(p.Id) ).AsQueryable();
             }
 
-            if (result!=null)
+            if (result!=null )
             {
-                var model = _mapper.Map<List<GetWorkPlaceViewModel>>(result.ToList());
+               var model = _mapper.ProjectTo<GetWorkPlaceViewModel>(result).ToList();
+
                 for (int i = 0; i < model.Count(); i++)
                 {
-                    if (_context.Groups.Where(p => p.ParentId == model[i].Id).Any())
+                    if (_context.WorkPlaces.Where(p => p.ParentId == model[i].Id).Any())
                     {
                         model[i].IsChailren = true;
                     }
@@ -70,7 +71,7 @@ namespace Azmoon.Application.Service.WorkPlace.Query
         public ResultDto<List<GetWorkPlaceViewModel>> GetTreeView()
         {
             GetChildrenWorkPlacees _getChildrenWorkPlaces = new GetChildrenWorkPlacees(_context); ;
-            var result = _context.Groups.AsQueryable();
+            var result = _context.WorkPlaces.AsQueryable();
          
 
             if (result != null)
@@ -97,6 +98,36 @@ namespace Azmoon.Application.Service.WorkPlace.Query
                 Message = "ناموفق"
             };
 
+        }
+
+        public ResultDto<List<GetWorkPlaceViewModel>> OnlyDirectChildren(long? parentId)
+        {
+
+          var  result = _context.WorkPlaces.Where(p => p.ParentId == parentId).AsQueryable();
+            if (result != null)
+            {
+                var model = _mapper.ProjectTo<GetWorkPlaceViewModel>(result).ToList();
+
+                for (int i = 0; i < model.Count(); i++)
+                {
+                    if (_context.WorkPlaces.Where(p => p.ParentId == model[i].Id).Any())
+                    {
+                        model[i].IsChailren = true;
+                    }
+                }
+                return new ResultDto<List<GetWorkPlaceViewModel>>
+                {
+                    Data = model,
+                    IsSuccess = true,
+                    Message = "موفق"
+                };
+            }
+            return new ResultDto<List<GetWorkPlaceViewModel>>
+            {
+                Data = null,
+                IsSuccess = false,
+                Message = "ناموفق"
+            };
         }
     }
    

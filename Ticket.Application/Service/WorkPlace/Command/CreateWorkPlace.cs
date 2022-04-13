@@ -23,33 +23,33 @@ namespace Azmoon.Application.Service.WorkPlace.Command
             _mapper = mapper;
         }
 
-        public ResultDto<Domain.Entities.Group> Exequte(CreateWorkPlaceDto dto)
+        public ResultDto<Domain.Entities.WorkPlace> Exequte(CreateWorkPlaceDto dto)
         {
-            var wplace = _mapper.Map<Domain.Entities.Group>(dto);
+            var wplace = _mapper.Map<Domain.Entities.WorkPlace>(dto);
             if (dto.Id>0)
             {
               //  var dbObj = _context.WorkPlaces.Where(p => p.Id == dto.Id).AsNoTracking().FirstOrDefault();
                 wplace.UpdatedAt = DateTime.Now;
                 wplace.Id = dto.Id;
-                _context.Groups.Update(wplace);
+                _context.WorkPlaces.Update(wplace);
             }
             else
             {
                 wplace.RegesterAt = DateTime.Now;
-                _context.Groups.Add(wplace);
+                _context.WorkPlaces.Add(wplace);
             }
            
-            var result = _context.SaveChangesAsync().Result;
+            var result = _context.SaveChanges();
             if (result>0)
             {
-             return new ResultDto<Domain.Entities.Group>
+             return new ResultDto<Domain.Entities.WorkPlace>
              {
                Data=wplace,
                IsSuccess=true,
                Message="اقدام موفق بود"
                 };
             }
-            return new ResultDto<Domain.Entities.Group>
+            return new ResultDto<Domain.Entities.WorkPlace>
             {
                 Data = null,
                 IsSuccess = false,

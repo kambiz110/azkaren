@@ -20,9 +20,10 @@ namespace EndPoint.Site.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IGroupFacad _workPlaceFacad;
+        private readonly IWorkPlaceFacad _workPlaceFacad;
         private readonly IUserFacad _userFacad;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IGroupFacad workPlaceFacad, IUserFacad userFacad)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
+            IWorkPlaceFacad workPlaceFacad, IUserFacad userFacad)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -184,7 +185,7 @@ namespace EndPoint.Site.Controllers
 
         public IActionResult GetWorkPlaceTreeView(string name, string family)
         {
-            var model = _workPlaceFacad.GetGroup.GetTreeView();
+            var model = _workPlaceFacad.GetWorkPlace.GetTreeView();
             var viewHtml = this.RenderViewAsync("_PartialWorkPlaceTreeView", model.Data, true);
             return Json(new ResultDto<string>
             {

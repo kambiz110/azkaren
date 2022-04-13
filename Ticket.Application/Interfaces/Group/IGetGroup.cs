@@ -12,5 +12,6 @@ namespace Azmoon.Application.Interfaces.Group
     {
         ResultDto<List<GetGroupViewModel>> Execute(long? parentId);
         ResultDto<List<GetGroupViewModel>> GetTreeView();
+        ResultDto<List<GetGroupViewModel>> OnlyDirectChildren(long? parentId);
     }
 }

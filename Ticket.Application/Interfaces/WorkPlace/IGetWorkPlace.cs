@@ -11,6 +11,7 @@ namespace Azmoon.Application.Interfaces.WorkPlace
    public interface IGetWorkPlace
     {
         ResultDto<List<GetWorkPlaceViewModel>> Execute(long? parentId);
+        ResultDto<List<GetWorkPlaceViewModel>> OnlyDirectChildren(long? parentId);
         ResultDto<List<GetWorkPlaceViewModel>> GetTreeView();
     }
 }

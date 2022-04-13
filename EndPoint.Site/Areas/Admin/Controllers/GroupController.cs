@@ -31,7 +31,7 @@ namespace EndPoint.Site.Areas.Administrator.Controllers
 
         public IActionResult Index(long? parentId)
         {
-            var result = _groupFacad.GetGroup.Execute(parentId);
+            var result = _groupFacad.GetGroup.OnlyDirectChildren(parentId);
             return View(result.Data);
         }
 

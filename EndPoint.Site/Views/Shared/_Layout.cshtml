@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+@using System.Security.Claims;
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>@this.ViewData["Title"]</title>
+
+    <environment names="Development">
+        <link href="~/Them/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Them/img/favicon.ico" rel="icon" type="image/png">
+
+        <link rel="stylesheet" href="~/Them/css/lazy.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/Them/css/demo.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/Them/lib/fontawesome/css/all.css" asp-append-version="true" />
+    </environment>
+    <environment names="Staging,Production">
+        @*<link href="~/Them/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />*@
+        <link rel="stylesheet" href="~/assets/css/bootstrap-rtl.min.css" />
+        <link href="~/Them/img/favicon.ico" rel="icon" type="image/png">
+
+        <link rel="stylesheet" href="~/Them/css/lazy.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/Them/css/demo.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/Them/lib/fontawesome/css/all.css" asp-append-version="true" />
+    </environment>
+    @await RenderSectionAsync("StyleSheet", false)
+</head>
+<body class="index">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-action="Index" asp-controller="Home">سامانه آزمون</a>
+
+                <button class="navbar-toggler collapsed"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#navbarNavDropdown-7"
+                        aria-controls="navbarNavDropdown-7"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown-7">
+                    <ul class="navbar-nav ml-auto mx-2">
+                        @RenderSection("About", required: false)
+                        @RenderSection("Register", required: false)
+                        @RenderSection("Login", required: false)
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+            <li class="px-5 text-center rounded h-bg-black-50 nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    سلام &nbsp; @User.FindFirst(System.Security.Claims.ClaimTypes.GivenName).Value.ToString()
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    @{ var roles = ((ClaimsIdentity)User.Identity).Claims
+                                                .Where(c => c.Type == ClaimTypes.Role)
+                                                .Select(c => c.Value).ToList(); }
+
+                    @if (roles.Contains("Administrator"))
+                    {
+    <a class="dropdown-item" asp-area="Admin" asp-controller="Quiz" asp-action="Index">پنل کاربری</a> }
+else
+{
+<a class="dropdown-item" asp-area="Student" asp-controller="Quizzes" asp-action="MyQuizzes">ناحیه کاربری</a>}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">خروج</a>
+                </div>
+            </li> }
+                        else
+                        {
+            <li class="nav-item ml-3">
+                <a class="btn btn-outline-light rounded" asp-area="" asp-controller="Account" asp-action="CreateUser">
+                    <b>ثبت نام</b>
+                </a>
+            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-light rounded" asp-area="" asp-controller="Account" asp-action="Login">
+                                    <b>ورود</b>
+                                </a>
+                            </li>}
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <partial name="_CookieConsentPartial" />
+    </div>
+    <main role="main" id="page-container">
+        <div id="content-wrap">
+            @this.RenderBody()
+        </div>
+    </main>
+    <partial name="~/Views/Shared/_FooterPartial.cshtml" />
+    <script src="~/lib/jquery/dist/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/lib/jquery/dist/popper.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+    <script src="~/Them/js/site.js"></script>
+
+    @*<environment names="Staging,Production">
+            <script src="~/Them/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+
+            <script src="~/lib/jquery/dist/jquery-3.5.1.slim.min.js"></script>
+            <script src="~/lib/jquery/dist/popper.min.js"></script>
+            <script src="~/Them/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+            <script src="~/Them/js/site.js"></script>
+        </environment>*@
+
+    @this.RenderSection("Scripts", required: false)
+</body>
+</html>

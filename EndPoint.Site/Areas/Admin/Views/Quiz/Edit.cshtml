@@ -1,0 +1,118 @@
+﻿@model Azmoon.Application.Service.Quiz.Dto.AddQuizDto
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>ویرایش آزمون</h1>
+
+
+
+<div class="row">
+    <div class="col-md-9 col-sm-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="Id" type="hidden" class="form-control" />
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+           
+            <div class="row">
+                <div class="input-group col-md-6 col-sm-12">
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text cursor-pointer" id="date5" data-mdpersiandatetimepicker="" data-mdpersiandatetimepicker-group="rangeSelector1" data-todate="" data-original-title="" title=""><i class='fas fa-calendar-alt' style='font-size:24px;color:forestgreen'></i></span>
+                    </div>
+                    <input type="hidden" id="StartDate" name="StartDate" class="form-control" placeholder="Persian Calendar Date"
+                           aria-label="date11" aria-describedby="date11">
+                    <input type="text" id="StartDateFake" value="@Model.StartDate"  class="form-control" aria-label="date5" aria-describedby="date5" placeholder="زمان شروع آزمون" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="input-group col-md-6 col-sm-12">
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text cursor-pointer" id="date6" data-mdpersiandatetimepicker="" data-mdpersiandatetimepicker-group="rangeSelector1" data-todate="" data-original-title="" title=""><i class='fas fa-calendar-alt' style='font-size:24px;color:red'></i></span>
+                    </div>
+                    <input type="hidden" id="EndDate" name="EndDate" class="form-control" placeholder="Persian Calendar Date"
+                           aria-label="date12" aria-describedby="date12">
+                    <input type="text" id="EndDateFake" value="@Model.EndDate" class="form-control" aria-label="date6" aria-describedby="date6" placeholder="زمان پایان آزمون" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="form-group col-md-6 col-sm-12">
+
+                    <input asp-for="Timer" class="form-control" placeholder=" مدت آزمون(دقیقه)" />
+                    <span asp-validation-for="Timer" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+
+                    <input id="Password" name="Password" class="form-control" placeholder="رمز آزمون" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label asp-for="MaxQuestion" class="control-label"></label>
+                    <input asp-for="MaxQuestion" class="form-control" />
+                    <span asp-validation-for="MaxQuestion" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6 col-sm-12">
+                    <label asp-for="GroupId" class="control-label"></label>
+                    <select asp-for="GroupId" class="form-control" asp-items="(IEnumerable<SelectListItem>)@TempData["categoresMentSelectListItem"]">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-md-6 col-sm-12">
+                <input type="submit" value="ذخیره" class="btn btn-primary col-9" style="text-align:center !important;" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">بازگشت</a>
+</div>
+
+@section Styles{
+    <link href="~/lib/trumbowyg-2_25_1/ui/trumbowyg.css" rel="stylesheet" />
+    <link href="~/lib/MD_BootstrapPersianDateTimePicker-master-bs5/dist/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/lib/trumbowyg-2_25_1/trumbowyg.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="~/lib/MD_BootstrapPersianDateTimePicker-master-bs5/dist/jquery.md.bootstrap.datetimepicker.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Description').trumbowyg();
+        });
+
+
+        $('#date5').MdPersianDateTimePicker({
+            targetTextSelector: '#StartDateFake',
+            targetDateSelector: '#StartDate',
+            enableTimePicker: true,
+            modalMode: true
+        });
+        $('#date6').MdPersianDateTimePicker({
+            targetTextSelector: '#EndDateFake',
+            targetDateSelector: '#EndDate',
+            groupId: 'date5',
+            toDate: true,
+            enableTimePicker: true,
+            modalMode: true
+        });
+
+    </script>
+}

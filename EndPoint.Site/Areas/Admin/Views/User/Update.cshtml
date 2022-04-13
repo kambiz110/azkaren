@@ -1,0 +1,95 @@
+﻿@model Azmoon.Application.Service.User.Dto.RegisterUserDto
+@{
+    ViewData["Title"] = " ویرایش کاربر";
+    Layout = "_LayoutUser.cshtml";
+}
+
+<hr />
+<div class="row">
+    <div class="col-12">
+        @if (ViewBag.Errors != null)
+        {
+            <div class=" alert alert-danger">
+                <ul>
+                    @foreach (var item in ViewBag.Errors)
+                    {
+                        <li>@item</li>
+
+                    }
+                </ul>
+            </div>
+
+        }
+        <form asp-action="Update" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" class="form-control" />
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+           
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="personeli"></label>
+                        <input asp-for="personeli" type="text" class="form-control" pattern="^\d{9}$" />
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="row">
+                @*<input name="ImageFile" class="form-control" type="file" />*@
+            </div>
+            <div class="form-group text-center mt-3 mb-0">
+                <input type="submit" id="createusersubmit" value="ویرایش" class="btn btn-success px-5 py-2" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/lib/ir-city-select-0.3.0/ir-city-select.js"></script>
+    <script>
+    $('#createusersubmit').click(function (e) {
+
+
+        $('.ir-province option').each(function () {
+            if (this.selected) {
+                var ss = this.selected;
+                var ss2 = this.val();
+                alert('this province is selected: ' + ss2);
+                console.log("selected bottom");
+            }
+
+            else {
+                e.preventDefault();
+            }
+
+        });
+        $('.ir-city option').each(function () {
+            if (this.selected)
+                alert('this city is selected');
+            else {
+                e.preventDefault();
+            }
+
+        });
+    });
+
+    </script>
+}
+

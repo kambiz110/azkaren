@@ -1,0 +1,50 @@
+﻿@model PasswordInputViewModel
+@addTagHelper *, DNTCaptcha.Core
+@{ ViewData["Title"] = "_TakeQuizPartial"; }
+
+<form method="post" class="col-12 col-md-5 offset-md-1" asp-area="Student" asp-action="Index" asp-controller="Quizzes">
+    <div class="component">
+        <div class="card">
+            <div class="card-header text-warning" style="font-size: xx-large">
+                <i class="fas fa-folder-open"></i>
+            </div>
+            <div class="card-body pt-0">
+                <h4 class="card-title">شرکت در آزمون</h4>
+
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="رمز آزمون..." asp-for="@Model.Password">
+                    <input type="hidden" asp-for="@Model.Error" value="emptyField">
+                </div>
+                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>عبارت امنیتی را وارد نمائید</label>
+                <dnt-captcha asp-captcha-generator-max="999"
+                             class="input-group"
+                             asp-captcha-generator-min="110"
+                             asp-captcha-generator-language="Persian"
+                             asp-captcha-generator-display-mode="NumberToWord"
+                             asp-use-relative-urls="true"
+                             asp-validation-error-message="عبارت امنیتی را به درستی وارد نمائید"
+                             asp-font-name="Tahoma"
+                             asp-font-size="16"
+                             asp-fore-color="#333333"
+                             asp-back-color="#F7F9B8"
+                             asp-text-box-class="form-control"
+                             asp-text-box-template="<div class='ml-auto'>{0}</div>"
+                             asp-validation-message-class="text-danger"
+                             asp-refresh-button-class="fas fa-redo btn-sm d-none"
+                             asp-use-noise="false"
+                             asp-dir="rtl" />
+            </div>
+            <div class="card-footer pb-3">
+                <button class="btn btn-outline-primary">ورود</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

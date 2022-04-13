@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewData["Title"] = "Result";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using Azmoon.Application.Service.Result.Query
+@model GetResutQuizWithPager
+@addTagHelper *, LazZiya.TagHelpers
+@using EndPoint.Site.Useful.Ultimite
+
+
+<h1>@ViewBag.QuizName </h1>
+
+<div class="row">
+    <div class="col-sm-4 col-xs-6">
+        <form asp-action="Index" method="get">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control float-right" placeholder="جستجو">
+
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                </div>
+                <button type="submit" class="btn btn-primary">جستجو</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-sm-4 col-xs-6">
+        <div class="form-group form-group-sm">
+
+
+            <form class="form-inline d-inline" asp-action="Index" method="post">
+                <button type="submit" name="search" value="clear" class="btn btn-default d-inline">
+                    پاک کن
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div id="alertPanel"></div>
+@{
+
+    if (Model != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).MaxPoints)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).Points)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).StartQuiz)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+
+                    if (Model.ResultQuizDtos != null)
+                    {
+                        @foreach (var item in Model.ResultQuizDtos)
+                        {
+                            <tr>
+                              
+                                <td>
+                                  @item.UserName
+
+                                </td>
+                                <td>
+                                  @item.PhoneNumber
+
+                                </td>
+
+                                <td>
+                                    @item.MaxPoints
+                                 
+                                </td>
+                                <td>
+                                    @item.Points
+                                 
+                                </td>
+                                <td>
+
+                                 @item.StartQuiz.ToPersianDateStrFarsi()
+                                </td>
+                         
+
+
+                            </tr>
+                        }
+                    }
+                }
+
+            </tbody>
+        </table>
+        <div class="card-footer">
+            @{
+                if (Model != null && Model.PagerDto != null)
+                {
+                    <paging page-no="@Model.PagerDto.PageNo"
+                            page-size="@Model.PagerDto.PageSize"
+                            total-records="@Model.PagerDto.TotalRecords"
+                            show-prev-next="true"
+                            show-total-pages="true"
+                            show-total-records="true"
+                            show-page-size-nav="true"
+                            show-first-numbered-page="true"
+                            show-last-numbered-page="true"
+                            query-string-key-page-no="PageNo"
+                            query-string-key-page-size="PageSize"
+                            query-string-value="@@(Request.QueryString.Value)"
+                            text-total-pages="صفحه"
+                            text-total-records="رکورد"
+                            text-first="&laquo;"
+                            text-last="&raquo;"
+                            text-previous="&lsaquo;"
+                            text-next="&rsaquo;"
+                            sr-text-first="اولین"
+                            sr-text-last="آخرین"
+                            sr-text-previous="قبلی"
+                            sr-text-next="بعدی"
+                            gap-size="2">
+                    </paging>
+                }
+            }
+
+        </div>
+    }
+}
+

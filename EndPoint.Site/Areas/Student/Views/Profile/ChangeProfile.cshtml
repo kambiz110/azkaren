@@ -1,0 +1,96 @@
+﻿@model Azmoon.Application.Service.User.Dto.GetDitalesUserProfileDto
+@addTagHelper *, DNTCaptcha.Core
+@{
+    ViewData["Title"] = "ChangeProfile";
+    Layout = "~/Areas/Student/Views/Profile/_Layout.cshtml";
+}
+
+
+<form asp-action="ChangeProfile" method="post" class="shadow p-3 mb-5 bg-body rounded">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+
+    @if (ViewBag.Errors != null)
+    {
+        <div class=" alert alert-danger">
+            <ul>
+                @foreach (var item in ViewBag.Errors)
+                {
+                    <li>@item</li>
+
+                }
+            </ul>
+        </div>
+
+    }
+
+    <input type="hidden" asp-for="userId" class="form-control" />
+    <input type="hidden" asp-for="personId" class="form-control" />
+    <div class="row">
+
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="yegan_r"></label>
+                <input asp-for="yegan_r" class="form-control" type="text" placeholder="مثال : اصفهان/گلپایگان" required />
+                <span asp-validation-for="yegan_r" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="yegan"></label>
+                <input asp-for="yegan" class="form-control" type="text" placeholder="مثال : پاوا/پایگاه دوم" required />
+                <span asp-validation-for="yegan" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="Phone"></label>
+                <input asp-for="Phone" class="form-control" type="text" pattern="(^09)?(\d{9,10})$" placeholder="مثال : 09123654789" required />
+
+            </div>
+
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="darajeh"></label>
+                <input asp-for="darajeh" class="form-control" type="text" required />
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+    </div>
+    <div class="form-group">
+        <label>عبارت را محاسبه و وارد نمائید</label>
+        <dnt-captcha asp-captcha-generator-max="999"
+                     class="input-group"
+                     asp-captcha-generator-min="110"
+                     asp-captcha-generator-language="Persian"
+                     asp-captcha-generator-display-mode="NumberToWord"
+                     asp-use-relative-urls="true"
+                     asp-validation-error-message="عبارت را محاسبه و وارد نمائید"
+                     asp-font-name="Tahoma"
+                     asp-font-size="16"
+                     asp-fore-color="#333333"
+                     asp-back-color="#F7F9B8"
+                     asp-text-box-class="form-control"
+                     asp-text-box-template="<div class='ml-auto'>{0}</div>"
+                     asp-validation-message-class="text-danger"
+                     asp-refresh-button-class="fas fa-redo btn-sm d-none"
+                     asp-use-noise="false"
+                     asp-dir="rtl" />
+        <div class="form-group text-center mt-3 mb-0">
+            <input type="submit" value="ذخیره تغییرات " class="btn btn-primary px-5 py-2" />
+        </div>
+    </div>
+
+
+
+</form>
+

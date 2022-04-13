@@ -1,0 +1,58 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>@this.ViewData["Title"]</title>
+
+    <environment names="Development">
+        <link href="~/Them/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Them/img/favicon.ico" rel="icon" type="image/png">
+        <link rel="stylesheet" href="~/Them/css/lazy.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/Them/css/demo.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/Them/lib/fontawesome/css/all.css" asp-append-version="true"/>
+    </environment>
+    <environment names="Staging,Production">
+        <link href="~/Them/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Them/img/favicon.ico" rel="icon" type="image/png">
+        <link rel="stylesheet" href="~/Them/css/lazy.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/Them/css/demo.css" asp-append-version="true"/>
+        <link rel="stylesheet" href="~/Them/lib/fontawesome/css/all.min.css" />
+    </environment>
+</head>
+<body class="index">
+    <partial name="~/Views/Shared/_LoginPartial.cshtml" />
+    <main id="page-container" role="main" class="pt-5">
+        <div class="row" id="content-wrap">
+            <partial name="_BublesAndCirclesPrtial" />
+            <partial name="_AdminSideNavBarPartial" />
+            <div class="col-12 col-md-9 ml-md-5">
+                @RenderSection("InnerNav", required: false)
+                @this.RenderBody()
+            </div>
+        </div>
+    </main>
+
+    <partial name="~/Views/Shared/_FooterPartial.cshtml" />
+
+    <environment names="Development">
+        <script src="~/Them/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src="~/Them/vendor/popper/popper.min.js"></script>
+        <script src="~/Them/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+        <script src="~/Them/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/Them/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/Them/vendor/popper/popper.min.js"></script>
+        <script src="~/Them/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+        <script src="~/Them/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @this.RenderSection("Scripts", required: false)
+</body>
+</html>
+
+

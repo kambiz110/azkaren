@@ -1,0 +1,76 @@
+﻿@model Azmoon.Application.Service.User.Dto.LoginDto
+@addTagHelper *, DNTCaptcha.Core
+@{
+    ViewData["Title"] = "ورود";
+    //Layout = "_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-4 offset-md-1" style="text-align:right;">
+            <div class="mt-5">
+                <div class="mb-2">
+                    <h2 class="">مشخصات حساب کاربری خود را وارد نمائید.</h2>
+                </div>
+                <form asp-action="Login" class="shadow p-3 mb-5 bg-body rounded">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>عبارت را محاسبه و وارد نمائید</label>
+                        <dnt-captcha asp-captcha-generator-max="999"
+                                     class="input-group"
+                                     asp-captcha-generator-min="110"
+                                     asp-captcha-generator-language="Persian"
+                                     asp-captcha-generator-display-mode="NumberToWord"
+                                     asp-use-relative-urls="true"
+                                     asp-validation-error-message="عبارت را محاسبه و وارد نمائید"
+                                     asp-font-name="Tahoma"
+                                     asp-font-size="16"
+                                     asp-fore-color="#333333"
+                                     asp-back-color="#F7F9B8"
+                                     asp-text-box-class="form-control"
+                                     asp-text-box-template="<div class='ml-auto'>{0}</div>"
+                                     asp-validation-message-class="text-danger"
+                                     asp-refresh-button-class="fas fa-redo btn-sm d-none"
+                                     asp-use-noise="false"
+                                     asp-dir="rtl" />
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <span class="ml-2 mr-2">مرا بخاطر بسپار</span>  <input class="form-check-input" asp-for="IsPersistent" />
+                        </label>
+                    </div>
+
+                    <div class="form-group text-center mt-3 mb-0">
+                        <input type="submit" value="ورود" class="btn btn-info px-5 py-2" />
+                    </div>
+                    <input type="hidden" asp-for="ReturnUrl" />
+                </form>
+
+                <p class="small mt-3 mb-5 text-center">
+                    حساب کاربری ندارید؟ <a asp-area="" asp-controller="Account" asp-action="Register" class="font-weight-medium ml-1">ثبت نام کنید</a>
+                </p>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 offset-md-1 d-flex">
+            <div class="flex-grow-1">
+                <partial name="_BublesAndCirclesPrtial" />
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/Them/js/timezone.js" asp-append-version="true"></script>
+}
+
+

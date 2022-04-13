@@ -1,0 +1,34 @@
+﻿@model PasswordInputViewModel
+@using Azmoon.Application.Service.Quiz.Dto
+
+@{
+
+    Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
+
+}
+@if (Model != null &&Model.Error != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <i class="fa fa-exclamation-circle"></i>
+        <strong>On no!</strong> @Model.Error
+    </div>
+}
+
+<div class="row mt-5">
+    <partial name="_TakeQuizPartial">
+        <aside class="col-md-4 offset-1 d-none">
+            <div class="headline headline-md text-center">
+                <h4>Last Updates</h4>
+                <hr>
+                <ul id="updates" class="navbar-nav">
+                </ul>
+            </div>
+        </aside>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/Them/js/statusUpdates.js" asp-append-version="true"></script>
+}

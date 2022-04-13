@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> سیستم پشتیبانی و ارسال تیکت فاوا ساع س ناجا </title>
+    <link rel="stylesheet" href="~/assets/css/bootstrap-rtl.min.css" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/css/land.min.css" asp-append-version="true" />
+    <link href="~/lib/W3/W3.CSS" rel="stylesheet" />
+    @await RenderSectionAsync("StyleSheet", false)
+    <style>
+        .w3-dropdown-content {
+            color: #000 !important;
+            background-color: #676c62 !important;
+        }
+        .w3-button:hover {
+            color: #000 !important;
+            background-color: #ccc !important;
+        }
+        .dropdown-item:focus, .dropdown-item:hover {
+            color: #16181b !important;
+            text-decoration: none;
+            background-color: #7ca5ce !important;
+        }
+        .w3-lime, .w3-hover-lime:hover {
+            color: #000 !important;
+            background-color: #1ba633 !important;
+        }
+    </style>
+</head>
+<body class="rtl">
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <a class="navbar-brand" asp-action="Index" asp-controller="Home">
+                    <h2 id="site_logo">اداره فناوری اطلاعات و ارتباطات</h2>
+                </a>
+                <div class="navbar-left ">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="w3-dropdown-hover">
+                            <button class="w3-button w3-lime">
+                                @User.FindFirst(System.Security.Claims.ClaimTypes.GivenName).Value.ToString()
+                                <i class='fas fa-angle-down'></i>
+                            </button>
+                            <div class="w3-dropdown-content w3-bar-block w3-border">
+                                <a class="dropdown-item w3-button w3-deep-orange w3-border w3-border-yellow w3-round-large" asp-action="Add" asp-controller="Question">تیکت</a>
+                                <a class="dropdown-item w3-button w3-Khaki w3-border w3-border-green w3-round-large" asp-area="Admin" asp-controller="Question" asp-action="MyQuestion">پنل کاربری</a>
+                                <a class="dropdown-item w3-button w3-gray w3-border w3-border-red w3-round-large" asp-area="" asp-controller="Account" asp-action="Logout">خروج</a>
+
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="headButtons" class="row clearfix">
+                            <a class="w-50 float-right text-center rounded btn btn-success" asp-controller="Account" asp-action="Login">ورود</a>
+                            <a class="w-50 float-left text-center rounded btn btn-primary" asp-controller="Account" asp-action="Create">عضویت</a>
+                        </div>
+                    }
+
+
+                    @*if (User.Identity.IsAuthenticated)
+        {
+            <a class="w-50 float-right p-1 text-center" asp-action="Index" asp-controller="Home">خانه</a>
+            <a class="w-50 p-1 text-center btn btn-info" asp-action="Add" asp-controller="Question">تیکت</a>
+            <a href="#" class="w-20 p-1 text-center">سلام &nbsp; @User.FindFirst(System.Security.Claims.ClaimTypes.GivenName).Value.ToString()</a>
+            <a class="w-20 p-1 mr-1 text-center btn btn-info" asp-area="Admin" asp-controller="Question" asp-action="MyQuestion">پنل کاربری</a>
+            <a class="w-20 p-1 text-center btn btn-danger" asp-area="" asp-controller="Account" asp-action="Logout">خروج</a>
+        }*@
+
+                    <div id="sendGuestTicketBtn" class="text-center m-3 d-none">
+                        <a class="p-1" href="#">ارسال تیکت بدون عضویت</a>
+                    </div>
+
+                </div>
+            </nav>
+            <nav class="mobile-navbar d-sm-none fixed-top">
+                <a href="index.html" class="navbar-brand">
+                    <span>
+                        <img src="assets/images/patronic-logo-dark.png" alt="SITE LOGO" height="40">
+                    </span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mobileNavbar">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-action="Index" asp-controller="Tiket">ورود</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="register.html">عضویت</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div id="headerSearchSection" class="text-center mt-3 mb-5">
+                <div id="howCanWeHelp">
+                    <h3>به بخش پشتیبانی فاوا ساع س ناجا خوش آمدید</h3>
+                    <p class="mt-3 mb-4">چطور میتوانیم کمکتان کنیم؟</p>
+                </div>
+                <div id="searchContainer">
+                    <form action="#" id="headSearchForm">
+                        <input type="search" class="header-search-input" placeholder="به دنبال چه چیزی میگردید؟در مقالات،سوالات متداول و اخبار جستجو کنید..." />
+                        <small class="form-text text-white text-left">جهت پیگیری پاسخ تیکت های خود ، کد پیگیری تیکت را در کادر بالا وارد کنید</small>
+                        <button type="submit" class="header-search-sub-btn"><span class="fa fa-search"></span></button>
+                    </form>
+                </div>
+            </div>
+            <div id="headerOpenTimes" class="d-none">
+                <div class="text-center">
+                    <div class="text-center d-inline-block p-3">
+                        <span class="far fa-calendar d-block mb-2"></span>
+                        <small>شنبه تا پنج شنبه</small>
+                    </div>
+                    <div class="text-center d-inline-block ml-3 p-3">
+                        <span class="far fa-clock d-block mb-2"></span>
+                        <small>0900 - 1600</small>
+                    </div>
+                    <div class="text-center d-inline-block ml-3 p-3" style="direction: ltr">
+                        <span class="fa fa-tty d-block mb-2"></span>
+                        <small>021 - (814)32000</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mb-5">
+        <div class="container padding-bottom-3x mb-2">
+            <div class="row">
+                <div class="col-lg-4">
+                    <aside class="user-info-wrapper">
+                        <div class="user-cover" style="        background-image: url(assets/images/bg1.jpg);">
+                            @*<div class="info-label" data-toggle="tooltip" title="" data-original-title="You currently have 290 Reward Points to spend"><i class="icon-medal"></i>290 points</div>*@
+                        </div>
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <a class="edit-avatar" href="#"></a><img src="~/media/users/HkNQzKGwKucRm8YfZnukw6epFnXlStpaCbhQqI6M.jpg" alt="User">
+                            </div>
+                            <div class="user-data">
+                                <h4>محمدحسین صمدی</h4><span>دایره نرم افزار و شبکه</span>
+                            </div>
+                        </div>
+                    </aside>
+                    <nav class="list-group">
+                        <a class="list-group-item" href="#"><i class="fa fa-user"></i>ناحیه کاربری</a>
+                        <a class="list-group-item" href="#"><i class="fa fa-tag"></i>درخواست های پشتیبانی جدید</a>
+                        <a class="list-group-item with-badge active" href="#"><i class="fa fa-tag"></i>درخواست پشتیبانی من<span class="badge badge-primary badge-pill">4</span></a>
+                        <a class="list-group-item with-badge" href="#"><i class="fa fa-th"></i>آموزش<span class="badge badge-primary badge-pill">6</span></a>
+                    </nav>
+                </div>
+                <div class="col-lg-8">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </main>
+
+    @{
+        await Html.RenderPartialAsync("_PartialFooter");
+    }
+    <script src="~/assets/js/jquery-3.5.1.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>*@
+    @*<script src="~/lib/jquery/dist/popper.min.js"></script>*@
+    <script src="~/assets/js/jquery-innerfade.min.js"></script>
+    <script src="~/assets/js/land.min.js"></script>
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>

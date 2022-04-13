@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Azmoon.Application.Service.Group.Dto.GetGroupViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+
+<div>
+    <a asp-area="Admin" asp-controller="Group" asp-action="Create" class="btn btn-success m-1">ایجاد  دسته بندی</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.IsChailren)
+            </th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+
+                    <td>
+                        @if (item.IsChailren)
+                        {
+                            <span class="btn btn-success">دارای فرزند</span>
+                        }
+                        else
+                        {
+                            <span class="btn btn-warning">فاقد فرزند</span>
+                        }
+
+                    </td>
+                    <td>
+                        @Html.ActionLink("ویرایش", "Edit", new { Id = item.Id }, new { @class = "btn btn-outline-info" }) |
+                        @Html.ActionLink("ایجاد زیرمجموعه", "Create", new { parentid = item.Id }, new { @class = "btn btn-outline-success" }) |
+                        @if (item.IsChailren)
+                        {
+                            @Html.ActionLink("مشاهده زیر مجموعه", "Index", new { parentId = item.Id }, new { @class = "btn btn-outline-info" }); <span>|</span>
+
+                        }
+
+                        @Html.ActionLink("غیر فعال کردن", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-warning" })
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>
+                    هیچ مقداری یافت نگردید
+                </td>
+            </tr>
+
+        }
+
+    </tbody>
+</table>

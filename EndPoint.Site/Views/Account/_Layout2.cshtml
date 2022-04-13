@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> @ViewData["Title"] | سیستم پشتیبانی و ارسال تیکت فاوا ساع س ناجا </title>
+    <link rel="stylesheet" href="~/assets/css/bootstrap-rtl.min.css" />
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/css/land.min.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("StyleSheet", false)
+</head>
+<body class="rtl">
+    <div class="account-pages my-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8 col-sm-12">
+                    <div class="card px-4 pt-4">
+                        <div class="card-body">
+                            <div class="text-center w-75 m-auto">
+                                <a asp-controller="Home" asp-action="Index">
+                                    <img src="~/assets/images/fava-logo-dark.png" alt="لوگو سایت" height="40">
+                                </a>
+                                <p class="text-muted mb-4 mt-3">@await RenderSectionAsync("message",false)</p>
+                            </div>
+                            @RenderBody()
+                        </div>
+                    </div>
+                    @await RenderSectionAsync("link",false)
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("_FooterPartial");
+    }
+    <script src="~/assets/js/jquery-3.5.1.min.js"></script>
+    <script src="~/assets/js/bootstrap.min.js"></script>
+    <script src="~/assets/js/jquery-innerfade.min.js"></script>
+    <script src="~/assets/js/land.min.js"></script>
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>

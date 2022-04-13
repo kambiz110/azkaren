@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "مدیریت فایل";
+}
+
+@section Styles{
+
+
+    <link rel="stylesheet" href="~/lib/jquery-ui/themes/base/theme.css" />
+    <link rel="stylesheet" href="~/lib/jquery-ui/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="~/lib/elfinder/css/elfinder.full.min.css" />
+    <link rel="stylesheet" href="~/lib/elfinder/css/theme.min.css" />
+
+    <style>
+     
+
+        #elfinder #v1_XC50bWI1 {
+            display: none !important;
+        }
+
+        .elfinder-navbar-wrapper > #nav-v1_XC50bWI1 {
+            display: none !important;
+        }
+    </style>
+}
+<div id="elfinder"></div>
+
+@section Scripts {
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/elfinder/js/elfinder.full.js"></script>
+    <script src="~/backend/js/elfinder.js"></script>
+    @*<script type="text/javascript">
+            function switchTheme(href) {
+                $('link#elfinder-theme').attr('href', href);
+            }
+        </script>*@
+}

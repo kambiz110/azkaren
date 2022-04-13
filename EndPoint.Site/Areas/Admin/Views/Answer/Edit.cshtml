@@ -1,0 +1,39 @@
+﻿@model Azmoon.Application.Service.Answer.Dto.AddAnswerDto
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>ویرایش سوال</h1>
+
+
+<div class="row">
+    <div class="col-md-6 col-sm-12">
+        <form asp-action="Edit">
+            <input name="QuestionId" type="hidden" value="@Model.QuestionId" />
+            <input asp-for="Id" class="form-control" type="hidden"/>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+
+
+            <div class="form-group">
+                <label asp-for="Text" class="control-label"></label>
+                <textarea asp-for="Text" class="form-control" ></textarea>
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsTrue" /> @Html.DisplayNameFor(model => model.IsTrue)
+                </label>
+            </div>
+            <div class="form-group row">
+                <input type="submit" value="ذخیره" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-info mr-2">بازگشت به لیست</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

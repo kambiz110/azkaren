@@ -1,0 +1,45 @@
+﻿@model Azmoon.Application.Service.User.Dto.RolesInUserDto
+
+
+
+<h1>نقش های کاربر</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="AllRoleInUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                @if (Model != null && Model.getShortRoles != null)
+                {
+                    <h3>
+                        نقش ها :<span class="h6 badge-btn badge-info rounded text-danger">با کلیک روی نقش می توانید آن را حذف نمائید.</span><br />
+                        @{
+                            for (int i = 0; i < Model.getShortRoles.RolesName.Count(); i++)
+                            {
+                                <a href="/Admin/Role/DeleteRoleInUser/@Model.UserId/@Model.getShortRoles.RolesId.ElementAt(i)"><span class="badge badge-secondary m2">@Model.getShortRoles.RolesName.ElementAt(i)</span></a>
+                            }
+                        }
+
+                    </h3>
+                }
+                else
+                {
+                    <span>کاربر فاقد نقش می باشد</span>
+                }
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("افزودن نقش", "AddRoleToUser", new { id = ViewBag.UserId }, new { @class = "btn btn-success" })
+
+    <a asp-action="Index" class="btn btn-info">بازگشت</a>
+</div>
+

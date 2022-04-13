@@ -1,0 +1,324 @@
+﻿@model Azmoon.Application.Service.User.Dto.RegisterUserDto
+@addTagHelper *, DNTCaptcha.Core
+@{
+    ViewData["Title"] = "ثبت نام";
+    //Layout = "_Layout.cshtml";
+}
+
+
+
+
+<div class="row justify-content-center mt-2" style="text-align:right !important">
+    <partial name="_BublesAndCirclesPrtial" />
+    <div class="col-12 col-md-6 col-md-offset-3">
+        <h4>
+            با ایجاد حساب کاربری امکان ورود به ناحیه کاربری و استفاده از خدمات سایت فراهم خواهد شد.
+
+        </h4>
+        @if (ViewBag.Errors != null)
+        {
+            <div class=" alert alert-danger">
+                <ul>
+                    @foreach (var item in ViewBag.Errors)
+                    {
+                        <li>@item</li>
+
+                    }
+                </ul>
+            </div>
+
+        }
+    <form asp-action="CreateUser" class="shadow p-3 mb-5 bg-body rounded">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="Id" class="form-control" />
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="melli"></label>
+                    <input asp-for="melli" class="form-control" type="number" pattern="^[0-9]{10}$" required />
+                    <span asp-validation-for="melli" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="personeli"></label>
+                    <input asp-for="personeli" type="number" class="form-control" pattern="(^40)?(\d{9}$)" required />
+                    <span asp-validation-for="personeli" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="TypeDarajeh"></label>
+                    <select class="form-control" asp-for="TypeDarajeh" required>
+                        <option value="">انتخاب...</option>
+                        @foreach (var std3 in ViewData["listTypeDarajeh"] as List<KeyValuePair<string, int>>)
+                        {
+                            <option value=@std3.Value.ToString()>@std3.Key</option>
+
+                        }
+
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="darajeh"></label>
+                    <select class="form-control" asp-for="darajeh" searchable required>
+                        <option value="">انتخاب...</option>
+                        @foreach (var std in ViewData["Darajeh"] as List<KeyValuePair<string, int>>)
+                        {
+                            <option value="@std.Value" darajText="@std.Key">@std.Key</option>
+
+                        }
+
+                    </select>
+                    <span asp-validation-for="darajeh" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="name_father"></label>
+                    <input asp-for="name_father" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
+                    <span asp-validation-for="name_father" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Phone"></label>
+                    <input asp-for="Phone" class="form-control" type="number" pattern="(^09)?(\d{11})$" placeholder="مثال : 09123654789" required />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row mt-3">
+            <div class="col-md-6 col-sm-12">
+                <label asp-for="WorkPlaceId"></label>
+                <div class="input-group">
+
+                    <div class="input-group-prepend" id="select-WorkPlaceId">
+                        <span class="input-group-text cursor-pointer"><i class='fas far fa-eye' style='font-size: 24px; color: red; padding-left: 16px;'></i></span>
+                    </div>
+                    <input type="text" id="WorkPlaceIdFake" class="form-control" placeholder="انتخاب ... " />
+                    <input type="hidden" asp-for="WorkPlaceId" />
+
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <label asp-for="tavalod"></label>
+                <div class="input-group">
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text cursor-pointer mb-2" id="date5" data-mdpersiandatetimepicker="" data-mdpersiandatetimepicker-group="rangeSelector1" data-todate="" data-original-title="" title=""><i class='fas fa-calendar-alt' style='font-size:24px;color:forestgreen'></i></span>
+                    </div>
+                    <input asp-for="tavalod" type="hidden" />
+                    <input type="text" id="StartDateFake" @*value="@Model.tavalod"*@ class="form-control" aria-label="date5" aria-describedby="date5" placeholder="انتخاب ... " />
+                    <span asp-validation-for="tavalod" class="text-danger"></span>
+                </div>
+            </div>
+          
+
+
+
+
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label asp-for="RePassword"></label>
+                    <input asp-for="RePassword" class="form-control" type="password" />
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>عبارت را محاسبه و وارد نمائید</label>
+            <dnt-captcha asp-captcha-generator-max="999"
+                         class="input-group"
+                         asp-captcha-generator-min="110"
+                         asp-captcha-generator-language="Persian"
+                         asp-captcha-generator-display-mode="NumberToWord"
+                         asp-use-relative-urls="true"
+                         asp-validation-error-message="عبارت را محاسبه و وارد نمائید"
+                         asp-font-name="Tahoma"
+                         asp-font-size="16"
+                         asp-fore-color="#333333"
+                         asp-back-color="#F7F9B8"
+                         asp-text-box-class="form-control"
+                         asp-text-box-template="<div class='ml-auto'>{0}</div>"
+                         asp-validation-message-class="text-danger"
+                         asp-refresh-button-class="fas fa-redo btn-sm d-none"
+                         asp-use-noise="false"
+                         asp-dir="rtl" />
+        </div>
+        <div class="col-12 text-center mt-5">
+
+            <input type="submit" id="createusersubmit" value="ثبت نام" class="btn btn-success col-6" />
+
+            <p class="text-muted">حساب کاربری دارید؟ <a asp-action="Login" class="font-weight-medium ml-1">وارد شوید</a></p>
+        </div> <!-- end col -->
+
+    </form>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="TreeViewModal" role="dialog" tabindex="-1" aria-labelledby="TreeViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TreeViewModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="WorkPlaceTreeView_modal_body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary mr-2" data-btn="save">ثبت انتخاب  </button>
+                <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">خروج</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section StyleSheet
+{
+    @*<style>
+            .input-group .input-group-text {
+                padding: -0.3rem 0.8rem !important;
+            }
+        </style>*@
+    <link href="~/lib/MD_BootstrapPersianDateTimePicker-master-bs5/dist/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+    <link href="~/lib/SweetAlert/sweetalert2.css" rel="stylesheet" />
+    <link href="~/lib/select2/select2.css" rel="stylesheet" />
+}
+@section Scripts{
+    @*<partial name="_ValidationScriptsPartial" />*@
+    <script src="~/lib/select2/select2.js"></script>
+    <script src="~/lib/SweetAlert/sweetalert2.js"></script>
+    <script src="~/lib/SweetAlert/polyfill.js.js"></script>
+    <script src="~/lib/MD_BootstrapPersianDateTimePicker-master-bs5/dist/jquery.md.bootstrap.datetimepicker.js"></script>
+    <script src="~/Them/js/timezone.js" asp-append-version="true"></script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#darajeh').select2({
+                placeholder: ' ... انتخاب ',
+                height: 30,
+            });
+            $('#date5').MdPersianDateTimePicker({
+                targetTextSelector: '#StartDateFake',
+                targetDateSelector: '#tavalod',
+                groupId: 'date5',
+                //fromDate: true,
+                //enableTimePicker: true,
+                format: "YYYY/MM/DD",
+                modalMode: true,
+                yearOffset: 60,
+            });
+            $('#StartDateFake').MdPersianDateTimePicker({
+                targetTextSelector: '#StartDateFake',
+                targetDateSelector: '#tavalod',
+                groupId: 'date5',
+                //fromDate: true,
+                //enableTimePicker: true,
+                format: "YYYY/MM/DD",
+                modalMode: true,
+                yearOffset: 60,
+            });
+
+            $('#select-WorkPlaceId').click(function () {
+                selectWorkPlaceId()
+
+            });
+            $('#WorkPlaceIdFake').click(function () {
+                selectWorkPlaceId()
+
+            });
+        });
+        $('[data-btn="save"]').click(function (e) {
+            e.preventDefault();
+            $('input[type=checkbox]').each(function () {
+                if (this.checked) {
+
+                    $('#WorkPlaceId').val($(this).val());
+                    $('#WorkPlaceIdFake').attr('placeholder', $(this).data('name'));
+                    $('#TreeViewModal').modal('hide');
+                }
+            });
+
+        });
+        function selectWorkPlaceId() {
+            $.getJSON('/Account/GetWorkPlaceTreeView', { name: 'kami', family: 'zare' }, function (result, textStatus, jqXHR) {
+
+
+            })
+                .done(function (result) {
+                    if (result.isSuccess) {
+                        $('#WorkPlaceTreeView_modal_body').empty();
+                        $('#WorkPlaceTreeView_modal_body').html(result.data);
+                        $('#TreeViewModal').modal('show');
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: result.data,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+
+                    }
+
+
+                })
+                .fail(function (jqxhr, settings, ex) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                });
+        }
+    </script>
+}

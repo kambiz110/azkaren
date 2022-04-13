@@ -1,0 +1,18 @@
+﻿@using Azmoon.Common.Useful
+@{ ViewData["Title"] = "_FooterPartial";
+                var area = this.User.IsInRole(GlobalConstants.AdministratorRoleName)
+                   || this.User.IsInRole(GlobalConstants.TeacherRoleName)
+                   ? "Administration"
+                   : ""; }
+
+<footer class="footer-1 bg-light text-dark pt-2" style="font-family: iransans; ">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="text-center">
+                اداره فناوری اطلاعات و ارتباطات <a href="http://saas.net"> سازمان عقیدتی سیاسی </a>  انتظامی جمهوری اسلامی ایران - 1399
+            </div>
+         
+        </div>
+    </div>
+</footer>
+

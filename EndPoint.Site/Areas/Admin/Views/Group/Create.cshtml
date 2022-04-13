@@ -1,0 +1,44 @@
+﻿@model Azmoon.Application.Service.Group.Dto.CreateGroupDto
+@using Microsoft.AspNetCore.Mvc.Rendering;
+
+@{
+    ViewData["Title"] = "Create";
+
+}
+
+<h1>سازمانی رده </h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+
+                <input type="hidden" asp-for="Id" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentId" class="control-label"></label>
+                <select asp-for="ParentId" asp-items="@ViewData["ParentWorkPlace"] as SelectList" class="form-control">
+                    <option>لطفا انتخاب  نمائید</option>
+                </select>
+                <span asp-validation-for="ParentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="ذخیره" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">بازگشت</a>
+</div>
+
+
+

@@ -1,0 +1,259 @@
+﻿@using EndPoint.Site.Useful.Ultimite
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>پنل مدیریت | داشبورد </title>
+    <link href="~/assets/css/site.css" rel="stylesheet" />
+    <link href="~/lib/W3/W3.CSS" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    @*<link rel="stylesheet" href="~/assets/css/font-awesome.css">*@
+    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/backend/css/adminlte.css">
+
+    <!-- bootstrap rtl -->
+    <link rel="stylesheet" href="~/backend/css/bootstrap-rtl.min.css">
+    <!-- template rtl version -->
+    @*<link rel="stylesheet" href="~/backend/css/custom-style.css">*@
+    <link href="~/assets/css/custom-style.css" rel="stylesheet" />
+    <link href="~/assets/fonts/Fonts.css" rel="stylesheet" />
+    @RenderSection("Styles", false)
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a asp-area="" asp-controller="home" asp-action="index" class="nav-link">خانه</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">خروج</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">تماس</a>
+                </li>
+            </ul>
+
+            <!-- SEARCH FORM -->
+            <form class="form-inline ml-3">
+                <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar" type="search" placeholder="جستجو" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Right navbar links -->
+
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index3.html" class="brand-link">
+                <img src="~/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                     style="opacity: .8">
+                <span class="brand-text font-weight-light">پنل مدیریت</span>
+            </a>
+
+            <!-- Sidebar -->
+            <aside class="main-sidebar sidebar-light-primary elevation-4">
+                <!-- Brand Logo -->
+                <a href="#" class="brand-link bg-primary">
+                    <img src="~/assets/img/avatar5.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                         style="opacity: .8">
+                    <span class="brand-text font-weight-light">پنل مدیریت</span>
+                </a>
+
+                <!-- Sidebar -->
+                <div class="sidebar" style="direction: ltr">
+                    <div style="direction: rtl">
+                        <!-- Sidebar user panel (optional) -->
+                        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                            <div class="image">
+                                <img class="img-circle elevation-2" src="~/assets/img/user8-128x128.jpg" alt="User Image" />
+                            </div>
+                            <div class="info">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a href="#" class="d-block"> @User.FindFirst(System.Security.Claims.ClaimTypes.GivenName).Value.ToString()</a>
+                                }
+                            </div>
+                        </div>
+                        <!-- Sidebar Menu -->
+                        <nav class="mt-2">
+                            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Home", "Index")"
+                                       asp-area="Pnl" asp-controller="Home" asp-action="Index">
+                                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                                        <p>
+                                            داشبورد
+                                            @*<i class="right fa fa-angle-left"></i>*@
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="FileManager" asp-action="Index">
+                                        <i class="nav-icon fa fa-folder"></i>
+                                        <p>مدیریت فایل</p>
+                                    </a>
+                                </li>
+
+
+
+
+       
+
+                           
+
+                                <li class="nav-item">
+                                    <a class="nav-link @Html.ActiveClass("Quiz")" href="#">
+                                        <i class="fas fa-chess nav-icon"></i>
+                                        <p>
+                                            آزمون
+
+                                            <i class="right fa fa-angle-left"></i>
+                                        </p>
+                                    </a>
+
+                                    <ul class="nav nav-treeview">
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-controller="Quiz" asp-action="Index">
+                                                <i class="fas fa-dice-d6 nav-icon"></i>
+                                                <p>آزمون ها</p>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+             
+                           
+                             
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="User" asp-action="Index">
+                                        <i class="nav-icon fa fa-users"></i>
+                                        <p>کاربران پنل</p>
+                                    </a>
+                                </li>
+
+                    
+                     
+                                <li class="nav-item has-treeview @Html.ActiveClass("WorkPlace",null,"menu-open")">
+                                    <a class="nav-link @Html.ActiveClass("Categore")">
+                                        <i class="fas fa-school nav-icon"></i>
+                                        <p>
+                                            دسته بندی
+                                            <span class="badge badge-danger badge-left">جدید</span>
+                                            <i class="right fa fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a class="nav-link @Html.ActiveClass("Index","Group")" asp-controller="Group" asp-action="Index">
+                                                <i class="fas fa-bars nav-icon"></i>
+                                                <p>لیست رده ها</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link @Html.ActiveClass("Create","Group")"
+                                               asp-controller="Group" asp-action="Create">
+                                                <i class="fas fa-file-medical nav-icon"></i>
+                                                <p>دسته بندی جدید</p>
+                                            </a>
+                                        </li>
+
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- /.sidebar-menu -->
+                    </div>
+                </div>
+                <!-- /.sidebar -->
+            </aside>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-left">
+                                @*<li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">خانه</a></li>*@
+
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div><!--/. container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-sm-none d-md-block">
+                Anything you want
+            </div>
+            <!-- Default to the left -->
+
+        </footer>
+    </div>
+
+    <!-- ./wrapper -->
+    <!-- REQUIRED SCRIPTS -->
+    <script src="~/lib/W3/w3.js"></script>
+    <!-- jQuery -->
+    <script src="~/backend/js/plugins/jquery/jquery.min.js"></script>
+    <script src="~/assets/plugins/jquery/jquery.js"></script>
+    <script src="~/assets/plugins/jQueryUI/jquery-ui.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/assets/plugins/bootstrap/js/bootstrap.js"></script>
+    <script src="~/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    @*<script src="~/assets/js/adminlte.js"></script>*@
+
+
+    <script src="~/backend/js/adminlte.js"></script>
+
+    <!-- PAGE SCRIPTS -->
+    @*<script src="~/assets/js/pages/dashboard2.js"></script>*@
+
+    @RenderSection("Scripts", false)
+</body>
+</html>
+

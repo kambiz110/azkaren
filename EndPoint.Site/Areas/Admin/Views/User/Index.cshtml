@@ -1,0 +1,109 @@
+﻿@using Azmoon.Application.Service.User.Dto
+@using Azmoon.Common.ResultDto
+@model PagingDto<List<UserShowAdminDto>>
+@addTagHelper *, LazZiya.TagHelpers
+
+
+
+
+<p>
+    <a asp-area="" asp-controller="Account" asp-action="Create" class="btn btn-success">ایجاد کاربر</a>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.Data.ElementAt(1).FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.ElementAt(1).LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.ElementAt(1).Phone)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model.Data)
+            {
+                <tr>
+
+            
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+
+                    <td>
+
+                        @Html.ActionLink("نقش ها", "UserRoles", new { id = item.Id }, new { @class = "btn btn-outline-primary" })
+
+                        @Html.ActionLink("ویرایش", "Update", new { Id = item.Id }, new { @class = "btn btn-outline-info" })
+
+                        @Html.ActionLink("دسترسی", "Group", new { Id = item.Id }, new { @class = "btn btn-outline-danger" })
+                        @Html.ActionLink("بازنشانی رمز", "ResetPassword", new { userName = item.UserName }, new { @class = "btn btn-outline-info" })
+                        @if (item.LockoutEnabled)
+                        {
+                            @Html.ActionLink("غیر فعال کردن", "ChengeLockAccunt", new { userName = item.UserName }, new { @class = "btn btn-outline-dark" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("فعال کردن", "ChengeLockAccunt", new { userName = item.UserName }, new { @class = "btn btn-outline-success" })
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td><span class="badge badge-info">هیچ رکوردی ثبت نشده است</span></td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+@{
+    if (Model != null)
+    {
+        <paging page-no="@Model.PageNo"
+                page-size="@Model.PageSize"
+                total-records="@Model.TotalRecords"
+                show-prev-next="true"
+                show-total-pages="true"
+                show-total-records="true"
+                show-page-size-nav="true"
+                show-first-numbered-page="true"
+                show-last-numbered-page="true"
+                query-string-key-page-no="PageIndex"
+                query-string-key-page-size="PageSize"
+                query-string-value="@@(Request.QueryString.Value)"
+                text-total-pages="صفحه"
+                text-total-records="رکورد"
+                text-first="&laquo;"
+                text-last="&raquo;"
+                text-previous="&lsaquo;"
+                text-next="&rsaquo;"
+                sr-text-first="اولین"
+                sr-text-last="آخرین"
+                sr-text-previous="قبلی"
+                sr-text-next="بعدی"
+                gap-size="2">
+        </paging>
+    }
+}

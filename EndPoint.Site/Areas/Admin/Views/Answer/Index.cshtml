@@ -1,0 +1,120 @@
+﻿@using Azmoon.Application.Service.Question.Dto
+@model GetPreViewQuestionDto
+<div class=" card bg-info">
+    <h1><span>سوال اولیه</span></h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <span class="btn m2">  @Html.DisplayNameFor(model => model.Subject)</span>
+                <div class="card">
+
+                    <h6 style="color:black">  @Model.Subject</h6>
+                </div>
+                <span class="btn m2">  @Html.DisplayNameFor(model => model.Message)</span>
+                <div class="jumbotron">
+
+                    <h6 style="color:black"> @Html.Raw(Model.Message) </h6>
+
+                </div>
+
+
+            </div><!-- Single post end -->
+            <!-- Related posts end -->
+
+
+
+
+        </div><!-- Content Col end -->
+
+    </div>
+    @if (Model.Images.Count > 1)
+    {
+        <div class="container">
+            <div class="row">
+
+
+                @foreach (var item in Model.Images)
+                {
+
+
+                    <img src="@item" class="rounded ml-2" width="150" height="150">
+
+                }
+            </div>
+        </div>
+    }
+    else if (Model.Images.Count == 1)
+    {
+        var img = Model.Images.FirstOrDefault();
+        <div class="container">
+            <img src="@img" class="rounded ml-2" width="150" height="150">
+        </div>
+    }<!-- Container end -->
+
+</div>
+@(await Component.InvokeAsync("GetAnswerInQuestion", new { QuestionId = Model.Id }))
+<div class="container">
+    <div class="card">
+        <div class="card-header">پاسخ</div>
+        <div class="card-body">
+
+            <form asp-action="Create" enctype="multipart/form-data">
+                <input asp-for="Id" class="form-control" type="hidden" />
+
+
+
+                <div class="form-group">
+                    <textarea name="Message" class="form-control" id="default-editor"></textarea>
+
+                </div>
+                <div class="form-group" id="fileUpload">
+
+                    <input name="ImageFile" class="form-control" type="file" />
+
+                </div>
+                <p><span class="btn btn-info mt-2 mb-2" id="addFileUpload">افزودن فایل های بیشتر</span></p>
+
+                <div class="form-group">
+                    <input type="submit" value="ثبت" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles{
+    <link href="~/lib/trumbowyg-2_25_1/ui/trumbowyg.css" rel="stylesheet" />
+}
+@section Scripts{
+
+
+
+    <script src="~/lib/trumbowyg-2_25_1/trumbowyg.js"></script>
+    <script>
+        $('#default-editor').trumbowyg();
+
+
+        $(document).ready(function () {
+
+            let Template = `<input name="ImageFile" class="form-control mt-2 mb-2" type="file" />`;
+            $("#addFileUpload").on("click", function () {
+                var fileCount = 0;
+                $('input[type="file"]').each(function () {
+                    fileCount = fileCount + 1;
+                });
+                if (fileCount < 4) {
+                    $("#fileUpload").append(Template);
+                }
+                else {
+                    var errorMsg = `<p style="color:red;">کاربر محترم شما فقط تعداد چهار فایل می توانید ضمیمه نمایئد!!!</p>`;
+                    $("#fileUpload").append(errorMsg);
+                }
+
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,118 @@
+﻿@using EndPoint.Site.Useful.Ultimite
+@model Azmoon.Application.Service.Quiz.Dto.GetQuizDetWithQuestionPager
+@addTagHelper *, LazZiya.TagHelpers
+@{
+
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h1 class="mr-2">جزئیات آزمون</h1>
+
+<div class="card w3-pale-red w3-text-black text-bold col-md-6 col-sm-12 p-3 m-1">
+    <dl class="row">
+
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuizDetiles.Name)
+        </dt>
+        <dd class="col-sm-5">
+            @Html.DisplayFor(model => model.GetQuizDetiles.Name)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuizDetiles.StartDate)
+        </dt>
+        <dd class="col-sm-5">
+            @Model.GetQuizDetiles.StartDate.ToPersianDateStrFarsi()
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuizDetiles.EndDate)
+        </dt>
+        <dd class="col-sm-5">
+            @Model.GetQuizDetiles.EndDate.ToPersianDateStrFarsi()
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuizDetiles.Status)
+        </dt>
+        <dd class="col-sm-5">
+
+            @{
+                if (Model.GetQuizDetiles.Status == true)
+                {
+                    <span class="btn btn-success">فعال</span>
+                }
+                else
+                {
+                    <span class="btn btn-danger">غیر فعال</span>
+                }
+
+            }
+
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuizDetiles.Timer)
+        </dt>
+        <dd class="col-sm-5">
+            @Html.DisplayFor(model => model.GetQuizDetiles.Timer)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuizDetiles.CategoreName)
+        </dt>
+        <dd class="col-sm-5">
+            @Html.DisplayFor(model => model.GetQuizDetiles.CategoreName)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuizDetiles.MaxQuestion)
+        </dt>
+        <dd class="col-sm-5">
+            @Html.DisplayFor(model => model.GetQuizDetiles.MaxQuestion)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("ویرایش", "Edit", new { id = Model.GetQuizDetiles.Id }, new { @class = "btn btn-outline-primary" })
+    <a asp-action="Index" class="btn btn-outline-info">بازگشت به لیست</a>
+    <a class="btn btn-outline-success"
+       asp-action="Create" asp-route-id= "@Model.GetQuizDetiles.Id" asp-controller="Question" asp-area="Admin">
+      افزودن سوال</a>
+</div>
+
+@{
+
+    if (Model != null && Model.getQuestionWithPager.Questiones != null && Model.getQuestionWithPager.Questiones.Count>0)
+    {
+
+        @(await Component.InvokeAsync("GetQuestionByQuizId", new { Questiones= Model.getQuestionWithPager.Questiones }))
+        <div class="card-footer">
+            @{
+                if (Model.getQuestionWithPager.PagerDto != null)
+                {
+                    <paging page-no="@Model.getQuestionWithPager.PagerDto.PageNo"
+                            page-size="@Model.getQuestionWithPager.PagerDto.PageSize"
+                            total-records="@Model.getQuestionWithPager.PagerDto.TotalRecords"
+                            show-prev-next="true"
+                            show-total-pages="true"
+                            show-total-records="true"
+                            show-page-size-nav="true"
+                            show-first-numbered-page="true"
+                            show-last-numbered-page="true"
+                            query-string-key-page-no="PageNo"
+                            query-string-key-page-size="PageSize"
+                            query-string-value="@@(Request.QueryString.Value)"
+                            text-total-pages="صفحه"
+                            text-total-records="رکورد"
+                            text-first="&laquo;"
+                            text-last="&raquo;"
+                            text-previous="&lsaquo;"
+                            text-next="&rsaquo;"
+                            sr-text-first="اولین"
+                            sr-text-last="آخرین"
+                            sr-text-previous="قبلی"
+                            sr-text-next="بعدی"
+                            gap-size="2">
+                    </paging>
+                }
+            }
+
+        </div>
+    }
+}

@@ -1,0 +1,88 @@
+﻿@using Azmoon.Application.Service.Question.Dto
+@model GetQuestionDitelWithAnswersPager
+@addTagHelper *, LazZiya.TagHelpers
+
+<h1 class="mr-2">جزئیات سوال</h1>
+
+<div class="card w3-khaki text-primary text-bold col-md-6 col-sm-12 p-3 m-1">
+    <dl class="row">
+
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuestionDto.Text)
+        </dt>
+        <dd class="col-sm-5">
+            @Html.DisplayFor(model => model.GetQuestionDto.Text)
+        </dd>
+
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.GetQuestionDto.Status)
+        </dt>
+        <dd class="col-sm-5">
+            @{
+
+                switch (Model.GetQuestionDto.Status)
+                {
+                    case true:
+
+                        <i class="fas fa-check" style="font-size:25px;color:forestgreen"></i>
+                        break;
+                    case false:
+                        <i class="fas fa-window-close" style="font-size:25px;color:red"></i>
+                        break;
+
+                }
+            }
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a class="btn btn-outline-info"
+       asp-action="Details" asp-route-id="@Model.GetQuestionDto.QuizId" asp-route-PageSize="10" asp-route-PageNo="1" asp-controller="Quiz" asp-area="Admin">
+        بازگشت
+    </a>
+    <a class="btn btn-outline-success"
+       asp-action="Create" asp-route-id="@Model.GetQuestionDto.Id" asp-controller="Answer" asp-area="Admin">
+        افزودن پاسخ
+    </a>
+</div>
+@{
+
+    if (Model != null && Model.AnswersWithPager.getAnswers != null && Model.AnswersWithPager.getAnswers.Count>0)
+    {
+
+        @(await Component.InvokeAsync("GetAnsweresByQuestionId", new { getAnswers = Model.AnswersWithPager.getAnswers }))
+        <div class="card-footer">
+            @{
+                if (Model.AnswersWithPager.PagerDto != null)
+                {
+                    <paging page-no="@Model.AnswersWithPager.PagerDto.PageNo"
+                            page-size="@Model.AnswersWithPager.PagerDto.PageSize"
+                            total-records="@Model.AnswersWithPager.PagerDto.TotalRecords"
+                            show-prev-next="true"
+                            show-total-pages="true"
+                            show-total-records="true"
+                            show-page-size-nav="true"
+                            show-first-numbered-page="true"
+                            show-last-numbered-page="true"
+                            query-string-key-page-no="PageNo"
+                            query-string-key-page-size="PageSize"
+                            query-string-value="@@(Request.QueryString.Value)"
+                            text-total-pages="صفحه"
+                            text-total-records="رکورد"
+                            text-first="&laquo;"
+                            text-last="&raquo;"
+                            text-previous="&lsaquo;"
+                            text-next="&rsaquo;"
+                            sr-text-first="اولین"
+                            sr-text-last="آخرین"
+                            sr-text-previous="قبلی"
+                            sr-text-next="بعدی"
+                            gap-size="2">
+                    </paging>
+                }
+            }
+
+        </div>
+    }
+}

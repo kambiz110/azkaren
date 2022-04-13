@@ -1,0 +1,82 @@
+﻿@{ Layout = null; }
+@using System.Collections
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/lib/elfinder/css/elfinder.min.css" rel="stylesheet" />
+    <link href="~/lib/elfinder/css/theme.css" rel="stylesheet" />
+    <link href="~/lib/elfinder/elfinder/themes/bootstrap/css/theme-bootstrap.css" rel="stylesheet" />
+
+    <style>
+        #elfinder.elfinder .elfinder-workzone {
+            height: 337px !important;
+        }
+
+        #elfinder #v1_XC50bWI1 {
+            display: none !important;
+        }
+        .elfinder-navbar-wrapper > #nav-v1_XC50bWI1 {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="elfinder"></div>
+    <script src="~/lib/elfinder/js/elfinder.min.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        $('[title="Files/.tmb"]').hide();
+
+            var myCommands = elFinder.prototype._options.commands;
+
+            var disabled = ['extract', 'archive', 'resize', 'help', 'select']; // Not yet implemented commands in ElFinder.Net
+
+            $.each(disabled, function (i, cmd) {
+                (idx = $.inArray(cmd, myCommands)) !== -1 && myCommands.splice(idx, 1);
+
+            });
+
+            var options = {
+				url: '/el-finder/file-system/connector', // Default (Local File System)
+				//url: '/el-finder/azure-storage/connector', // Microsoft Azure Connector
+                rememberLastDir: false, // Prevent elFinder saving in the Browser LocalStorage the last visited directory
+                commands: myCommands,
+                //lang: 'pt_BR', // elFinder supports UI and messages localization. Check the folder Content\elfinder\js\i18n for all available languages. Be sure to include the corresponding .js file(s) in the JavaScript bundle.
+                uiOptions: { // UI buttons available to the user
+                    toolbar: [
+                        ['back', 'forward'],
+                        ['reload'],
+                        ['home', 'up'],
+                        ['mkdir', 'mkfile', 'upload'],
+                        ['open', 'download'],
+                        ['undo', 'redo'],
+                        ['info'],
+                        ['quicklook'],
+                        ['copy', 'cut', 'paste'],
+                        ['rm'],
+                        ['duplicate', 'rename', 'edit'],
+                        ['selectall', 'selectnone', 'selectinvert'],
+                        ['view', 'sort']
+                    ]
+                },
+                getFileCallback: function (file, fm) {
+                 //  console.log(file);
+                    top.elFinderBrowserCallback(file, @TempData["Selector"] ,@TempData["preview"] );
+                    //console.log(parent.activeEditor);
+                    //console.log(top.activeEditor);
+                    //parent.tinymce.activeEditor.windowManager.getParams().oninsert(file, fm);
+                    //// close popup window
+                    //parent.tinymce.activeEditor.windowManager.close();
+
+                }
+            };
+            $('#elfinder').elfinder(options).elfinder('instance');
+        });</script>
+
+</body>
+</html>
+
+
+
+

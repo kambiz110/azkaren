@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewData["Title"] = "_SideNavBarPartial";
+}
+
+<div id="side-bar" class="col-12 col-md-2 border-right ml-2 mb-5 pb-5">
+    <ul class="navbar-nav text-center">
+        <li class="nav-item active">
+            <form class="my-2">
+                <button class="btn btn-primary manage-account-btn"
+                        asp-area="Student"
+                        asp-action="Index"
+                        asp-controller="Quizzes">
+                    صفحه نخست
+                </button>
+            </form>
+        </li>
+        <li class="nav-item active">
+         
+                <a class="btn btn-primary manage-account-btn mb-2"
+                        asp-area="Student"
+                        asp-action="MyQuizzes"
+                        asp-controller="Quizzes" >
+                   آزمون های من
+                </a>
+         
+        </li>
+        <li class="nav-item">
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="true"
+               class="dropdown-toggle btn btn-primary manage-account-btn">رویداد ها</a>
+            <ul class="list-unstyled collapse show" id="pageSubmenu" style="">
+                <li class="dropdown-item nav-item">
+                    <a class="nav-link text-primary"
+                       asp-area=""
+                       asp-controller="Students"
+                       asp-action="StudentActiveEventsAll">
+                        فعال
+                    </a>
+                </li>
+                <li class="dropdown-item nav-item">
+                    <a class="nav-link text-primary"
+                       asp-area=""
+                       asp-controller="Students"
+                       asp-action="StudentPendingEventsAll">
+                        در آستانه شروع
+                    </a>
+                </li>
+                <li class="dropdown-item nav-item">
+                    <a class="nav-link text-primary"
+                       asp-area=""
+                       asp-controller="Students"
+                       asp-action="StudentEndedEventsAll">
+                        پایان یافته
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

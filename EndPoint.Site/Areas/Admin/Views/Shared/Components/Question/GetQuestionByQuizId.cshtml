@@ -1,0 +1,93 @@
+﻿@using Azmoon.Application.Service.Question.Dto
+@model List<GetQuestionViewModel>
+
+@{
+    if (Model != null)
+    {
+        <h3 class="w3-panel w3-round-xlarge w3-teal p-2" style="text-align:right !important;"><span  >لیست سوال ها</span> </h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ElementAt(1).Text)
+                    </th>
+           
+                    <th>
+                        @Html.DisplayNameFor(model => model.ElementAt(1).CountTrueAsnswer)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ElementAt(1).CountFalseAsnswer)
+                    </th>
+                    <td> @Html.DisplayNameFor(model => model.ElementAt(1).Status)</td>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model != null)
+                    {
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Text)
+                                </td>
+                    
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CountTrueAsnswer)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CountFalseAsnswer)
+                                </td>
+
+                                <td>
+
+                                    @{
+
+                             
+                                        switch (item.Status)
+                                        {
+                                            case true:
+
+                                                <i class="fas fa-check" style="font-size:25px;color:forestgreen"></i>
+                                                break;
+                                            case false:
+                                                <i class="fas fa-window-close" style="font-size:25px;color:red"></i>
+                                                break;
+
+                                        }
+                                    }
+                                </td>
+                                <td>
+
+                                    <a class="btn btn-outline-primary"
+                                       asp-action="Edit" asp-route-id="@item.Id" asp-controller="Question" asp-area="Admin">
+                                        ویرایش
+                                    </a>
+                                    <a class="btn btn-outline-info"
+                                       asp-action="Details" asp-route-id="@item.Id" asp-route-PageSize="10" asp-route-PageNo="1"  asp-controller="Question" asp-area="Admin">
+                                        جزئیات
+                                    </a>
+                                    <a class="btn btn-outline-danger"
+                                       asp-action="Delete" asp-route-id="@item.Id" asp-route-quizid="@item.QuizId" asp-controller="Question" asp-area="Admin">
+                                        حذف
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                }
+
+
+            </tbody>
+        </table>
+
+
+    }
+    else
+    {
+        <h2><span>هیچ رکوردی ثبت نگردیده است</span></h2>
+    }
+}

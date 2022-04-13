@@ -1,0 +1,71 @@
+﻿@model Azmoon.Application.Service.User.Dto.GetDitalesUserProfileDto
+
+@{
+    ViewData["Title"] = "GetUserDitaels";
+    Layout = "~/Areas/Student/Views/Profile/_Layout.cshtml";
+}
+
+
+
+<div>
+
+    <div class="row">
+
+        <div class="col-sm-4">
+            <label asp-for="FirstName" class="ml-1"></label>
+            <span class="text-danger p-1">
+                :
+                @Html.DisplayFor(model => model.FirstName)
+            </span>
+        </div>
+        <div class="col-sm-4">
+            <label asp-for="LastName" class="ml-1"></label>
+            <span class="text-danger p-1">
+                :
+                @Html.DisplayFor(model => model.LastName)
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-sm-4">
+            <label asp-for="Phone" class="ml-1"></label>
+            <span class="text-danger p-1">
+                :
+                @Html.DisplayFor(model => model.Phone)
+            </span>
+        </div>
+        <div class="col-sm-4">
+            <label asp-for="darajeh" class="ml-1"></label>
+            <span class="text-danger p-1">
+                :
+                @Html.DisplayFor(model => model.darajeh)
+            </span>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-sm-4">
+            <label asp-for="yegan_r" class="ml-1"></label>
+            <span class="text-danger p-1">
+                :
+                @Html.DisplayFor(model => model.yegan_r)
+            </span>
+        </div>
+        <div class="col-sm-4">
+            <label asp-for="yegan" class="ml-1"></label>
+            <span class="text-danger p-1">
+                :
+                @Html.DisplayFor(model => model.yegan)
+            </span>
+        </div>
+
+    </div>
+
+
+</div>
+

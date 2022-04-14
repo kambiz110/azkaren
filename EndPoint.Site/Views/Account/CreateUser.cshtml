@@ -37,14 +37,14 @@
                 <div class="form-group">
                     <label asp-for="FirstName"></label>
                     <input asp-for="FirstName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                    
                 </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                     <label asp-for="LastName"></label>
                     <input asp-for="LastName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
-                    <span asp-validation-for="LastName" class="text-danger"></span>
+                    
                 </div>
             </div>
         </div>
@@ -53,14 +53,14 @@
                 <div class="form-group">
                     <label asp-for="melli"></label>
                     <input asp-for="melli" class="form-control" type="number" pattern="^[0-9]{10}$" required />
-                    <span asp-validation-for="melli" class="text-danger"></span>
+                   
                 </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                     <label asp-for="personeli"></label>
                     <input asp-for="personeli" type="number" class="form-control" pattern="(^40)?(\d{9}$)" required />
-                    <span asp-validation-for="personeli" class="text-danger"></span>
+                   
                 </div>
             </div>
         </div>
@@ -102,14 +102,14 @@
                 <div class="form-group">
                     <label asp-for="name_father"></label>
                     <input asp-for="name_father" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
-                    <span asp-validation-for="name_father" class="text-danger"></span>
+          
                 </div>
             </div>
             <div class="col-md-6 col-sm-12">
                 <div class="form-group">
                     <label asp-for="Phone"></label>
                     <input asp-for="Phone" class="form-control" type="number" pattern="(^09)?(\d{11})$" placeholder="مثال : 09123654789" required />
-                    <span asp-validation-for="Phone" class="text-danger"></span>
+    
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@
                         <span class="input-group-text cursor-pointer"><i class='fas far fa-eye' style='font-size: 24px; color: red; padding-left: 16px;'></i></span>
                     </div>
                     <input type="text" id="WorkPlaceIdFake" class="form-control" placeholder="انتخاب ... " />
-                    <input type="hidden" asp-for="WorkPlaceId" />
+                    <input type="hidden" asp-for="WorkPlaceId"/>
 
                 </div>
             </div>
@@ -138,7 +138,7 @@
                     </div>
                     <input asp-for="tavalod" type="hidden" />
                     <input type="text" id="StartDateFake" @*value="@Model.tavalod"*@ class="form-control" aria-label="date5" aria-describedby="date5" placeholder="انتخاب ... " />
-                    <span asp-validation-for="tavalod" class="text-danger"></span>
+           
                 </div>
             </div>
           

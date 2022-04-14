@@ -32,7 +32,7 @@ namespace Azmoon.Application.Service.User.Dto
 
         [Display(Name = "تلفن")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
-        [RegularExpression(@"(^09)?(\d{11})$", ErrorMessage = " {0}  را به درستی وارد نمائید")]
+        [MobliPhon]
         public string Phone { get; set; }
 
         [Display(Name = "درجه")]
@@ -63,12 +63,13 @@ namespace Azmoon.Application.Service.User.Dto
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$", ErrorMessage = "رمز باید شامل 8 کارکتر حروف بزرگ و عدد  و متا کارکتر باشد")]
         public string Password { get; set; }
+
         [Display(Name = "تکرار رمز عبور")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$", ErrorMessage = "رمز باید شامل 8 کارکتر حروف بزرگ و عدد  و متا کارکتر باشد")]
         [Compare(nameof(Password), ErrorMessage = "پسورد مطابق با رمز قبلی نمی باشد")]
         public string RePassword { get; set; }
-        public IEnumerable<Domain.Entities.Group> WorkPlaces { get; set; }
+
 
         [Display(Name = "محل خدمت")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]

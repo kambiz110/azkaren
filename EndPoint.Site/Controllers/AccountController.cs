@@ -197,20 +197,10 @@ namespace EndPoint.Site.Controllers
         [HttpGet]
         public IActionResult CreateUser(/*ShortRegisterDto dto=null*/)
         {
-            //var workPlaceSelectListItem = _workPlaceFacad.GetWorkPlaceSelectListItem.Exequte(null).Data;
 
             ViewData["Darajeh"] = StaticList.listeDarajeh;
             ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
-            //if (dto!=null)
-            //{
-            //    var data = new RegisterUserDto { 
-            //    melli=(dto.melli) ,
-            //    personeli=dto.personeli,
-            //    Phone=dto.Phone
 
-            //    };
-            //    return View(data);
-            //}
             return View();
         }
         [HttpPost]
@@ -219,10 +209,13 @@ namespace EndPoint.Site.Controllers
             ErrorMessage = "عبارت امنیتی را به درستی وارد نمائید",
             CaptchaGeneratorLanguage = Language.Persian,
             CaptchaGeneratorDisplayMode = DisplayMode.NumberToWord)]
-        public IActionResult CreateUser(IFormFile Image, RegisterUserDto dto, IFormCollection form)
+        public IActionResult CreateUser(IFormFile Image, RegisterUserDto dto)
         {
             ModelState.Remove("Id");
-
+            if (dto.WorkPlaceId==0)
+            {
+                ModelState.AddModelError("WorkPlaceId", "محل خدمت را وارد نمائید!!");
+            }
             if (!ModelState.IsValid)
             {
                 var query = from state in ModelState.Values
@@ -230,9 +223,8 @@ namespace EndPoint.Site.Controllers
                             select error.ErrorMessage;
 
                 var errorList = query.ToList();
+                errorList.Remove("The value '' is invalid.");
                 ViewBag.Errors = errorList;
-                //var workPlaceSelectListItem = _workPlaceFacad.GetWorkPlaceSelectListItem.Exequte(null).Data;
-                //TempData["workPlaceSelectListItem"] = workPlaceSelectListItem;
                 ViewData["Darajeh"] = StaticList.listeDarajeh;
                 ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
                 return View();

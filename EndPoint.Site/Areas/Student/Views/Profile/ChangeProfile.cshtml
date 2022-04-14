@@ -28,24 +28,17 @@
     <input type="hidden" asp-for="userId" class="form-control" />
     <input type="hidden" asp-for="personId" class="form-control" />
     <div class="row">
-
         <div class="col-md-6 col-sm-12">
-            <div class="form-group">
-                <label asp-for="yegan_r"></label>
-                <input asp-for="yegan_r" class="form-control" type="text" placeholder="مثال : اصفهان/گلپایگان" required />
-                <span asp-validation-for="yegan_r" class="text-danger"></span>
+            <label asp-for="WorkPlaceId"></label>
+            <div class="input-group">
+
+                <div class="input-group-prepend" id="select-WorkPlaceId">
+                    <span class="input-group-text cursor-pointer"><i class='fas far fa-eye' style='font-size: 24px; color: red; padding-left: 16px;'></i></span>
+                </div>
+                <input type="text" id="WorkPlaceIdFake" class="form-control" placeholder="@Model.WorkplaceName " />
+                <input type="hidden" asp-for="WorkPlaceId" />
             </div>
         </div>
-        <div class="col-md-6 col-sm-12">
-            <div class="form-group">
-                <label asp-for="yegan"></label>
-                <input asp-for="yegan" class="form-control" type="text" placeholder="مثال : پاوا/پایگاه دوم" required />
-                <span asp-validation-for="yegan" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label asp-for="Phone"></label>
@@ -54,18 +47,44 @@
             </div>
 
         </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="form-group">
+                <label asp-for="TypeDarajeh"></label>
+                <select class="form-control" asp-for="TypeDarajeh" required>
+                    <option value="">انتخاب...</option>
+                    @foreach (var std3 in ViewData["listTypeDarajeh"] as List<KeyValuePair<string, int>>)
+                    {
+                        <option value=@std3.Value.ToString()>@std3.Key</option>
+
+                    }
+
+                </select>
+
+            </div>
+        </div>
+
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label asp-for="darajeh"></label>
-                <input asp-for="darajeh" class="form-control" type="text" required />
+                <select class="form-control" asp-for="darajeh" searchable required>
+                    <option value=""></option>
+                    @foreach (var std in ViewData["Darajeh"] as List<KeyValuePair<string, int>>)
+                    {
 
+                        <option value=@std.Value.ToString() darajText="@std.Key">@std.Key</option>
+
+                    }
+
+                </select>
+                <span asp-validation-for="darajeh" class="text-danger"></span>
             </div>
-
         </div>
-
     </div>
-    <div class="row">
-    </div>
+ 
     <div class="form-group">
         <label>عبارت را محاسبه و وارد نمائید</label>
         <dnt-captcha asp-captcha-generator-max="999"
@@ -94,3 +113,96 @@
 
 </form>
 
+<div class="modal fade" id="TreeViewModal" role="dialog" tabindex="-1" aria-labelledby="TreeViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TreeViewModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="WorkPlaceTreeView_modal_body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary mr-2" data-btn="save">ثبت انتخاب  </button>
+                <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">خروج</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles
+{
+
+
+    <link href="~/lib/select2/select2.css" rel="stylesheet" />
+    <link href="~/lib/SweetAlert/sweetalert2.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/lib/select2/select2.js"></script>
+    <script src="~/lib/SweetAlert/sweetalert2.js"></script>
+    <script src="~/lib/SweetAlert/polyfill.js.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#darajeh').select2({
+                placeholder: ' ... انتخاب ',
+                height: 30,
+            });
+
+            $('#select-WorkPlaceId').click(function () {
+                selectWorkPlaceId()
+
+            });
+            $('#WorkPlaceIdFake').click(function () {
+                selectWorkPlaceId()
+
+            });
+        });
+        $('[data-btn="save"]').click(function (e) {
+            e.preventDefault();
+            $('input[type=checkbox]').each(function () {
+                if (this.checked) {
+
+                    $('#WorkPlaceId').val($(this).val());
+                    $('#WorkPlaceIdFake').attr('placeholder', $(this).data('name'));
+                    $('#TreeViewModal').modal('hide');
+                }
+            });
+
+        });
+        function selectWorkPlaceId() {
+            $.getJSON('/Student/Profile/GetWorkPlaceTreeView', { name: 'kami', family: 'zare' }, function (result, textStatus, jqXHR) {
+
+
+            })
+                .done(function (result) {
+                    if (result.isSuccess) {
+                        $('#WorkPlaceTreeView_modal_body').empty();
+                        $('#WorkPlaceTreeView_modal_body').html(result.data);
+                        $('#TreeViewModal').modal('show');
+
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: result.data,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+
+                    }
+
+
+                })
+                .fail(function (jqxhr, settings, ex) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                });
+        }
+    </script>
+}

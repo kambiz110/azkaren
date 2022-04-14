@@ -22,6 +22,7 @@ namespace Azmoon.Application.AutoMapper
     {
         public ViewModelToDomainProfile()
         {
+            CreateMap<GetDitalesUserProfileDto, User>();
             CreateMap<AddRoleDto, Role>();
             CreateMap<CreateGroupDto, Group>();
 

@@ -7,6 +7,8 @@ using Azmoon.Application.Interfaces.Contexts;
 using Azmoon.Application.Interfaces.User;
 using Azmoon.Application.Service.User.Dto;
 using Azmoon.Common.ResultDto;
+using Azmoon.Common.Useful;
+using Microsoft.EntityFrameworkCore;
 
 namespace Azmoon.Application.Service.User.Query
 {
@@ -41,17 +43,24 @@ namespace Azmoon.Application.Service.User.Query
 
         public ResultDto<GetDitalesUserProfileDto> GetPerson(string username)
         {
-            var user = _context.Users.Where(p => p.UserName == username).FirstOrDefault();
+            var user = _context.Users.Where(p => p.UserName == username)
+                .Include(p=>p.WorkPlace)
+                .FirstOrDefault();
+
             var person = _context.Persons.Where(p=>p.personeli==user.UserName).FirstOrDefault();
             var dto = new GetDitalesUserProfileDto {
             FirstName=user.FirstName,
             LastName=user.LastName,
-            darajeh=person.darajeh,
-            Phone=user.Phone,
-            yegan=person.yegan,
-            yegan_r=person.yegan_r,
-           personId=person.Id,
+            darajehName= StaticList.listeDarajeh.Where(p=>p.Value==user.darajeh).FirstOrDefault().Key,
+                TypeDarajehName = StaticList.listTypeDarajeh.Where(p => p.Value == user.TypeDarajeh).FirstOrDefault().Key,
+                Phone =user.Phone,
+            WorkplaceName= user.WorkPlace.Name,
+            TypeDarajeh = user.TypeDarajeh,
+                personId =person.Id,
+                darajeh=user.darajeh,
+                WorkPlaceId=(long)user.WorkPlaceId,
            userId=user.Id
+           
             };
             return new ResultDto<GetDitalesUserProfileDto> { 
             Data=dto,

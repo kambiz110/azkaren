@@ -108,7 +108,7 @@ namespace Azmoon.Application.Service.Facad
         {
             get
             {
-                return _updateProfile = _updateProfile ?? new UpdateProfile(_context);
+                return _updateProfile = _updateProfile ?? new UpdateProfile(_context, _mapper);
             }
         }
     }

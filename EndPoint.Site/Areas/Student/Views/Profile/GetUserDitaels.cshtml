@@ -42,27 +42,21 @@
             <label asp-for="darajeh" class="ml-1"></label>
             <span class="text-danger p-1">
                 :
-                @Html.DisplayFor(model => model.darajeh)
+                @Html.DisplayFor(model => model.darajehName)
             </span>
         </div>
 
     </div>
     <div class="row">
 
-        <div class="col-sm-4">
-            <label asp-for="yegan_r" class="ml-1"></label>
+        <div class="col-sm-12">
+            <label asp-for="WorkPlaceId" class="ml-1"></label>
             <span class="text-danger p-1">
                 :
-                @Html.DisplayFor(model => model.yegan_r)
+                @Html.DisplayFor(model => model.WorkplaceName)
             </span>
         </div>
-        <div class="col-sm-4">
-            <label asp-for="yegan" class="ml-1"></label>
-            <span class="text-danger p-1">
-                :
-                @Html.DisplayFor(model => model.yegan)
-            </span>
-        </div>
+
 
     </div>
 

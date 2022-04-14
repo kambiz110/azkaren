@@ -14,6 +14,8 @@ using Azmoon.Application.Service.Quiz.Dto;
 using DNTCaptcha.Core;
 using Azmoon.Application.Service.User.Dto;
 using Azmoon.Application.Service.User.Command;
+using EndPoint.Site.Useful.Static;
+using EndPoint.Site.Useful.Ultimite;
 
 namespace EndPoint.Site.Areas.Client.Controllers
 {
@@ -26,19 +28,22 @@ namespace EndPoint.Site.Areas.Client.Controllers
         private readonly IQuizFacad _getQuiz;
         private readonly SignInManager<User> _signInManager;
         private readonly IUserFacad _userFacad;
-
+        private readonly IWorkPlaceFacad _workPlaceFacad;
         public ProfileController(UserManager<User> userManager,
             IQuestionFacad questionFacad,
-                      IUserFacad userFacad ,
-            IQuizFacad getQuiz,
+                      IUserFacad userFacad,
+            IQuizFacad getQuiz
+            , IWorkPlaceFacad workPlaceFacad
+            ,
             SignInManager<User> signInManager = null
-       )
+ )
         {
             _userManager = userManager;
             _questionFacad = questionFacad;
             _getQuiz = getQuiz;
             _signInManager = signInManager;
             _userFacad = userFacad;
+            _workPlaceFacad = workPlaceFacad;
         }
 
         // GET: ProfileController
@@ -64,7 +69,7 @@ namespace EndPoint.Site.Areas.Client.Controllers
             return View(dto);
         }
 
-
+        [HttpGet]
         public  ActionResult GetUserDitaels()
         {
             var user =  _userFacad.FindUserById.GetPerson(User.Identity.Name);
@@ -112,6 +117,8 @@ namespace EndPoint.Site.Areas.Client.Controllers
         [HttpGet]
         public IActionResult ChangeProfile()
         {
+            ViewData["Darajeh"] = StaticList.listeDarajeh;
+            ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
             var user = _userFacad.FindUserById.GetPerson(User.Identity.Name);
             return View(user.Data);
         }
@@ -132,7 +139,10 @@ namespace EndPoint.Site.Areas.Client.Controllers
                 var errorList = query.ToList();
                 ViewBag.Errors = errorList;
 
-                       return View();
+                ViewData["Darajeh"] = StaticList.listeDarajeh;
+                ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
+                var user = _userFacad.FindUserById.GetPerson(User.Identity.Name);
+                return View(user.Data);
             }
 
          var result= _userFacad.updateProfile.update(dto);
@@ -140,6 +150,18 @@ namespace EndPoint.Site.Areas.Client.Controllers
 
 
             return RedirectToAction("GetUserDitaels");
+        }
+
+        public IActionResult GetWorkPlaceTreeView(string name, string family)
+        {
+            var model = _workPlaceFacad.GetWorkPlace.GetTreeView();
+            var viewHtml = this.RenderViewAsync("_PartialWorkPlaceTreeView", model.Data, true);
+            return Json(new ResultDto<string>
+            {
+                Data = viewHtml,
+                IsSuccess = true,
+                Message = "موفق"
+            });
         }
     }
 }

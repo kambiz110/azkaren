@@ -195,7 +195,7 @@ namespace EndPoint.Site.Controllers
             });
         }
         [HttpGet]
-        public IActionResult CreateUser(/*ShortRegisterDto dto=null*/)
+        public IActionResult CreateUser()
         {
 
             ViewData["Darajeh"] = StaticList.listeDarajeh;

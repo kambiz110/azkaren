@@ -26,16 +26,24 @@ namespace Azmoon.Application.Service.User.Dto
         [RegularExpression(@"(^09)?(\d{9,10})$", ErrorMessage = " {0}  را به درستی وارد نمائید")]
         public string Phone { get; set; }
 
-        [Display(Name = "درجه")]
-        [Required(ErrorMessage = " {0}  را وارد نمائید ")]
-        public string darajeh { get; set; }
+
+        public string darajehName { get; set; }
+
+
+        public string WorkplaceName { get; set; }
 
         [Display(Name = "محل خدمت")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
-        public string yegan_r { get; set; }
+        public long WorkPlaceId { get; set; }
 
-        [Display(Name = "یگان خدمتی")]
+        [Display(Name = "درجه")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
-        public string yegan { get; set; }
+        public int darajeh { get; set; }
+
+        [Display(Name = "نوع درجه")]
+        [Required(ErrorMessage = " {0}  را وارد نمائید ")]
+        public int TypeDarajeh { get; set; }
+
+         public string TypeDarajehName { get; set; }
     }
 }

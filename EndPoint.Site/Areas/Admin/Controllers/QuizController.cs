@@ -162,6 +162,11 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         [HttpGet]
         public ActionResult Access(long id)
         {
+            var model = _context.Quizzes.Where(p => p.Id == id).FirstOrDefault();
+            if (model != null)
+            {
+                ViewBag.QuizName = model.Name;
+            }
             return View();
         }
 

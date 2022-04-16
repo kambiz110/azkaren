@@ -28,6 +28,9 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Attachment\" />
+    <Folder Include="Service\Filter\Dto\" />
+    <Folder Include="Service\Filter\Command\" />
+    <Folder Include="Service\Filter\Query\" />
   </ItemGroup>
 
 </Project>

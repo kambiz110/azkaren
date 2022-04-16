@@ -133,6 +133,7 @@ namespace EndPoint.Site
             services.AddScoped<IAnswerFacad, AnswerFacad>();
             services.AddScoped<IQuizFacad, QuizFacad>();
             services.AddScoped<IResultQuizFacad, ResultQuizFacad>();
+            services.AddScoped<IQuizFilterFacad, QuizFilterFacad>();
             ApplicationConfigureServiceContainer.AddServices(services);
 
 

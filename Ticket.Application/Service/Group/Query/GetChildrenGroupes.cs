@@ -9,7 +9,7 @@ using Azmoon.Common.ResultDto;
 
 namespace Azmoon.Application.Service.Group.Query
 {
-   public class GetChildrenGroup : IGetChildrenGroup
+    public class GetChildrenGroup : IGetChildrenGroup
     {
         private readonly IDataBaseContext _context;
 
@@ -21,17 +21,28 @@ namespace Azmoon.Application.Service.Group.Query
         public ResultDto<List<long>> Exequte(List<long> workplaceIdes)
         {
             List<long> resultList = new List<long>();
-            resultList.AddRange(workplaceIdes);
-
-            foreach (var item in workplaceIdes)
+            if (workplaceIdes != null)
             {
-                getChildren(item, resultList);
+                resultList.AddRange(workplaceIdes);
+                foreach (var item in workplaceIdes)
+                {
+                    getChildren(item, resultList);
+                }
+                return new ResultDto<List<long>>
+                {
+                    Data = resultList,
+                    IsSuccess = true,
+                    Message = "موفق"
+                };
             }
+
+
+
             return new ResultDto<List<long>>
             {
                 Data = resultList,
-                IsSuccess = true,
-                Message = "موفق"
+                IsSuccess = false,
+                Message = "نا موفق"
             };
         }
 

@@ -60,6 +60,7 @@ namespace Azmoon.Persistence.Contexts
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<User> UserRole { get; set; }
         public virtual DbSet<WorkPlace> WorkPlaces { get; set; }
+        public virtual DbSet<QuizFilter> QuizFilters { get; set; }
         private void initUser(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().Ignore(p => p.Email);

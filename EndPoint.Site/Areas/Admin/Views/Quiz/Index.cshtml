@@ -10,10 +10,61 @@
 
 }
 <h1>لیست آزمون ها</h1>
+<div class="row">
+    <nav class="navbar navbar-expand-sm submenu-nav">
+        <ul class="navbar-nav">
 
-<p>
-    <a asp-action="Create" class="btn btn-success">ایجاد آزمون</a>
-</p>
+
+            <li class="nav-item">
+                <form asp-action="Create" asp-area="Admin" asp-controller="Quiz" method="get">
+                    <button type="submit" class="btn btn-default btn-change-state w3-green m-1">
+                        آزمون جدید  <i class="nav-icon fa fa-plus-circle"></i>
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form id="edit_form" asp-action="Edit">
+                    <button type="submit" class="btn btn-default btn-change-state w3-orange m-1" data-action="Edit" data-controller="Quiz" data-area="Admin">
+                        ویرایش <i class="nav-icon fa fa-edit"></i>
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form id="edit_form" asp-action="Details">
+                    <button type="submit" class="btn btn-default btn-change-state w3-purple m-1" data-action="Details" data-controller="Quiz" data-area="Admin">
+                        جزئیات <i class="nav-icon fa fa-clipboard-list"></i>
+                    </button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form id="unpublish_form" asp-action="Access">
+                    <button type="submit" class="btn btn-default btn-change-state w3-blue m-1" data-action="Access" data-controller="Quiz" data-area="Admin">
+                        فیلتر دسترسی <i class="nav-icon fas fa-shield-alt"></i>
+                    </button>
+                </form>
+            </li>
+
+            <li class="nav-item">
+                <form id="unpublish_form" asp-action="Result">
+                    <button type="submit" class="btn btn-default btn-change-state w3-deep-orange m-1" data-action="Result" data-controller="Quiz" data-area="Admin">
+                        نتایج <i class="fas fa-chalkboard-teacher"></i>
+                    </button>
+                </form>
+            </li>
+
+            <li class="nav-item">
+                <form id="unpublish_form" asp-action="Delete">
+                    <button type="submit" class="btn btn-default btn-change-state w3-pink m-1" data-action="Delete" data-controller="Quiz" data-area="Admin">
+                       حذف <i class="nav-icon fas fa-exclamation-circle"></i>
+                    </button>
+                </form>
+            </li>
+
+
+
+        </ul>
+    </nav>
+</div>
 <div class="row">
     <div class="col-sm-4 col-xs-6">
         <form asp-action="Index" method="get">
@@ -45,9 +96,13 @@
 
     if (Model != null)
     {
+        <div id="alertPanel"></div>
         <table class="table">
             <thead>
                 <tr>
+                    <th>
+                        انتخاب
+                    </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Quizes.ElementAt(1).Name)
                     </th>
@@ -61,7 +116,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Quizes.ElementAt(1).Status)
                     </th>
-                    <th></th>
+                    <th>فیلتر</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,7 +127,9 @@
                         @foreach (var item in Model.Quizes)
                         {
                             <tr>
-
+                                <td>
+                                    <input name="posts[]" type="checkbox" class="checkthis" value="@item.Id" data-username="@item.Id" />
+                                </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
@@ -102,10 +159,22 @@
                                     }
                                 </td>
                                 <td>
-                                    @Html.ActionLink("نتیجه", "Result", new { PageSize = 100, PageNo = 1, q = "", status = true, guizId = item.Id }, new { @class = "btn btn-outline-info" })
-                                    @Html.ActionLink("ویرایش", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-primary" })
-                                    @Html.ActionLink("جزئیات", "Details", new { id = item.Id, PageSize = 10, PageNo = 1 }, new { @class = "btn btn-outline-info" })
-                                    @Html.ActionLink("حذف", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-danger" })
+                                    @{
+
+                                        switch (item.state)
+                                        {
+                                            case 1:
+
+                                                <i class='fas fa-circle' style='font-size:25px;color:green'></i>
+                                                break;
+                                            case 2:
+                                                <i class='fas fa-circle blink' style='font-size:25px;color:orange'></i>
+                                                break;
+                                            case 3:
+                                                <i class='fas fa-circle' style='font-size:25px;color:red'></i>
+                                                break;
+                                        }
+                                    }
                                 </td>
                             </tr>
                         }
@@ -156,8 +225,66 @@
     <script src="~/lib/modal-popup-ybox/js/yBox.js"></script>
     <script>
 
-        $(".blinking").setInterval(function () {
-            $(".blinking").fadeOut(100).fadeIn(100)
-        }, 1000);
+        //$(".blinking").setInterval(function () {
+        //    $(".blinking").fadeOut(100).fadeIn(100)
+        //}, 1000);
+
+    </script>
+    <script>
+
+        $(document).on("click", "button[data-action]", function (e) {
+            e.preventDefault();
+            var linkk = $(this).data("action");
+            var controller = $(this).data("controller");
+            var area = $(this).data("area");
+            var Aarea = "";
+            if (area != "") {
+                Aarea = '/' + area;
+            }
+            console.log("linkk  : ", linkk);
+            var numberOfChecked = $('input:checkbox:checked');
+           
+            var test = TestnumberOfChecked(numberOfChecked);
+            if (test) {
+
+                console.log("val    : ", numberOfChecked.val());
+                if (linkk != "ResetPassword") {
+
+
+                    window.location.href = Aarea + '/' + controller + '/' + linkk + '/' + numberOfChecked.val();
+                }
+                else {
+
+                    var Checked = $('input:checkbox:checked');
+                    var userName = Checked.data("username");
+                    console.log("username  : ", userName);
+                    window.location.href = Aarea + '/' + controller + '/' + linkk + '/' + userName;
+                }
+
+            }
+
+        });
+
+        function TestnumberOfChecked(numberOfChecked) {
+            if (numberOfChecked.length === 0 || numberOfChecked.length > 1) {
+                console.log("publish_form click", numberOfChecked);
+                var errorMessage = "لطفاً! یک  آزمون  را  انتخاب نمایید.";
+                var alertPanelContent =
+                    `<div class="alert alert-warning alert-dismissible">
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                        ${errorMessage}
+                                                                    </div>`;
+                $("#alertPanel").html(alertPanelContent);
+                $("#alertPanel").slideDown("fast");
+                window.setTimeout(function () {
+                    $("#alertPanel").slideUp(500);
+                }, 3000);
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
     </script>
 }

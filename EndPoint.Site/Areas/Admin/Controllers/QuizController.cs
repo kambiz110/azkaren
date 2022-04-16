@@ -25,7 +25,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         private readonly ILogger<QuizController> _logger;
         private readonly IGroupFacad groupFacad;
 
-        public QuizController(IQuizFacad quizFacad,  IDataBaseContext context, IQuestionFacad questionFacad, IResultQuizFacad resultQuizFacad, ILogger<QuizController> logger , IGroupFacad groupFacad)
+        public QuizController(IQuizFacad quizFacad, IDataBaseContext context, IQuestionFacad questionFacad, IResultQuizFacad resultQuizFacad, ILogger<QuizController> logger, IGroupFacad groupFacad)
         {
             _quizFacad = quizFacad;
             _context = context;
@@ -36,21 +36,21 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         }
 
         // GET: QuizController
-        public ActionResult Index(int PageSize = 10, int PageNo = 1, string q = "", string search = "", int status=1 )
+        public ActionResult Index(int PageSize = 10, int PageNo = 1, string q = "", string search = "", int status = 1)
         {
             if (search == "clear")
             {
                 return RedirectToAction("Index");
             }
-            var result = _quizFacad.getQuiz.GetQuizes( PageSize, PageNo, q, status);
+            var result = _quizFacad.getQuiz.GetQuizes(PageSize, PageNo, q, status);
             return View(result.Data);
         }
 
         // GET: QuizController/Details/5
-        public ActionResult Details(long id ,int PageSize = 10, int PageNo = 1 )
+        public ActionResult Details(long id, int PageSize = 10, int PageNo = 1)
         {
             var result = _quizFacad.getQuiz.GetQuizDetWithQuestionPagerById(id);
-            var resultQus = _questionFacad.GetQuestion.GetByQuizId(PageSize ,PageNo  ,id);
+            var resultQus = _questionFacad.GetQuestion.GetByQuizId(PageSize, PageNo, id);
             result.Data.getQuestionWithPager = resultQus.Data;
             return View(result.Data);
         }
@@ -58,7 +58,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         // GET: QuizController/Create
         public ActionResult Create()
         {
-           var categoresMentSelectListItem = groupFacad.GetChildrenGroup.Exequte(null).Data;
+            var categoresMentSelectListItem = groupFacad.GetGroupSelectListItem.Exequte(null).Data;
             TempData["categoresMentSelectListItem"] = categoresMentSelectListItem;
             return View(new AddQuizDto() { }); ;
         }
@@ -94,15 +94,15 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
                 return View(dto);
             }
 
-           
+
         }
 
         // GET: QuizController/Edit/5
         public ActionResult Edit(long id)
         {
             var result = _quizFacad.getQuiz.GetQuizById(id);
-           // var categoresMentSelectListItem = _categoreFacad.GetCategoreSelectListItem.Exequte(null).Data;
-          //  TempData["categoresMentSelectListItem"] = categoresMentSelectListItem;
+            // var categoresMentSelectListItem = _categoreFacad.GetCategoreSelectListItem.Exequte(null).Data;
+            //  TempData["categoresMentSelectListItem"] = categoresMentSelectListItem;
             return View(result.Data);
         }
 
@@ -142,20 +142,29 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         public ActionResult Delete(int id)
         {
             var model = _context.Quizzes.Where(p => p.Id == id).FirstOrDefault();
-           // model.Status = false;
+            // model.Status = false;
             model.UpdatedAt = DateTime.Now;
             _context.Quizzes.Update(model);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
-        }     
+        }
         public ActionResult Result(int PageSize, int PageNo, string q, bool status, long guizId)
         {
             var model = _context.Quizzes.Where(p => p.Id == guizId).FirstOrDefault();
-            ViewBag.QuizName = model.Name;
-            var result = _resultQuizFacad.getResultQuiz.getResultWithPager(PageSize,PageNo ,q ,1, guizId);
-            return View(result.Data) ;
+            if (model != null)
+            {
+                ViewBag.QuizName = model.Name;
+            }
+
+            var result = _resultQuizFacad.getResultQuiz.getResultWithPager(PageSize, PageNo, q, 1, guizId);
+            return View(result.Data);
+        }
+        [HttpGet]
+        public ActionResult Access(long id)
+        {
+            return View();
         }
 
-  
+
     }
 }

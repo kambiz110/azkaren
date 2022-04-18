@@ -10,7 +10,7 @@ using Azmoon.Application.Interfaces.User;
 using Azmoon.Application.Service.User.Dto;
 using Azmoon.Common.Pagination;
 using Azmoon.Common.ResultDto;
-
+using Azmoon.Application.Service.Filter.Dto;
 
 namespace Azmoon.Application.Service.User.Query
 {
@@ -43,6 +43,47 @@ namespace Azmoon.Application.Service.User.Query
             {
                 Data = null
 
+
+            };
+
+        }
+
+        public ResultDto<List<Filter.Dto.Result>> apiSelectUser(string search)
+        {
+            //  var users = _userManager.Users.ToListAsync().Result;
+            var users = _context.Users.Where(p=>p.UserName.StartsWith(search)).AsQueryable();
+         
+            if (users != null)
+            {
+
+                var model = _mapper.ProjectTo<Filter.Dto.Result>(users).ToList();
+                if (model.Count()>0)
+                {
+  return new ResultDto<List<Filter.Dto.Result>>
+                {
+                    Data = model ,
+                    IsSuccess = true,
+                    Message = "موفق"
+
+                };
+                }
+                else
+                {
+                    return new ResultDto<List<Filter.Dto.Result>>
+                    {
+                        Data = null,
+                        IsSuccess = false,
+                        Message = "کاربر یافت نشد"
+
+                    };
+                }
+              
+            }
+            return new ResultDto<List<Filter.Dto.Result>>
+            {
+                Data = null,
+                IsSuccess=false,
+                Message = "کاربر یافت نشد"
 
             };
 

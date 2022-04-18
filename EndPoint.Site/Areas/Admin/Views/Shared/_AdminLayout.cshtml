@@ -155,7 +155,7 @@
                                     <a class="nav-link @Html.ActiveClass("Categore")">
                                         <i class="fas fa-school nav-icon"></i>
                                         <p>
-                                          دسته بندی سازمانی
+                                            دسته بندی سازمانی
                                             <span class="badge badge-danger badge-left">جدید</span>
                                             <i class="right fa fa-angle-left"></i>
                                         </p>
@@ -219,7 +219,7 @@
             <!-- /.content-header -->
             <!-- Main content -->
             <section class="content">
-                <div class="container-fluid">
+                <div class="container-fluid main_admin">
                     @RenderBody()
                 </div><!--/. container-fluid -->
             </section>
@@ -232,14 +232,9 @@
         </aside>
         <!-- /.control-sidebar -->
         <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
-            <div class="float-right d-sm-none d-md-block">
-                Anything you want
-            </div>
-            <!-- Default to the left -->
-
-        </footer>
+        @{
+            await Html.RenderPartialAsync("_PartialFooter");
+        }
     </div>
 
     <!-- ./wrapper -->

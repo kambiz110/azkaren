@@ -21,11 +21,19 @@ namespace Azmoon.Application.AutoMapper
         public DomainToViewModelProfile()
         {
             //  CreateMap<Course, CourseViewModel>();
+            CreateMap<User, Application.Service.Filter.Dto.Result>()
+                 .ForMember(ds => ds.id,
+            src => src.MapFrom(src => src.UserName))
+                  .ForMember(ds => ds.text,
+            src => src.MapFrom(src => src.FirstName+" "+ src.LastName));
             CreateMap<Group, GetGroupViewModel>();
             CreateMap<WorkPlace, GetWorkPlaceViewModel>().ReverseMap();
             CreateMap<User, UserShowAdminDto>();
             CreateMap<Role, GetRoleDto>();
-            CreateMap<Quiz, GetQuizDto>().ReverseMap();
+            CreateMap<Quiz, GetQuizDto>()
+                .ForMember(ds => ds.FilterStatus,
+            src => src.MapFrom(src => src.QuizFilter!=null?true:false))
+                .ReverseMap();
             CreateMap<Quiz, GetQuizDetilesDto>().ReverseMap();
             CreateMap<Question, GetQuestionViewModel>().ReverseMap(); 
             CreateMap<Question, AddQuestionViewModel>().ReverseMap(); 

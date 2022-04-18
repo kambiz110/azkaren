@@ -31,6 +31,8 @@ namespace Azmoon.Domain.Entities
         public long? PasswordddId { get; set; }
 
         public virtual Password Passworddd { get; set; }
+        public long? QuizFilterId { get; set; }
+        public virtual QuizFilter QuizFilter { get; set; }
         public virtual ICollection<Question> Questions { get; set; }
         public virtual ICollection<Result> Results { get; set; }
         public ICollection<Quiz> Quizzes { get; set; }

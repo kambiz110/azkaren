@@ -8,8 +8,11 @@ namespace Azmoon.Domain.Entities
 {
    public class QuizFilter : BaseEntity
     {
+        public long Id { get; set; }
         public string WorkpalceOption { get; set; }
-        public string DarajehOption { get; set; }
+        public int TypeDarajeh { get; set; }
         public string UserNameOption { get; set; }
+        public long QuizId { get; set; }
+        public Quiz Quiz { get; set; }
     }
 }

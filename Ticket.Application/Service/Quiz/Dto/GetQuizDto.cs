@@ -22,6 +22,8 @@ namespace Azmoon.Application.Service.Quiz.Dto
         [Display(Name = "وضعیت")]
         public bool Status { get; set; }
 
+        [Display(Name = "فیلتر")]
+        public bool FilterStatus { get; set; }
 
         [Display(Name = "وضعیت")]
         public int state { get; set; }

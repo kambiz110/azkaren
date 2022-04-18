@@ -10,6 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EndPoint.Site.Useful.Ultimite;
+using Azmoon.Common.ResultDto;
+using Azmoon.Common.Useful;
+using Azmoon.Application.Service.Filter.Dto;
 
 namespace EndPoint.Site.Areas.Pnl.Controllers
 {
@@ -18,14 +22,16 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
     public class QuizController : Controller
     {
         private readonly IQuizFacad _quizFacad;
-
+        private readonly IUserFacad _userFacad;
         private readonly IDataBaseContext _context;
         private readonly IQuestionFacad _questionFacad;
         private readonly IResultQuizFacad _resultQuizFacad;
         private readonly ILogger<QuizController> _logger;
         private readonly IGroupFacad groupFacad;
+        private readonly IWorkPlaceFacad _workPlaceFacad;
+        private readonly IQuizFilterFacad _quizFilterFacad;
 
-        public QuizController(IQuizFacad quizFacad, IDataBaseContext context, IQuestionFacad questionFacad, IResultQuizFacad resultQuizFacad, ILogger<QuizController> logger, IGroupFacad groupFacad)
+        public QuizController(IQuizFacad quizFacad, IDataBaseContext context, IQuestionFacad questionFacad, IResultQuizFacad resultQuizFacad, ILogger<QuizController> logger, IGroupFacad groupFacad, IWorkPlaceFacad workPlaceFacad, IUserFacad userFacad, IQuizFilterFacad quizFilterFacad)
         {
             _quizFacad = quizFacad;
             _context = context;
@@ -33,6 +39,9 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
             _resultQuizFacad = resultQuizFacad;
             _logger = logger;
             this.groupFacad = groupFacad;
+            _workPlaceFacad = workPlaceFacad;
+            _userFacad = userFacad;
+            _quizFilterFacad = quizFilterFacad;
         }
 
         // GET: QuizController
@@ -165,11 +174,53 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
             var model = _context.Quizzes.Where(p => p.Id == id).FirstOrDefault();
             if (model != null)
             {
+                ViewBag.QuizId = model.Id;
                 ViewBag.QuizName = model.Name;
             }
+            ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Access(CreatFilterDto dto)
+        {
+            var result = _quizFilterFacad.addQuizFilter.AddFilter(dto);
+            if (!result.IsSuccess)
+            {
+                var model = _context.Quizzes.Where(p => p.Id == dto.QuizId).FirstOrDefault();
+                if (model != null)
+                {
+                    dto.QuizId = model.Id;
+                    ViewBag.QuizId = model.Id;
+                    ViewBag.QuizName = model.Name;
+                }
+                ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
+                return View(dto);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult GetWorkPlaceTreeView(string name, string family)
+        {
+            var model = _workPlaceFacad.GetWorkPlace.GetTreeView();
+            var viewHtml = this.RenderViewAsync("_PartialWorkPlaceTreeView", model.Data, true);
+            return Json(new ResultDto<string>
+            {
+                Data = viewHtml,
+                IsSuccess = true,
+                Message = "موفق"
+            });
+        }
+
+        public IActionResult apiSelect2(string search)
+        {
+            var model = _userFacad.GetUsers.apiSelectUser(search);
+
+            return Json(model);
+
+        }
 
     }
 }

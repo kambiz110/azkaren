@@ -1,12 +1,16 @@
-﻿
+﻿@using Azmoon.Application.Service.Filter.Dto
+@model CreatFilterDto
 @{
     ViewData["Title"] = "Access";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
+
 <h2 class="mr-2">
     @ViewBag.QuizName
 </h2>
-<form method="post" action="Access">
+<form method="post" action="Access" class="col-sm-12 col-md-8 col-lg-7">
+    <input type="hidden" value="@ViewBag.QuizId" asp-for="@Model.QuizId" />
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
@@ -18,7 +22,31 @@
             </h2>
             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    در جبهه شرقی ارتش روسیه پس از ناکامی در تصرف شهر صنعتی خارکیف، دومین شهر بزرگ اوکراین، اقدام به عقب نشینی و تغییر جهت حملات کرد؛ نخست شهر ایزیوم در جنوب این منطقه هدف پیشروی ارتش روسیه قرار گرفت که از دو هفته قبل تقریبا به شکل کامل تحت کنترل قوای روس قرار گرفته و اوکراینی ها مقاومت خاصی از خود نشان ندادند و ارتش روسیه کنترل کامل شهر را به دست گرفته است؛ علاوه بر این در حال تحکیم مواضع در نقاط حاشیه ایزیوم هستند.
+                    <div class="form-row align-middle">
+                        <div class="form-group col-md-6 col-sm-12">
+
+                            <div class="input-group">
+
+                                <div class="input-group-prepend" id="select-WorkPlaceId">
+                                    <span class="input-group-text cursor-pointer"><i class='fas far fa-eye' style='font-size: 24px; color: blueviolet; padding-left: 16px;'></i></span>
+                                </div>
+                                <input type="text" name="WorkPlaceIdFake" id="WorkPlaceIdFake" class="form-control" placeholder="انتخاب محل خدمت ... " />
+                                <input type="hidden" asp-for="WorkPlaceId" />
+
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4 mt-1">
+                            <div class="form-check form-switch form-switch-md">
+                                <label class="form-check-label" for="WorkPlaceWithChildren">
+                                    با زیر مجموعه ؟
+                                </label>
+                                <input class="form-check-input mr-2" type="checkbox" asp-for="WorkPlaceWithChildren">
+
+                            </div>
+                        </div>
+
+                    </div> 
+
                 </div>
             </div>
         </div>
@@ -33,7 +61,22 @@
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    در جبهه شرقی ارتش روسیه پس از ناکامی در تصرف شهر صنعتی خارکیف، دومین شهر بزرگ اوکراین، اقدام به عقب نشینی و تغییر جهت حملات کرد؛ نخست شهر ایزیوم در جنوب این منطقه هدف پیشروی ارتش روسیه قرار گرفت که از دو هفته قبل تقریبا به شکل کامل تحت کنترل قوای روس قرار گرفته و اوکراینی ها مقاومت خاصی از خود نشان ندادند و ارتش روسیه کنترل کامل شهر را به دست گرفته است؛ علاوه بر این در حال تحکیم مواضع در نقاط حاشیه ایزیوم هستند.
+                    <div class="col-md-4 col-sm-8">
+                        <div class="form-group">
+                            <label asp-for="TypeDarajeh"></label>
+                            <select class="form-control" asp-for="TypeDarajeh" required>
+                                <option value="">انتخاب...</option>
+                                @foreach (var std3 in ViewData["listTypeDarajeh"] as List<KeyValuePair<string, int>>)
+                                {
+                                    <option value=@std3.Value.ToString()>@std3.Key</option>
+
+                                }
+
+                            </select>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -48,19 +91,246 @@
             </h2>
             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                    در جبهه شرقی ارتش روسیه پس از ناکامی در تصرف شهر صنعتی خارکیف، دومین شهر بزرگ اوکراین، اقدام به عقب نشینی و تغییر جهت حملات کرد؛ نخست شهر ایزیوم در جنوب این منطقه هدف پیشروی ارتش روسیه قرار گرفت که از دو هفته قبل تقریبا به شکل کامل تحت کنترل قوای روس قرار گرفته و اوکراینی ها مقاومت خاصی از خود نشان ندادند و ارتش روسیه کنترل کامل شهر را به دست گرفته است؛ علاوه بر این در حال تحکیم مواضع در نقاط حاشیه ایزیوم هستند.
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label asp-for="UserList"></label>
+                            <select class="form-control" id="SelectUserList" searchable multiple="multiple" style="width:400px !important">
+                                <option value="">...انتخاب</option>
+
+
+                            </select>
+                            <input type='button' value='ثبت کاربر' id='but_read' class="mr-1 btn btn-outline-primary">
+                        </div>
+                    </div>
+                    <div class="form-group m-2">
+                        <label name="Tageees" class="control-label"></label>
+                        <textarea name="UserList" id="Tageees" class="form-control text-right" dir="rtl" rows="2"></textarea>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-12 center text-center">
+        <button type="submit" class="btn btn-default btn-change-state w3-green mt-1 pt-1 pb-1 col-6">
+            ثبت  <i class="nav-icon fa fa-plus-circle"></i>
+        </button>
+        <a href="/Admin/Quiz/Index" class="btn btn-cyan btn-change-state w3-cyan  mt-1 pt-1 pb-1 col-5">
+            بازگشت  <i class="nav-icon fa fa-undo"></i>
+        </a>
+    </div>
 
 </form>
 
+<div class="modal fade" id="TreeViewModal" role="dialog" tabindex="-1" aria-labelledby="TreeViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TreeViewModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="WorkPlaceTreeView_modal_body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary mr-2" data-btn="save">ثبت انتخاب  </button>
+                <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">خروج</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Styles  {
     <link href="~/lib/bootstrap-5.0.2/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/SweetAlert/sweetalert2.css" rel="stylesheet" />
+    <link href="~/lib/select2/select2.css" rel="stylesheet" />
+    <link href="~/lib/Tagging-System-Autocomplete-Amsify-Suggestags/css/amsify.suggestags.css" rel="stylesheet" />
+
+    <style>
+        .form-switch.form-switch-md {
+            padding-left: 4.5em;
+            height: 2.5em;
+        }
+
+            .form-switch.form-switch-md .form-check-input {
+                margin-left: -4.5em;
+                height: 2em;
+                width: 4em;
+            }
+
+            .form-switch.form-switch-md .form-check-label {
+                padding-top: 0.5em;
+            }
+
+        .form-switch.form-switch-lg {
+            padding-left: 8.5em;
+            height: 4.5em;
+        }
+
+            .form-switch.form-switch-lg .form-check-input {
+                margin-left: -8.5em;
+                height: 4em;
+                width: 8em;
+            }
+
+            .form-switch.form-switch-lg .form-check-label {
+                padding-top: 1.5em;
+            }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #3a355b !important;
+        }
+    </style>
+
 }
 
 @section Scripts  {
     <script src="~/lib/bootstrap-5.0.2/js/bootstrap.js"></script>
+    <script src="~/lib/select2/select2.js"></script>
+    <script src="~/lib/SweetAlert/sweetalert2.js"></script>
+    <script src="~/lib/SweetAlert/polyfill.js.js"></script>
+    <script src="~/lib/Tagging-System-Autocomplete-Amsify-Suggestags/js/jquery.amsify.suggestags.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#SelectUserList').select2({
+                placeholder: '  انتخاب ....',
+                height: 30,
+                tags: true
+            });
+            $('#Tageees').amsifySuggestags({
+                type: 'bootstrap',
+                tagLimit: 5,
+                trimValue: true,
+                dashspaces: true,
+                lowercase: true
+            });
+
+            $('#select-WorkPlaceId').click(function () {
+                selectWorkPlaceId()
+
+            });
+            $('#WorkPlaceIdFake').click(function () {
+                selectWorkPlaceId()
+
+            });
+
+            $('[data-btn="save"]').click(function (e) {
+                e.preventDefault();
+                $('input[type=checkbox]').each(function () {
+                    if (this.checked) {
+
+                        $('#WorkPlaceId').val($(this).val());
+                        $('#WorkPlaceIdFake').attr('placeholder', $(this).data('name'));
+                        $('#TreeViewModal').modal('hide');
+                    }
+                });
+
+            });
+            function selectWorkPlaceId() {
+                $.getJSON('/Account/GetWorkPlaceTreeView', { name: 'kami', family: 'zare' }, function (result, textStatus, jqXHR) {
+
+
+                })
+                    .done(function (result) {
+                        if (result.isSuccess) {
+                            $('#WorkPlaceTreeView_modal_body').empty();
+                            $('#WorkPlaceTreeView_modal_body').html(result.data);
+                            $('#TreeViewModal').modal('show');
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: result.data,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+
+                        }
+
+
+                    })
+                    .fail(function (jqxhr, settings, ex) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    });
+            }
+
+            $('#but_read').click(function () {
+                var name = $('#SelectUserList option:selected').text();
+                var userid = $('#SelectUserList').val();
+                amsifySuggestags = new AmsifySuggestags($('#Tageees'));
+                amsifySuggestags._init();
+                amsifySuggestags.addTag(userid);
+               
+            });
+
+        });
+
+
+        $(document.body).on("change keyup", ".select2-search__field", function (e) {
+            e.preventDefault();
+            var search = $(this).val();
+            var selectuser = $('#SelectUserList');
+            $('#SelectUserList').empty();
+            var my_orders = $("#myorders");
+            my_orders.empty();
+            if (search.length > 8) {
+                $.getJSON('/Admin/Quiz/apiSelect2', { search: search }, function (result, textStatus, jqXHR) {
+                })
+                    .done(function (result) {
+                        if (result.isSuccess) {
+                            //  my_orders.append("<h2>یافت شد<h2>");
+                            // result.data.forEach(selectappendFunction);
+
+                            // $('#SelectUserList').empty();
+                            $.each(result.data, function (i, item) {
+                                let Template = '<option value="' + item.id + '">"' + item.text + '"</option>';
+                                var newOption = new Option(item.text, item.id, true, true);
+                                $('#SelectUserList').append(newOption).trigger('change');
+                                $('#SelectUserList').trigger('change.select2');
+                                $('#SelectUserList').select2('close');
+
+                                console.log(i + ": " + item.text);
+
+                            });
+
+                        }
+                        else {
+                            $('#SelectUserList').empty();
+                            $('#SelectUserList').select2('close');
+                            Swal.fire({
+                                icon: 'warning',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+
+                        }
+                    })
+                    .fail(function (jqxhr, settings, ex) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    });
+
+            }
+        });
+        function selectappendFunction(item, index) {
+            var id = "";
+            var text = "";
+            let Template = '<option value="' + item.id + '">"' + item.text + '"</option>';
+
+            $('#SelectUserList').append(Template);
+            console.log('appendFunction' + index + ": " + item);
+        }
+    </script>
 }

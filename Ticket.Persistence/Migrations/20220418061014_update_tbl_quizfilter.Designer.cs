@@ -4,14 +4,16 @@ using Azmoon.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Azmoon.Persistence.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220418061014_update_tbl_quizfilter")]
+    partial class update_tbl_quizfilter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,9 +226,6 @@ namespace Azmoon.Persistence.Migrations
                     b.Property<long?>("PasswordddId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("QuizFilterId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("QuizId")
                         .HasColumnType("bigint");
 
@@ -286,8 +285,7 @@ namespace Azmoon.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuizId")
-                        .IsUnique();
+                    b.HasIndex("QuizId");
 
                     b.ToTable("QuizFilters");
                 });
@@ -747,8 +745,8 @@ namespace Azmoon.Persistence.Migrations
             modelBuilder.Entity("Azmoon.Domain.Entities.QuizFilter", b =>
                 {
                     b.HasOne("Azmoon.Domain.Entities.Quiz", "Quiz")
-                        .WithOne("QuizFilter")
-                        .HasForeignKey("Azmoon.Domain.Entities.QuizFilter", "QuizId")
+                        .WithMany()
+                        .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -875,8 +873,6 @@ namespace Azmoon.Persistence.Migrations
                     b.Navigation("Passworddd");
 
                     b.Navigation("Questions");
-
-                    b.Navigation("QuizFilter");
 
                     b.Navigation("Quizzes");
 

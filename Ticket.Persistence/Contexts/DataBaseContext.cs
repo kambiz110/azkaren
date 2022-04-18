@@ -40,7 +40,10 @@ namespace Azmoon.Persistence.Contexts
                 .WithOne(p=>p.Quiz)
                 .HasForeignKey<Password>(c => c.QuizId);
 
-
+            modelBuilder.Entity<Quiz>()
+          .HasOne(p => p.QuizFilter)
+          .WithOne(p => p.Quiz)
+          .HasForeignKey<QuizFilter>(c => c.QuizId);
             //add defulte role and user
             initUser(modelBuilder);
 

@@ -110,6 +110,7 @@ namespace Azmoon.Application.Service.Quiz.Query
             var model = _context.Quizzes.Where(p => p.Status == status)
                 .AsNoTracking()
                 .OrderByDescending(p=>p.StartDate)
+                .Include(p=>p.QuizFilter)
                 .AsQueryable();
             if (!String.IsNullOrEmpty(searchKey))
             {

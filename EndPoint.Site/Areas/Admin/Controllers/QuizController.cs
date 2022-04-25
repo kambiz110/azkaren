@@ -68,7 +68,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         public ActionResult Create()
         {
             var categoresMentSelectListItem = groupFacad.GetGroupSelectListItem.Exequte(null).Data;
-            TempData["categoresMentSelectListItem"] = categoresMentSelectListItem;
+            ViewData["categoresMentSelectListItem"] = categoresMentSelectListItem;
             return View(new AddQuizDto() { }); ;
         }
 
@@ -91,15 +91,15 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
                 }
                 catch
                 {
-                    //var categoresMentSelectListItem = _categoreFacad.GetCategoreSelectListItem.Exequte(null).Data;
-                    //TempData["categoresMentSelectListItem"] = categoresMentSelectListItem;
+                    var categoresMentSelectListItem = groupFacad.GetGroupSelectListItem.Exequte(null).Data;
+                    ViewData["categoresMentSelectListItem"] = categoresMentSelectListItem;
                     return View(dto);
                 }
             }
             else
             {
-                //var categoresMentSelectListItem = _categoreFacad.GetCategoreSelectListItem.Exequte(null).Data;
-                //TempData["categoresMentSelectListItem"] = categoresMentSelectListItem;
+                var categoresMentSelectListItem = groupFacad.GetGroupSelectListItem.Exequte(null).Data;
+                ViewData["categoresMentSelectListItem"] = categoresMentSelectListItem;
                 return View(dto);
             }
 
@@ -110,8 +110,9 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         public ActionResult Edit(long id)
         {
             var result = _quizFacad.getQuiz.GetQuizById(id);
-            // var categoresMentSelectListItem = _categoreFacad.GetCategoreSelectListItem.Exequte(null).Data;
-            //  TempData["categoresMentSelectListItem"] = categoresMentSelectListItem;
+            var categoresMentSelectListItem = groupFacad.GetGroupSelectListItem.Exequte(null).Data;
+            ViewData["categoresMentSelectListItem"] = categoresMentSelectListItem;
+
             return View(result.Data);
         }
 
@@ -171,13 +172,19 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         [HttpGet]
         public ActionResult Access(long id)
         {
+            ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
             var model = _context.Quizzes.Where(p => p.Id == id).FirstOrDefault();
             if (model != null)
             {
                 ViewBag.QuizId = model.Id;
                 ViewBag.QuizName = model.Name;
             }
-            ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
+            var quizFilter = _quizFilterFacad.getFilter.GetByQuizId(id);
+            if (quizFilter.IsSuccess)
+            {
+                return View(quizFilter.Data);
+            }
+           
             return View();
         }
 
@@ -213,7 +220,17 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
                 Message = "موفق"
             });
         }
-
+        public IActionResult GetGroupTreeView(string name, string family)
+        {
+            var model = groupFacad.GetGroup.GetTreeView();
+            var viewHtml = this.RenderViewAsync("_PartialGroupTreeView", model.Data, true);
+            return Json(new ResultDto<string>
+            {
+                Data = viewHtml,
+                IsSuccess = true,
+                Message = "موفق"
+            });
+        }
         public IActionResult apiSelect2(string search)
         {
             var model = _userFacad.GetUsers.apiSelectUser(search);

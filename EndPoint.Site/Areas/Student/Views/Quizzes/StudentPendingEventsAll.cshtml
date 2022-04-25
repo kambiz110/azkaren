@@ -1,0 +1,125 @@
+﻿@using Azmoon.Application.Service.Quiz.Dto
+@model GetQuizStudentWithPeger
+@using EndPoint.Site.Useful.Ultimite
+@addTagHelper *, LazZiya.TagHelpers
+@{
+    ViewData["Title"] = "StudentActiveEventsAll";
+    Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
+    int counter = 1;
+}
+
+
+
+@* quizzes *@
+<div class="form-group flex-grow-1">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-warning mt-4 p-2">
+        <div class="container">
+            <h5 class="mb-0">آزمون های در آستانه شروع</h5>
+            <button class="navbar-toggler collapsed bg-primary"
+                    type="button" data-toggle="collapse"
+                    data-target="#navbarNavDropdown222"
+                    aria-controls="navbarNavDropdown222"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        </div>
+    </nav>
+    <div class="component">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        ردیف
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(1).Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(1).StartDate)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(1).EndDate)
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.Quizes != null)
+                    {
+                        @foreach (var quiz in Model.Quizes)
+                        {
+                            <tr class="table-active bg-white">
+                                <td>
+                                    @counter
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => quiz.Name)
+                                </td>
+                                <td>
+                                    @quiz.StartDate.ToPersianDateStrFarsi()
+                                </td>
+                                <td>
+                                    @quiz.EndDate.ToPersianDateStrFarsi()
+                                </td>
+                                <td class="text-right ">
+                                    
+                                </td>
+                                @{counter++;
+                                }
+                            </tr>
+
+                        }
+                    }
+                    if (Model.Quizes == null)
+                    {
+                        <tr>
+                            <td>
+                               هیچ رکوردی یافت نگردید 
+                            </td>
+                        </tr>
+
+                    }
+
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div>
+    @{
+        if (Model != null && Model.PagerDto != null)
+        {
+            <paging page-no="@Model.PagerDto.PageNo"
+                    page-size="@Model.PagerDto.PageSize"
+                    total-records="@Model.PagerDto.TotalRecords"
+                    show-prev-next="true"
+                    show-total-pages="true"
+                    show-total-records="true"
+                    show-page-size-nav="true"
+                    show-first-numbered-page="true"
+                    show-last-numbered-page="true"
+                    query-string-key-page-no="PageNo"
+                    query-string-key-page-size="PageSize"
+                    query-string-value="@@(Request.QueryString.Value)"
+                    text-total-pages="صفحه"
+                    text-total-records="رکورد"
+                    text-first="&laquo;"
+                    text-last="&raquo;"
+                    text-previous="&lsaquo;"
+                    text-next="&rsaquo;"
+                    sr-text-first="اولین"
+                    sr-text-last="آخرین"
+                    sr-text-previous="قبلی"
+                    sr-text-next="بعدی"
+                    gap-size="2">
+            </paging>
+        }
+    }
+
+</div>

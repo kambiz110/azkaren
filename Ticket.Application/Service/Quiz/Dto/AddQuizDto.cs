@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -44,5 +45,7 @@ namespace Azmoon.Application.Service.Quiz.Dto
 
         [Display(Name = " آزمون دارای سطح دسترسی است ؟")]
         public bool IsPrivate { get; set; }
-    }
+
+        public SelectListItem GroupSelectList { get; set; }
+}
 }

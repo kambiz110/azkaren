@@ -10,13 +10,13 @@ namespace Azmoon.Application.Service.Filter.Dto
    public class CreatFilterDto
     {
         [Display(Name = "محل خدمت")]
-        public long WorkPlaceId { get; set; }
+        public long? WorkPlaceId { get; set; }
         public bool WorkPlaceWithChildren  { get; set; }
 
         public string WorkPlaceIdFake { get; set; }
 
         [Display(Name = "نوع درجه")]
-        public  int TypeDarajeh { get; set; }
+        public  int? TypeDarajeh { get; set; }
 
         [Display(Name = "جستجو کاربران")]
         public string UserList { get; set; }

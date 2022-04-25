@@ -13,6 +13,7 @@ using Azmoon.Application.Service.Group.Dto;
 using Azmoon.Domain.Entities;
 using Azmoon.Application.Service.Quiz.Dto;
 using Azmoon.Application.Service.WorkPlace.Dto;
+using Azmoon.Application.Service.Filter.Dto;
 
 namespace Azmoon.Application.AutoMapper
 {
@@ -34,6 +35,7 @@ namespace Azmoon.Application.AutoMapper
                 .ForMember(ds => ds.FilterStatus,
             src => src.MapFrom(src => src.QuizFilter!=null?true:false))
                 .ReverseMap();
+            CreateMap<Quiz, QuizAssignViewModel>().ReverseMap();
             CreateMap<Quiz, GetQuizDetilesDto>().ReverseMap();
             CreateMap<Question, GetQuestionViewModel>().ReverseMap(); 
             CreateMap<Question, AddQuestionViewModel>().ReverseMap(); 

@@ -3,46 +3,41 @@
 @{
     ViewData["Title"] = "Start";
     Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
+    var quizModel = ViewData["quizModel"] as GetQuizDetilesViewModel;
 }
+<div class="center text-center col-12">
+    <input id="minutes" type="hidden" value="@quizModel.Timer" />
 
-<div class="container-fluid">
+</div>
+<div class="col-12 offset-md-2 col-md-8 my-3 center text-center">
     <div class="flex-grow-1">
         <partial name="_BublesAndCirclesPrtial" />
     </div>
-    @if (Model.Timer != 0)
-    {
-        <input id="minutes" type="hidden" value="@Model.Timer" />
-        <div id="clockdiv" class="pt-2" style="display:none">
-            <div>
-                <span class="minutes"></span>
-            </div>
-            <div>
-                <span class="seconds"></span>
-            </div>
-        </div>}
-    <div class="col-12 offset-md-2 col-md-8 my-3 row">
-        <form id="@(Model.Questions.Count.ToString())f" method="post" class="col-11 ml-4 mb-5">
+    <input id="hiddenkey"  type="hidden" data-pass="@ViewBag.password" data-quizid="@ViewBag.quizid"/>
+    <div class="my-3 row">
+
+
+        <form id="@(quizModel.QuestionCount.ToString())f" data-formcount="@(quizModel.QuestionCount.ToString())" method="post" class="col-11 ml-4 mb-5 form_question">
+
             <div id="details" class="component pt-2">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                     <i class="fa fa-exclamation-circle"></i>
-                    <strong>Warning!</strong>
-                    You have only one attempt to take this quiz!
-                    When you start, be aware to not leave the page by mistake, you will not be able to return again!
-                    Good luck!
+                    <strong>هشدار!!</strong>
+                    شما فقط یک تلاش برای شرکت در این آزمون دارید! هنگام شروع، حواستان باشد که به اشتباه صفحه را ترک نکنید! موفق باشید
                 </div>
                 <div class="card mb-3 mt-3">
                     <div class="card-header text-info pb-0" style="font-size: xx-large">
                         <i class="far fa-list-alt"></i>
-                        <p class="display-5 d-inline-block">Quiz:</p>
+                        <p class="display-5 d-inline-block">آزمون:</p>
                     </div>
                     <div class="card-body pt-1">
-                        <h4 class="card-title">@Model.Name</h4>
-                        <input type="hidden" asp-for="@Model.Name" value="@Model.Name" />
+                        <h4 class="card-title">@quizModel.Name</h4>
+                        @*<input type="hidden" asp-for="@quizModel.Name" value="@quizModel.Name" />*@
                         <p class="card-text border-top pt-2" style="display: block;">
-                            <span class="text-primary mr-1">∗</span>@Html.Raw(Model.Description)
+                            <span class="text-primary mr-1"></span>@Html.Raw(quizModel.Description)
                         </p>
                     </div>
                     <div class="card-footer py-3">
@@ -50,102 +45,42 @@
 
                         </div>
                         <div class="row mx-1 text-white">
-                            <a id="start" class="btn btn-danger col-md-4 mt-5 offset-md-1">Start</a>
+                            <a id="start" class="btn btn-danger col-md-4 mt-5 offset-md-1">شروع</a>
                             <a class="btn btn-success col-md-4 mt-md-5 mt-2 offset-md-2"
                                asp-area="Student"
                                asp-action="Index"
-                               asp-controller="Home">
-                                Cancel
+                               asp-controller="Quizzes">
+                                لغو
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
-            @* pagination *@
-            @if (Model.Questions.Count > 1)
-            {
-                <div id="pagging" class="text-center my-1" style="display:none">
-                    <ul class="pagination justify-content-center">
-                        <li id="first" class="page-item">
-                            <a class="page-link">
-                                <i class="fas fa-long-arrow-alt-left"></i>
-                            </a>
-                        </li>
-                        @for (int i = 1; i <= Model.Questions.Count; i++)
-                        {
-                            <li class="page-item number @i">
-                                <a class="page-link">
-                                    @i
-                                </a>
-                            </li>
-                        }
-                        <li id="last" class="page-item">
-                            <a class="page-link">
-                                <i class="fas fa-long-arrow-alt-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>      }
-            @for (int i = 0; i < Model.Questions.Count; i++)
-            {
-                var question = Model.Questions[i];
 
-                <div id="@question.Id" class="component" style="display:none">
-                    <div class="card mb-3">
-                        <div class="card-header text-warning">
-                            <i class="fas fa-question-circle"></i>
-                            @Html.HiddenFor(model => model.Questions[i].Id)
+            <div id="loadquizzz">
 
-                            <span class="text-primary ml-1">Question @question.Id</span>
-                        </div>
+            </div>
 
-                        <div class="card-title text-center m-1">
-                            <h4 class="quiz">@Html.Raw(question.Text)</h4>
-                        </div>
-                        <hr>
-                        <div class="card-body px-4">
-                            @for (int j = 0; j < question.Answers.Count; j++)
-                            {
-                                var answer = question.Answers[j];
-                                <div class="form-group mb-0">
-                                    <div class="mt-2">
-                                        @Html.EditorFor(x => x.Questions[i].Answers[j].IsTrue)
-                                        <h6 class="d-inline-block mt-0 ml-1 quiz">@Html.Raw(answer.Text)</h6>
-                                        @Html.HiddenFor(model => model.Questions[i].Answers[j].Id)
-                                    </div>
-                                </div>}
-                        </div>
-                        <div class="card-footer pb-3">
-                            <div class="row mx-1 text-white">
-                                <a id="prev" class="btn btn-primary col-md-5 mt-2">Previous</a>
-                                <a id="@(question.Id.ToString())next" class="btn btn-primary col-md-5 mt-2 offset-md-2 d-inline-block">Next</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>      }
-            <input id="quizId" type="hidden" asp-for="@Model.Id" value="@Model.Id" />
-            <button id="submit" type="button" class="btn btn-primary col-md-5 offset-md-3" data-toggle="modal" data-target="#btn" style="display:none">
-                Submit Quiz
-            </button>
+
             <!-- the modal -->
             <div class="modal fade" id="btn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Attention!</h5>
+                            <h5 class="modal-title" id="exampleModalLabel"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body text-center">
-                            <h5>Are you sure you want to submit your result?</h5>
+                            <h5>آیا از انتخاب مقادیر در این آزمون اطمینان دارد؟</h5>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-success" type="submit" id="submitResult"
                                     asp-action="Submit" asp-controller="Quizzes">
-                                Submit
+                                ثبت
                             </button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">No!</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف!</button>
                         </div>
                     </div>
                 </div>
@@ -153,8 +88,47 @@
         </form>
     </div>
 </div>
+
+
+@section Styles{
+
+}
 @section Scripts
 {
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/Them/js/attemptQuiz.js"></script>
+    @*<script>
+        $.ajax('/jquery/submitData', {
+            type: 'POST',  // http method
+            data: { myData: 'This is my data.' },  // data to submit
+            success: function (data, status, xhr) {
+                $('p').append('status: ' + status + ', data: ' + data);
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                $('p').append('Error' + errorMessage);
+            }
+        });
+
+            function ajaxSendQuizId() {
+        var id = $('#quizId').val();
+
+        var url = '/Student/Quizzes/StartedQuizAjaxCall';
+
+
+
+        $.ajax(url, {
+            type: 'POST',  // http method
+            data: { password: '@ViewBag.password', quizid: '@ViewBag.quizid'},
+            success: function (result) {
+
+                $("#loadquizzz").html(result.data);
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+
+            }
+        });
+    }
+    </script>*@
+
 }
 

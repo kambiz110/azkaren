@@ -15,6 +15,6 @@ namespace Azmoon.Application.Service.Question.Dto
         public string Text { get; set; }
         public long QuestionId { get; set; }
         [Display(Name = "گزینه صحیح است ?")]
-        public bool IsTrue { get; set; }
+        public bool IsTrue { get; set; } = false;
     }
 }

@@ -27,6 +27,7 @@
         <link rel="stylesheet" href="~/Them/css/demo.css" asp-append-version="true">
         <link rel="stylesheet" href="~/Them/lib/fontawesome/css/all.min.css" />
     </environment>
+    @this.RenderSection("Styles", required: false)
 </head>
 <body class="index">
     <header>
@@ -82,14 +83,18 @@
 
     <environment names="Development">
         <script src="~/Them/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
-        <script src="~/Them/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
-        <script src="~/Them/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+        @*<script src="~/lib/jquery/dist/jquery-3.5.1.slim.min.js"></script>
+        <script src="~/lib/jquery/dist/popper.min.js"></script>*@
+        @*<script src="~/Them/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>*@
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        @*<script src="~/Them/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>*@
 
     </environment>
     <environment names="Staging,Production">
         <script src="~/Them/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-        <script src="~/Them/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-        <script src="~/Them/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+        @*<script src="~/Them/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>*@
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        @*<script src="~/Them/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>*@
     </environment>
 
     @this.RenderSection("Scripts", required: false)

@@ -15,7 +15,7 @@ namespace Azmoon.Application.Service.Quiz.Dto
             ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
             MinimumLength = 6)]
         public string Password { get; set; }
-
+        public long QuizId { get; set; }
         public string Error { get; set; }
     }
 }

@@ -60,7 +60,7 @@ namespace EndPoint.Site.Areas.Client.Controllers
             CaptchaGeneratorDisplayMode = DisplayMode.NumberToWord)]
         public ActionResult Index(PasswordInputViewModel dto)
         {
-            var result = _getQuiz.getQuiz.GetQuizIdByPasswordAsync(dto.Password);
+            var result = _getQuiz.getQuiz.GetQuizIdByPasswordAsync(dto.Password ,dto.QuizId);
             if (!result.IsSuccess)
             {
                 dto.Error = "لطفا در وارد کردن رمز عبور آزمون دقت فرمایید";

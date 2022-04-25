@@ -26,11 +26,10 @@
                         <div class="form-group col-md-6 col-sm-12">
 
                             <div class="input-group">
-
                                 <div class="input-group-prepend" id="select-WorkPlaceId">
                                     <span class="input-group-text cursor-pointer"><i class='fas far fa-eye' style='font-size: 24px; color: blueviolet; padding-left: 16px;'></i></span>
                                 </div>
-                                <input type="text" name="WorkPlaceIdFake" id="WorkPlaceIdFake" class="form-control" placeholder="انتخاب محل خدمت ... " />
+                                <input type="text" name="WorkPlaceIdFake" id="WorkPlaceIdFake" value="@Model.WorkPlaceIdFake" class="form-control" placeholder="انتخاب محل خدمت ... " />
                                 <input type="hidden" asp-for="WorkPlaceId" />
 
                             </div>
@@ -64,7 +63,7 @@
                     <div class="col-md-4 col-sm-8">
                         <div class="form-group">
                             <label asp-for="TypeDarajeh"></label>
-                            <select class="form-control" asp-for="TypeDarajeh" required>
+                            <select class="form-control" asp-for="TypeDarajeh" >
                                 <option value="">انتخاب...</option>
                                 @foreach (var std3 in ViewData["listTypeDarajeh"] as List<KeyValuePair<string, int>>)
                                 {
@@ -104,7 +103,7 @@
                     </div>
                     <div class="form-group m-2">
                         <label name="Tageees" class="control-label"></label>
-                        <textarea name="UserList" id="Tageees" class="form-control text-right" dir="rtl" rows="2"></textarea>
+                        <textarea name="UserList" id="Tageees" class="form-control text-right" dir="rtl" rows="2">@Model.UserList</textarea>
                     </div>
                 </div>
             </div>
@@ -126,7 +125,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="TreeViewModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -135,7 +134,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary mr-2" data-btn="save">ثبت انتخاب  </button>
-                <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">خروج</button>
+                <button type="button" class="btn btn-secondary mr-2" data-bs-dismiss="modal">خروج</button>
             </div>
         </div>
     </div>
@@ -204,6 +203,7 @@
                 trimValue: true,
                 dashspaces: true,
                 lowercase: true
+               
             });
 
             $('#select-WorkPlaceId').click(function () {

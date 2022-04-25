@@ -26,20 +26,20 @@ namespace Azmoon.Application.Service.Quiz
         {
             var user = _context.Users.Where(p => p.UserName == userName).FirstOrDefault();
             var model = _mapper.Map<Domain.Entities.Quiz>(dto);
-            model.Password = dto.Password.ToEncodeAndHashMD5();
+            model.Password = dto.Password.EncryptString();
             model. CreatorId = user.Id;
             model.UpdatedAt = DateTime.Now;
             if (model.Id > 0)
             {
-                _context.Passwords.Add(new Domain.Entities.Password { QuizId=model.Id , Content=model.Password.ToEncodeAndHashMD5() });
-                _context.Quizzes.Update(model);
+                //_context.Passwords.Add(new Domain.Entities.Password { QuizId=model.Id , Content=model.Password.ToEncodeAndHashMD5() });
+            _context.Quizzes.Update(model);
             }
             else
             {
                 _context.Quizzes.Add(model);
-                var pass = _context.Passwords.Where(p => p.QuizId == model.Id).FirstOrDefault();
-                pass.Content = model.Password;
-                _context.Passwords.Update(pass);
+                //var pass = _context.Passwords.Where(p => p.QuizId == model.Id).FirstOrDefault();
+                //pass.Content = model.Password;
+                //_context.Passwords.Update(pass);
             }
 
             var result = _context.SaveChanges();

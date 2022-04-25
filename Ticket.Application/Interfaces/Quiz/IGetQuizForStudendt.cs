@@ -11,5 +11,6 @@ namespace Azmoon.Application.Interfaces.Quiz
    public interface IGetQuizForStudendt
     {
         ResultDto<GetQuizForStudendtDto> Exequte(long QuizId);
+        ResultDto<GetQuizStudentWithPeger> GetQuizes(int PageSize, int PageNo, string searchKey, int status);
     }
 }

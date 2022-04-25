@@ -9,18 +9,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azmoon.Common.Pagination;
+using Azmoon.Application.Service.Filter.Dto;
+using Azmoon.Common.Useful;
 
 namespace Azmoon.Application.Service.Quiz.Query
 {
     public class GetQuizForStudendt : IGetQuizForStudendt
     {
         private readonly IDataBaseContext _context;
+        private readonly IMapper _mapper;
 
-
-        public GetQuizForStudendt(IDataBaseContext context)
+        public GetQuizForStudendt(IDataBaseContext context, IMapper mapper)
         {
             _context = context;
-     
+            _mapper = mapper;
         }
         public ResultDto<GetQuizForStudendtDto> Exequte(long QuizId)
         {
@@ -59,6 +62,66 @@ namespace Azmoon.Application.Service.Quiz.Query
 
             throw new NotImplementedException();
         }
+        public  ResultDto<GetQuizStudentWithPeger> GetQuizes(int PageSize, int PageNo, string searchKey, int status)
+        {
+            int rowCount = 0;
+
+            var model =  _context.Quizzes.Where(p => p.Status == status)
+                .AsNoTracking()
+                .OrderByDescending(p => p.StartDate)
+                .Include(p => p.QuizFilter)
+                .AsQueryable();
+            if (!String.IsNullOrEmpty(searchKey))
+            {
+                model = model.Where(p => p.Name.Contains(searchKey.Trim())).AsQueryable();
+            }
+            if (status==1)
+            {
+                model = model.Where(p => p.StartDate <= DateTime.Now && p.EndDate > DateTime.Now).AsQueryable();
+            }
+            if (status == 2)
+            {
+               model = model.Where(p => p.StartDate > DateTime.Now && p.StartDate <= DateTime.Now.AddDays(7) && p.EndDate > DateTime.Now).AsQueryable();
+            }
+            if (status == 3)
+            {
+              model = model.Where(p =>  p.EndDate < DateTime.Now).AsQueryable();
+            }
+            var date = new GetQuizStudentWithPeger() { };
+            if (model != null)
+            {
+                var modelList = model.ToPaged(PageNo, PageSize, out rowCount).ToList();
+                var result = _mapper.Map<List<QuizAssignViewModel>>(modelList);
+                var paging = result.ToPaged(PageNo, PageSize, out rowCount).ToList();
+                for (int i = 0; i < paging.Count; i++)
+                {
+                    var start = (DateTime)paging.ElementAt(i).StartDate;
+                    var end = (DateTime)paging.ElementAt(i).EndDate;
+
+                }
+                date.Quizes = paging;
+                date.PagerDto = new PagerDto
+                {
+                    PageNo = PageNo,
+                    PageSize = PageSize,
+                    TotalRecords = rowCount
+                };
+                return new ResultDto<GetQuizStudentWithPeger>
+                {
+
+                    Data = date,
+                    IsSuccess = true,
+                    Message = "Success"
+                };
+            }
+            return new ResultDto<GetQuizStudentWithPeger>
+            {
+                Data = null,
+                IsSuccess = false,
+                Message = "Warninge"
+            };
+        }
+
         private IList<int> getArreyIndex(int length ,int count) {
 
             Random rndQusetionIndex = new Random();

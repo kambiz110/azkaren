@@ -46,7 +46,7 @@ namespace Azmoon.Application.Service.Facad
             get
             {
 
-                return _quizForStudendt = _quizForStudendt ?? new GetQuizForStudendt(_context);
+                return _quizForStudendt = _quizForStudendt ?? new GetQuizForStudendt(_context, _mapper);
             }
         }
     }

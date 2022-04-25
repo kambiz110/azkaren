@@ -60,6 +60,7 @@ namespace Azmoon.Persistence.Contexts
         public DbSet<Group> Groups { get; set; }
         public DbSet<persons> Persons { get; set; }
         public DbSet<Password> Passwords { get; set; }
+        public DbSet<QuizStartTemp>QuizStartTemps  { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<User> UserRole { get; set; }
         public virtual DbSet<WorkPlace> WorkPlaces { get; set; }

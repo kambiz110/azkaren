@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Azmoon.Application.Service.Question.Dto;
 using Azmoon.Common.Useful;
+using Azmoon.Application.Service.Group.Query;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Azmoon.Application.Service.Quiz.Query
 {
@@ -28,12 +30,17 @@ namespace Azmoon.Application.Service.Quiz.Query
 
         public ResultDto<AddQuizDto> GetQuizById(long id)
         {
+
             var model = _context.Quizzes.Where(p => p.Status == 1 && p.Id == id)
             .AsNoTracking()
             .FirstOrDefault();
             if (model != null)
             {
                 var result = _mapper.Map<AddQuizDto>(model);
+                if (!String.IsNullOrEmpty(result.Password))
+                {
+                    result.Password = result.Password.DecryptString();
+                }
 
                 return new ResultDto<AddQuizDto>
                 {
@@ -54,7 +61,7 @@ namespace Azmoon.Application.Service.Quiz.Query
         {
             var model = _context.Quizzes.Where(p => p.Status == 1 && p.Id == id)
             .AsNoTracking()
-            .Include(p=>p.Group)
+            .Include(p => p.Group)
             .FirstOrDefault();
             if (model != null)
             {
@@ -106,11 +113,11 @@ namespace Azmoon.Application.Service.Quiz.Query
         public ResultDto<GetQuizWithPeger> GetQuizes(int PageSize, int PageNo, string searchKey, int status)
         {
             int rowCount = 0;
-  
+
             var model = _context.Quizzes.Where(p => p.Status == status)
                 .AsNoTracking()
-                .OrderByDescending(p=>p.StartDate)
-                .Include(p=>p.QuizFilter)
+                .OrderByDescending(p => p.StartDate)
+                .Include(p => p.QuizFilter)
                 .AsQueryable();
             if (!String.IsNullOrEmpty(searchKey))
             {
@@ -119,7 +126,7 @@ namespace Azmoon.Application.Service.Quiz.Query
             var date = new GetQuizWithPeger() { };
             if (model != null)
             {
-               var modelList= model.ToPaged(PageNo, PageSize, out rowCount).ToList();
+                var modelList = model.ToPaged(PageNo, PageSize, out rowCount).ToList();
                 var result = _mapper.Map<List<GetQuizDto>>(modelList);
                 var paging = result.ToPaged(PageNo, PageSize, out rowCount).ToList();
                 for (int i = 0; i < paging.Count; i++)
@@ -127,7 +134,7 @@ namespace Azmoon.Application.Service.Quiz.Query
                     var start = (DateTime)modelList.ElementAt(i).StartDate;
                     var startSuspand = start.AddHours(5.0);
                     var end = (DateTime)modelList.ElementAt(i).EndDate;
-                    if (start <= DateTime.Now && end>DateTime.Now)
+                    if (start <= DateTime.Now && end > DateTime.Now)
                     {
                         //در حال برگزاری
                         paging.ElementAt(i).state = 1;
@@ -166,16 +173,16 @@ namespace Azmoon.Application.Service.Quiz.Query
             };
         }
 
-        public ResultDto<long> GetQuizIdByPasswordAsync(string password)
+        public ResultDto<long> GetQuizIdByPasswordAsync(string password, long quizId)
         {
-            var model = _context.Passwords.Where(p => p.Status == 1  && p.Content==password.ToEncodeAndHashMD5())
+            var model = _context.Quizzes.Where(p => p.Status == 1 && p.Id == quizId && p.Password == password.DecryptString())
            .AsNoTracking()
            .FirstOrDefault();
             if (model != null)
             {
                 return new ResultDto<long>
                 {
-                    Data=model.Id,
+                    Data = model.Id,
                     IsSuccess = true,
                     Message = "Success"
                 };
@@ -187,7 +194,34 @@ namespace Azmoon.Application.Service.Quiz.Query
                 Message = "Warninge"
             };
         }
+        public ResultDto<GetQuizDetilesViewModel> GetQuizViewStartPageById(long id) {
 
+            var model = _context.Quizzes.Where(p => p.Status == 1 && p.Id == id)
+               .AsNoTracking()
+               .Include(p => p.Questions)
+               .FirstOrDefault();
+            if (model != null)
+            {
+                return new ResultDto<GetQuizDetilesViewModel>
+                {
+                    Data = new GetQuizDetilesViewModel
+                    {
+                        Description = model.Description,
+                        Id = model.Id,
+                        Name = model.Name,
+                        Timer = (int)model.Timer,
+                        QuestionCount = model.Questions.Count()
+                    },
+                    IsSuccess=true
+                };
+            }
+             return new ResultDto<GetQuizDetilesViewModel>
+            {
+                Data=null,
+                IsSuccess=false
+            }; 
+
+}
         public async Task<AttemtedQuizViewModel> GetQuizByIdAsync(long id)
         {
             var getQuizForStudendtDto = new AttemtedQuizViewModel();
@@ -195,7 +229,7 @@ namespace Azmoon.Application.Service.Quiz.Query
                 .AsNoTracking()
                 .FirstOrDefault();
             var Question = _context.Qestions
-                .Where(p => p.QuizId == id)
+                .Where(p => p.QuizId == id && p.Status==1)
                 .AsNoTracking()
                 .ToList();
             List<AttemtedQuizQuestionViewModel> qustiones = new List<AttemtedQuizQuestionViewModel>();
@@ -208,7 +242,9 @@ namespace Azmoon.Application.Service.Quiz.Query
             {
                 QuestionCounter = Question.Count();
             }
-            var lstIndexQuestion = getArreyIndex(qustiones.Count(), QuestionCounter);
+
+            var lstIndexQuestion = getArreyIndex(Question.Count, QuestionCounter);
+
             foreach (var item in lstIndexQuestion)
             {
                 var ques = new AttemtedQuizQuestionViewModel
@@ -220,6 +256,7 @@ namespace Azmoon.Application.Service.Quiz.Query
                 qustiones.Add(ques);
             }
             getQuizForStudendtDto.Id = id;
+            getQuizForStudendtDto.Description = Quiz.Description;
             getQuizForStudendtDto.Name = Quiz.Name;
             getQuizForStudendtDto.Questions = qustiones;
             getQuizForStudendtDto.Timer = (int)Quiz.Timer;
@@ -228,40 +265,108 @@ namespace Azmoon.Application.Service.Quiz.Query
 
         private IList<int> getArreyIndex(int length, int count)
         {
-
-            Random rndQusetionIndex = new Random();
-
             IList<int> result = new List<int>();
-            do
+            Random rndQusetionIndex = new Random();
+            if (length<count)
             {
-                var a = rndQusetionIndex.Next(0, (length - 1));
-                if (!result.Where(p => p == a).Any())
-                {
-                    result.Add(a);
-                }
-
+                count = length;
             }
-            while (result.Count() <= count);
+            if (length == count && count == 1)
+            {
+                result.Add(0);
+            }
+            else
+            {
+                do
+                {
+                    var a = rndQusetionIndex.Next(0, (length));
+                    if (!result.Where(p => p == a).Any())
+                    {
+                        result.Add(a);
+                    }
+
+                }
+                while (result.Count() < count);
+                return result;
+            }
+
+
 
             return result;
         }
+        private IList<long> getArreyIndexAnswer(int length, int count, List<long> Ides)
+        {
 
-        private async Task< List<AttemtedQuizAnswerViewModel>> GetAnswerForQuestionId(long questionId)
+            Random rndQusetionIndex = new Random();
+
+            IList<long> result = new List<long>();
+            int TrueCounter = 0;
+            int FalseCounter = 0;
+            do
+            {
+                var a = rndQusetionIndex.Next(0, (length));
+
+
+                if (!result.Where(p => p == Ides[a]).Any())
+                {
+                    var answers = _context.Answers
+                         .Where(p => p.Id == Ides[a])
+                         .AsNoTracking()
+                         .FirstOrDefault();
+                    if (answers.IsTrue)
+                    {
+                        if (TrueCounter < 1)
+                        {
+
+                            result.Add(Ides[a]);
+                            TrueCounter++;
+
+
+
+                        }
+
+                    }
+                    else
+                    {
+                        if (FalseCounter < 3)
+                        {
+
+                            result.Add(Ides[a]);
+                            FalseCounter++;
+
+
+                        }
+
+                    }
+
+
+
+                }
+
+            }
+            while (result.Count() < count);
+
+            return result;
+        }
+        private async Task<List<AttemtedQuizAnswerViewModel>> GetAnswerForQuestionId(long questionId)
         {
             List<AttemtedQuizAnswerViewModel> result = new List<AttemtedQuizAnswerViewModel>();
             var answers = await _context.Answers
-             .Where(p => p.QuestionId == questionId)
+             .Where(p => p.QuestionId == questionId && p.Status==1)
              .AsNoTracking()
              .ToListAsync();
-            var lstIndexAnswers = getArreyIndex(answers.Count(), 4);
+
+            var Ides = answers.Select(p => p.Id).ToList();
+            var lstIndexAnswers = getArreyIndexAnswer(answers.Count(), 4, Ides);
             foreach (var item in lstIndexAnswers)
             {
+           
                 var answ = new AttemtedQuizAnswerViewModel
                 {
-                    Id = answers[item].Id,
-                    Text = answers[item].Text,
-                    IsTrue = answers[item].IsTrue,
-                    QuestionId= questionId
+                    Id = answers.Find(p => p.Id == item).Id,
+                    Text = answers.Find(p => p.Id == item).Text,
+                    //IsTrue = answers[item].IsTrue,
+                    QuestionId = questionId
                 };
                 result.Add(answ);
             }

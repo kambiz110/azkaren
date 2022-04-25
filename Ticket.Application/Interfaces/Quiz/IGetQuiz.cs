@@ -14,7 +14,8 @@ namespace Azmoon.Application.Interfaces.Quiz
         ResultDto<AddQuizDto> GetQuizById(long id);
         ResultDto<GetQuizDetilesDto> GetQuizDetailsById(long id);
         ResultDto<GetQuizDetWithQuestionPager> GetQuizDetWithQuestionPagerById(long id);
-        ResultDto<long> GetQuizIdByPasswordAsync(string password);
+        ResultDto<long> GetQuizIdByPasswordAsync(string password, long quizId);
        Task< AttemtedQuizViewModel> GetQuizByIdAsync(long id);
+        ResultDto<GetQuizDetilesViewModel> GetQuizViewStartPageById(long id);
     }
 }

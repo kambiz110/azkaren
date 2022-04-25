@@ -23,26 +23,37 @@ namespace Azmoon.Application.Service.Filter.Query
 
         public ResultDto<CreatFilterDto> GetByQuizId(long quizid)
         {
-            var filter = _context.QuizFilters.AsNoTracking().Where(p => p.QuizId == quizid).Select(p =>
-         new CreatFilterDto
-         {
-             TypeDarajeh = p.TypeDarajeh,
-             UserList = p.UserNameOption,
-             WorkPlaceId = TolongFirst(p.WorkpalceOption),
-             WorkPlaceIdFake = _context.WorkPlaces.AsNoTracking().Where(d => d.Id == TolongFirst(p.WorkpalceOption)).FirstOrDefault().Name,
-             WorkPlaceWithChildren = (ToBoolTwoChild(p.WorkpalceOption))
-         })
+            var filter = _context.QuizFilters.AsNoTracking().Where(p => p.QuizId == quizid)
+         //       .Select(p =>
+         //new CreatFilterDto
+         //{
+         //    TypeDarajeh = p.TypeDarajeh,
+         //    UserList = p.UserNameOption,
+         //    WorkPlaceId = TolongFirst(p.WorkpalceOption),
+         //    WorkPlaceIdFake = _context.WorkPlaces.AsNoTracking().Where(d => d.Id == TolongFirst(p.WorkpalceOption)).FirstOrDefault().Name,
+         //    WorkPlaceWithChildren = (ToBoolTwoChild(p.WorkpalceOption))
+         //})
             .FirstOrDefault();
             if (filter == null)
             {
+                
                 return new ResultDto<CreatFilterDto>
                 {
                     IsSuccess = false
                 };
             }
+            var result = new CreatFilterDto
+            {
+                QuizId=filter.QuizId,
+                TypeDarajeh = (filter.TypeDarajeh)!=null ? filter.TypeDarajeh:null,
+                UserList = filter.UserNameOption,
+                WorkPlaceId = !String.IsNullOrEmpty(filter.WorkpalceOption)? TolongFirst(filter.WorkpalceOption):null,
+                WorkPlaceIdFake = !String.IsNullOrEmpty(filter.WorkpalceOption) ? _context.WorkPlaces.AsNoTracking().Where(d => d.Id == TolongFirst(filter.WorkpalceOption)).FirstOrDefault().Name:null,
+                WorkPlaceWithChildren = !String.IsNullOrEmpty(filter.WorkpalceOption) ? ToBoolTwoChild(filter.WorkpalceOption):false
+            };
             return new ResultDto<CreatFilterDto>
             {
-                Data = filter,
+                Data = result,
                 IsSuccess = true,
                 Message = "موفق"
             };
@@ -50,7 +61,9 @@ namespace Azmoon.Application.Service.Filter.Query
 
         private long TolongFirst(string s)
         {
-            var v = s.Split("_").ToArray();
+            if (!String.IsNullOrEmpty(s))
+            {
+    var v = s.Split("_").ToArray();
             long number;
 
             bool isParsable = Int64.TryParse(v.ElementAt(0), out number);
@@ -59,16 +72,23 @@ namespace Azmoon.Application.Service.Filter.Query
                 return number;
             else
                 return 0;
+            }
+            return 0;
 
         }
         private bool ToBoolTwoChild(string s)
         {
-            var v = s.Split("_").ToArray();
-            int number;
-            bool isParsable = Int32.TryParse(v.ElementAt(1), out number);
-            if (number > 0)
+            if (!String.IsNullOrEmpty(s))
             {
-                return true;
+                var v = s.Split("_").ToArray();
+                int number;
+                bool isParsable = Int32.TryParse(v.ElementAt(1), out number);
+                if (number > 0)
+                {
+                    return true;
+                }
+                return false;
+
             }
             return false;
         }

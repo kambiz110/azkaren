@@ -30,13 +30,21 @@ namespace Azmoon.Application.Service.Filter.Command
                 UserNameOption = dto.UserList,
                 WorkpalceOption = dto.WorkPlaceId + "_" + (dto.WorkPlaceWithChildren==true?1:0).ToString()
             };
+            var quiz = _context.Quizzes.Where(p => p.Id == dto.QuizId).FirstOrDefault();
             var quizFilter = _context.QuizFilters.AsNoTracking().Where(p => p.QuizId == dto.QuizId).FirstOrDefault();
             if (quizFilter!=null)
             {
                 filter.Id = quizFilter.Id;
-               
+                quiz.QuizFilterId = filter.Id;
+                _context.QuizFilters.Update(filter);
             }
-            _context.QuizFilters.Add(filter);
+            else
+            {
+                _context.QuizFilters.Add(filter);
+        
+                quiz.QuizFilterId = filter.Id;
+            }
+           
             var saved = _context.SaveChanges();
             return new ResultDto
             {

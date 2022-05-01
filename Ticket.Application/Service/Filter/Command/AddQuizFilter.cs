@@ -28,7 +28,7 @@ namespace Azmoon.Application.Service.Filter.Command
                 QuizId = dto.QuizId,
                 TypeDarajeh = dto.TypeDarajeh,
                 UserNameOption = dto.UserList,
-                WorkpalceOption = dto.WorkPlaceId + "_" + (dto.WorkPlaceWithChildren==true?1:0).ToString()
+                WorkpalceOption =(dto.WorkPlaceId!=null)?  (dto.WorkPlaceId + "_" + (dto.WorkPlaceWithChildren == true ? 1 : 0).ToString() ):""
             };
             var quiz = _context.Quizzes.Where(p => p.Id == dto.QuizId).FirstOrDefault();
             var quizFilter = _context.QuizFilters.AsNoTracking().Where(p => p.QuizId == dto.QuizId).FirstOrDefault();

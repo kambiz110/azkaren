@@ -17,6 +17,7 @@ using Azmoon.Application.Service.Question.Dto;
 using Azmoon.Application.Service.User.Dto;
 using Azmoon.Common.ResultDto;
 using Azmoon.Domain.Entities;
+using Azmoon.Application.Service.Group.Dto;
 
 namespace EndPoint.Site.Areas.Admin.Controllers
 {
@@ -196,9 +197,45 @@ namespace EndPoint.Site.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult GroupAccess(string Id)
+        {
 
+             var model = _groupFacad.GetGroup.GroupAccess(Id).Data;
+            return View(model);
+        }
+        [HttpGet]
+        public IActionResult EditGroupAccess(string Id)
+        {
 
+            var departMentSelectListItem = _groupFacad.GetGroupSelectListItem.Exequte(null).Data;
+            ViewData["departMentSelectListItem"] = departMentSelectListItem;
+           var model = _groupFacad.GetGroup.GroupAccess(Id).Data;
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult EditGroupAccess(GetGroupAccessDto dto)
+        {
+            var result = _groupFacad.addGroupInUser.Exequte(dto);
+            var departMentSelectListItem = _groupFacad.GetGroupSelectListItem.Exequte(null).Data;
+            ViewData["departMentSelectListItem"] = departMentSelectListItem;
 
-   
+            return RedirectToAction("GroupAccess", new { Id = dto.UserId });
+        }
+
+        [HttpGet]
+        [Route("Admin/User/DeleteGroupAccess/{UserId}/{DeleteGroupAccess}")]
+        public IActionResult DeleteDepartmentAccess(string UserId, long DeleteGroupAccess)
+        {
+
+            var result = _groupFacad.deleteGroupAccess.delete(UserId, DeleteGroupAccess);
+            if (result.IsSuccess)
+            {
+
+            }
+            var referer = HttpContext.Request.Headers["Referer"].ToString();
+            return Redirect(referer);
+        }
+
     }
 }

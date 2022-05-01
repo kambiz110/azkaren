@@ -1,13 +1,17 @@
 ﻿using Azmoon.Application.Interfaces.Facad;
 using Azmoon.Application.Interfaces.Quiz;
+using Azmoon.Application.Interfaces.QuizTemp;
+using Azmoon.Application.Service.Filter.Dto;
 using Azmoon.Application.Service.Quiz.Dto;
 using Azmoon.Common.ResultDto;
 using Azmoon.Domain.Entities;
 using DNTCaptcha.Core;
 using EndPoint.Site.Areas.Client.Controllers;
+using EndPoint.Site.Helper.ActionFilter;
 using EndPoint.Site.Helper.Session;
 using EndPoint.Site.Useful.Ultimite;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
@@ -26,13 +30,17 @@ namespace EndPoint.Site.Areas.Student.Controllers
         private readonly IQuizFacad getQuiz;
         private readonly IResultQuizFacad _resultQuiz;
         private readonly IDistributedCache distributedCache;
+        private readonly IGetQuizTemp _getQuizTemp;
+        private readonly IAddQuizStartTemp _addQuizStartTemp;
 
-        public QuizzesController(UserManager<User> userManager, IQuizFacad getQuiz, IResultQuizFacad resultQuiz, IDistributedCache distributedCache)
+        public QuizzesController(UserManager<User> userManager, IQuizFacad getQuiz, IResultQuizFacad resultQuiz, IDistributedCache distributedCache, IGetQuizTemp getQuizTemp, IAddQuizStartTemp addQuizStartTemp)
         {
             _userManager = userManager;
             this.getQuiz = getQuiz;
             _resultQuiz = resultQuiz;
             this.distributedCache = distributedCache;
+            _getQuizTemp = getQuizTemp;
+            _addQuizStartTemp = addQuizStartTemp;
         }
         public ActionResult Index(int pageIndex = 1, int pagesize = 10)
         {
@@ -63,6 +71,9 @@ namespace EndPoint.Site.Areas.Student.Controllers
 
             return View(model.Data);
         }
+
+        [HttpPost]
+        [TypeFilter(typeof(SetAccessDataFilter))]
         public IActionResult Start(string password, long quizid)
         {
             ViewBag.password = password;
@@ -76,17 +87,29 @@ namespace EndPoint.Site.Areas.Student.Controllers
         }
 
         [HttpGet]
-        public IActionResult Submit( )
+        public IActionResult Submit(AttemtedQuizViewModel model)
         {
             return this.View();
         }
 
         [HttpPost]
-        public IActionResult Submit(AttemtedQuizViewModel model)
-        {
-          
 
-            return this.View(model);
+        public IActionResult Submit( IFormCollection foFormCollection , AttemtedQuizViewModel model)
+        {
+            HttpContext.Session.Remove("QuizTimer");
+            List<KeyValuePair<string, string>> answer=new List<KeyValuePair<string, string>>();
+            foreach (var item in foFormCollection)
+            {
+                if (item.Key!="Id" && item.Key!= "__RequestVerificationToken")
+                {
+                    answer.Add(new KeyValuePair<string, string> (item.Key, item.Value));
+            
+                }
+
+               
+            }
+
+            return this.View();
         }
 
         public IActionResult Results()
@@ -126,15 +149,31 @@ namespace EndPoint.Site.Areas.Student.Controllers
             }
 
 
-            //var user = await this._userManager.GetUserAsync(this.User);
-            //var roles = await this._userManager.GetRolesAsync(user);
-
             if (quizid > 0)
             {
                 var quizModel = this.getQuiz.getQuiz.GetQuizByIdAsync(quizid).Result;
+                var quizTemp = _getQuizTemp.GetByUserNameWithQuizId(quizid, User.Identity.Name);
+                if (quizTemp.IsSuccess)
+                {
 
-                //SessionHelper.SetObjectAsJson(HttpContext.Session, "QuizTimer", quizModel.Timer);
-                //var timer = SessionHelper.GetObjectFromJson<int>(HttpContext.Session, "QuizTimer");
+                }
+                if (SessionHelper.GetObjectFromJson<DateTime>(HttpContext.Session, "QuizTimer") == DateTime.MinValue)
+                {
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "QuizTimer", DateTime.Now.AddMinutes(quizModel.Timer));
+                }
+               
+                var timer = SessionHelper.GetObjectFromJson<DateTime>(HttpContext.Session, "QuizTimer");
+                TimeSpan span = timer.Subtract(DateTime.Now);
+                if (span.Minutes<1)
+                {
+                    return Json(new ResultDto<string>
+                    {
+                        Data = "",
+                        IsSuccess = false,
+                        Message = "'زمان آزمون شما به پایان رسیده است!'"
+                    });
+                }
+                quizModel.Timer = span.Minutes;
                 var viewHtml = this.RenderViewAsync("_PartialQuizView", quizModel, true);
                 return Json(new ResultDto<string>
                 {

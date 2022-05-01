@@ -6,14 +6,14 @@
     var quizModel = ViewData["quizModel"] as GetQuizDetilesViewModel;
 }
 <div class="center text-center col-12">
-    <input id="minutes" type="hidden" value="@quizModel.Timer" />
+
 
 </div>
 <div class="col-12 offset-md-2 col-md-8 my-3 center text-center">
     <div class="flex-grow-1">
         <partial name="_BublesAndCirclesPrtial" />
     </div>
-    <input id="hiddenkey"  type="hidden" data-pass="@ViewBag.password" data-quizid="@ViewBag.quizid"/>
+    <input id="hiddenkey" type="hidden" data-pass="@ViewBag.password" data-quizid="@ViewBag.quizid" />
     <div class="my-3 row">
 
 
@@ -91,44 +91,46 @@
 
 
 @section Styles{
-
+    <link href="~/lib/SweetAlert/sweetalert2.css" rel="stylesheet" />
 }
 @section Scripts
 {
+    <script src="~/lib/SweetAlert/sweetalert2.js"></script>
+    <script src="~/lib/SweetAlert/polyfill.js.js"></script>
     <partial name="_ValidationScriptsPartial" />
     <script src="~/Them/js/attemptQuiz.js"></script>
     @*<script>
-        $.ajax('/jquery/submitData', {
-            type: 'POST',  // http method
-            data: { myData: 'This is my data.' },  // data to submit
-            success: function (data, status, xhr) {
-                $('p').append('status: ' + status + ', data: ' + data);
-            },
-            error: function (jqXhr, textStatus, errorMessage) {
-                $('p').append('Error' + errorMessage);
-            }
-        });
+            $.ajax('/jquery/submitData', {
+                type: 'POST',  // http method
+                data: { myData: 'This is my data.' },  // data to submit
+                success: function (data, status, xhr) {
+                    $('p').append('status: ' + status + ', data: ' + data);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    $('p').append('Error' + errorMessage);
+                }
+            });
 
-            function ajaxSendQuizId() {
-        var id = $('#quizId').val();
+                function ajaxSendQuizId() {
+            var id = $('#quizId').val();
 
-        var url = '/Student/Quizzes/StartedQuizAjaxCall';
+            var url = '/Student/Quizzes/StartedQuizAjaxCall';
 
 
 
-        $.ajax(url, {
-            type: 'POST',  // http method
-            data: { password: '@ViewBag.password', quizid: '@ViewBag.quizid'},
-            success: function (result) {
+            $.ajax(url, {
+                type: 'POST',  // http method
+                data: { password: '@ViewBag.password', quizid: '@ViewBag.quizid'},
+                success: function (result) {
 
-                $("#loadquizzz").html(result.data);
-            },
-            error: function (jqXhr, textStatus, errorMessage) {
+                    $("#loadquizzz").html(result.data);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
 
-            }
-        });
-    }
-    </script>*@
+                }
+            });
+        }
+        </script>*@
 
 }
 

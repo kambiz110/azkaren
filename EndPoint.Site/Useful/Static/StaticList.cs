@@ -29,5 +29,6 @@ namespace EndPoint.Site.Useful.Static
                 new KeyValuePair<string, int>("روحانی", 2),
                 new KeyValuePair<string, int>("کارمند", 0)
         };
+      
     }
 }

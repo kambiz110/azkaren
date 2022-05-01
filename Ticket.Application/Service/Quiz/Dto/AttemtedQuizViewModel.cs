@@ -18,7 +18,7 @@ namespace Azmoon.Application.Service.Quiz.Dto
         public string Description { get; set; }
 
         public int Timer { get; set; }
-
+        IEnumerable<KeyValuePair<int, string>> answer { get; set; }
         public IList<AttemtedQuizQuestionViewModel> Questions { get; set; }
     }
 }

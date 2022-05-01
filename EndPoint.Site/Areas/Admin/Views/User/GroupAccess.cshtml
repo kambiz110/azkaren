@@ -1,0 +1,40 @@
+﻿@model Azmoon.Application.Service.Group.Dto.GetGroupAccessDto
+
+@{
+    ViewData["Title"] = "GroupAccess";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div dir="rtl">
+    <h4>دسترسی به دپارتمان</h4>
+    <hr />
+    <div class="form-group col-md-4">
+        <label asp-for="FullName" class="control-label"></label>
+        <input asp-for="FullName" class="form-control" disabled readonly />
+
+    </div>
+    <div class="form-group col-md-4">
+        <label asp-for="GroupName" class="control-label"></label>
+        <input asp-for="GroupName" class="form-control" disabled readonly />
+
+    </div>
+    @if (Model.GroupIds != null && Model.GroupIds.Count() > 0)
+    {
+        <h3>
+            دسترسی ها  :<span class="h6 badge-btn badge-light rounded p-1 text-danger">با کلیک روی دسترسی می توانید آن را حذف نمائید.</span><br />
+        </h3>
+
+        for (int i = 0; i < Model.GroupIds.Count(); i++)
+        {
+            <a href="/Admin/User/DeleteGroupAccess/@Model.UserId/@Model.GroupIds.ElementAt(i)"><span class="btn btn-secondary h2 m2">@Model.GroupNames.ElementAt(i)</span></a>
+        }
+
+    }
+    else
+    {
+        <span class="btn btn-danger mr-2 ml-2">کاربر فاقد دسترسی به دپارتمان می باشد!!!</span>
+    }
+    <div>
+        @Html.ActionLink("تغییر و تخصیص دسترسی", "EditGroupAccess", new { id = Model.UserId }, new { @class = "btn btn-outline-success m-2" })
+
+    </div>
+</div>

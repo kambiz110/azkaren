@@ -1,6 +1,7 @@
 ﻿using Azmoon.Application.Interfaces.Contexts;
 using Azmoon.Application.Interfaces.Facad;
 using Azmoon.Application.Interfaces.Filter;
+using Azmoon.Application.Interfaces.WorkPlace;
 using Azmoon.Application.Service.Filter.Command;
 using Azmoon.Application.Service.Filter.Query;
 using System;
@@ -14,10 +15,11 @@ namespace Azmoon.Application.Service.Facad
     public class QuizFilterFacad : IQuizFilterFacad
     {
         private readonly IDataBaseContext _context;
-
-        public QuizFilterFacad(IDataBaseContext context)
+        private readonly IGetChildrenWorkPlace _getChildrenWorkPlace;
+        public QuizFilterFacad(IDataBaseContext context, IGetChildrenWorkPlace getChildrenWorkPlace)
         {
             _context = context;
+            _getChildrenWorkPlace = getChildrenWorkPlace;
         }
         private IAddQuizFilter _addQuizFilter;
         public IAddQuizFilter addQuizFilter
@@ -32,8 +34,16 @@ namespace Azmoon.Application.Service.Facad
         {
             get
             {
-                return _getFilter = _getFilter ?? new GetFilter(_context);
+                return _getFilter = _getFilter ?? new GetFilter(_context ,_getChildrenWorkPlace);
             }
         }
+        private IDeleteQuizFilter _deleteQuizFilter;
+        public IDeleteQuizFilter deleteQuizFilter 
+        {
+            get
+            {
+                return _deleteQuizFilter = _deleteQuizFilter ?? new DeleteQuizFilter(_context );
+    }
+}
     }
 }

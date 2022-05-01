@@ -25,6 +25,7 @@ namespace Azmoon.Application.Interfaces.Contexts
         DbSet<Domain.Entities.WorkPlace> WorkPlaces { get; set; }
         DbSet<Domain.Entities.QuizFilter> QuizFilters { get; set; }
         DbSet<Domain.Entities.QuizStartTemp> QuizStartTemps { get; set; }
+        DbSet<Domain.Entities.GroupUser> GroupUsers { get; set; }
         int SaveChanges(bool acceptAllChangesOnSuccess);
         int SaveChanges();
         Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken());

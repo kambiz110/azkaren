@@ -37,6 +37,12 @@ using EndPoint.Site.Useful.Filter;
 using Azmoon.Application.Service.Answer.Command;
 using Azmoon.Application.Container;
 using Azmoon.Persistence.Seeding;
+using Azmoon.Application.Interfaces.QuizTemp;
+using Azmoon.Application.Service.QuizTemp.Query;
+using Azmoon.Application.Service.QuizTemp.Command;
+using EndPoint.Site.Helper.ActionFilter;
+using Azmoon.Application.Interfaces.WorkPlace;
+using Azmoon.Application.Service.WorkPlace.Query;
 
 namespace EndPoint.Site
 {
@@ -71,10 +77,16 @@ namespace EndPoint.Site
             //        DisableGlobalLocks = true
             //    }));
 
-     
-           // services.AddHangfireServer();
 
-            services.AddMvc();
+            // services.AddHangfireServer();
+            services.AddMvc(options =>
+            {
+                //options.Filters.Add(typeof(SetViewDataFilter));
+            });
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);//You can set Time   
+            });
+           
         
             services.AddIdentity<User, Role>()
                .AddEntityFrameworkStores<DataBaseContext>()
@@ -124,6 +136,9 @@ namespace EndPoint.Site
             //services.AddInitRateLimit(Configuration);
 
             services.AddScoped<Azmoon.Common.FileWork.IFileProvider, Azmoon.Common.FileWork.FileProvider>();
+            services.AddTransient<IGetQuizTemp, GetQuizTemp>();
+            services.AddTransient<IGetChildrenWorkPlace, GetChildrenWorkPlacees>();
+            services.AddTransient<IAddQuizStartTemp, AddQuizStartTemp>();
             //FacadeInject
             services.AddScoped<IGroupFacad, GroupFacad>();
             services.AddScoped<IWorkPlaceFacad, WorkPlaceFacad>();
@@ -172,7 +187,7 @@ namespace EndPoint.Site
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 

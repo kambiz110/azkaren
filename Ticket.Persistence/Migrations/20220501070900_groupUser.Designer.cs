@@ -4,14 +4,16 @@ using Azmoon.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Azmoon.Persistence.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20220501070900_groupUser")]
+    partial class groupUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,7 +140,10 @@ namespace Azmoon.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("GroupId")
+                    b.Property<long?>("GroupId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("GrouptId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("RegesterAt")
@@ -769,9 +774,7 @@ namespace Azmoon.Persistence.Migrations
                 {
                     b.HasOne("Azmoon.Domain.Entities.Group", "Group")
                         .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("Azmoon.Domain.Entities.User", "User")
                         .WithMany("GroupUsers")

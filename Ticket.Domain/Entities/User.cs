@@ -22,6 +22,7 @@ namespace Azmoon.Domain.Entities
         public long? WorkPlaceId { get; set; }
         public  WorkPlace WorkPlace { get; set; }
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
+        public ICollection<GroupUser> GroupUsers { get; set; }
 
     }
 

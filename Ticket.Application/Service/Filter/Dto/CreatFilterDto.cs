@@ -21,7 +21,7 @@ namespace Azmoon.Application.Service.Filter.Dto
         [Display(Name = "جستجو کاربران")]
         public string UserList { get; set; }
         public long QuizId { get; set; }
-
+        public long Id { get; set; }
     }
     public class Result
     {

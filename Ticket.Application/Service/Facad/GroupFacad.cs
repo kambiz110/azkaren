@@ -9,10 +9,11 @@ using Azmoon.Application.Interfaces.Contexts;
 using Azmoon.Application.Interfaces.Facad;
 using Azmoon.Application.Interfaces.Group;
 using Azmoon.Application.Service.Group.Query;
+using Azmoon.Application.Service.Group.Command;
 
 namespace Azmoon.Application.Service.Facad
 {
-   public class GroupFacad : IGroupFacad
+    public class GroupFacad : IGroupFacad
     {
         private readonly IDataBaseContext _context;
 
@@ -23,7 +24,7 @@ namespace Azmoon.Application.Service.Facad
         {
             _context = context;
             _mapper = mapper;
- 
+
         }
 
         private IGetGroup _getGetGroup;
@@ -31,7 +32,7 @@ namespace Azmoon.Application.Service.Facad
         {
             get
             {
-                return _getGetGroup = _getGetGroup ?? new GetGroup(_context , _mapper );
+                return _getGetGroup = _getGetGroup ?? new GetGroup(_context, _mapper);
             }
         }
         private IGetChildrenGroup _getChildrenGroup;
@@ -53,7 +54,23 @@ namespace Azmoon.Application.Service.Facad
             }
 
         }
+        private IAddGroupInUser _addGroupInUser;
+        public IAddGroupInUser addGroupInUser
+        {
+            get
+            {
+                return _addGroupInUser = _addGroupInUser ?? new AddGroupInUser(_context);
+            }
 
-  
+        }
+        private IDeleteGroupAccess _deleteGroupAccess;
+        public IDeleteGroupAccess deleteGroupAccess
+        {
+            get
+            {
+                return _deleteGroupAccess = _deleteGroupAccess ?? new DeleteGroupAccess(_context);
+            }
+
+        }
     }
 }

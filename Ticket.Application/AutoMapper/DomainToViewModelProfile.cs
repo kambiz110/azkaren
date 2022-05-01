@@ -14,6 +14,7 @@ using Azmoon.Domain.Entities;
 using Azmoon.Application.Service.Quiz.Dto;
 using Azmoon.Application.Service.WorkPlace.Dto;
 using Azmoon.Application.Service.Filter.Dto;
+using Azmoon.Application.Service.QuizTemp.Dto;
 
 namespace Azmoon.Application.AutoMapper
 {
@@ -30,6 +31,7 @@ namespace Azmoon.Application.AutoMapper
             CreateMap<Group, GetGroupViewModel>();
             CreateMap<WorkPlace, GetWorkPlaceViewModel>().ReverseMap();
             CreateMap<User, UserShowAdminDto>();
+            CreateMap<User, RegisterUserDto>();
             CreateMap<Role, GetRoleDto>();
             CreateMap<Quiz, GetQuizDto>()
                 .ForMember(ds => ds.FilterStatus,
@@ -41,6 +43,7 @@ namespace Azmoon.Application.AutoMapper
             CreateMap<Question, AddQuestionViewModel>().ReverseMap(); 
             CreateMap<Answer, GetAnswerDto>().ReverseMap(); 
             CreateMap<Answer, AddAnswerDto>().ReverseMap(); 
+            CreateMap<QuizStartTemp, AddQuizTempDto>().ReverseMap(); 
 
 
 

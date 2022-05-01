@@ -11,5 +11,6 @@ namespace Azmoon.Application.Interfaces.Facad
     {
         IAddQuizFilter addQuizFilter { get; }
         IGetFilter getFilter { get; }
+        IDeleteQuizFilter deleteQuizFilter { get; }
     }
 }

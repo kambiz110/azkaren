@@ -1,0 +1,40 @@
+﻿@model Azmoon.Application.Service.Group.Dto.GetGroupAccessDto
+
+@{
+    ViewData["Title"] = "EditGrouptAccess";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<div dir="rtl">
+    <h4>تغییر و تخصیص دسترسی به دپارتمان کاربر</h4>
+    <hr />
+    <form asp-action="EditGroupAccess">
+
+        <input asp-for="UserId" type="hidden" />
+        <div class="form-group col-md-4">
+            <label asp-for="FullName" class="control-label"></label>
+            <input asp-for="FullName" class="form-control" disabled readonly />
+
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="GroupName" class="control-label"></label>
+            <input asp-for="GroupName" class="form-control" disabled readonly />
+
+        </div>
+        <div class="form-group col-md-5">
+            <label asp-for="GroupIds" class="control-label"></label>
+            <select asp-for="GroupIds" class="form-control" asp-items="(IEnumerable<SelectListItem>)@ViewData["departMentSelectListItem"]" multiple>
+            </select>
+        </div>
+        <div class="form-group row">
+            <input type="submit" value="ذخیره" class="btn btn-outline-primary ml-2" />
+            @Html.ActionLink("بازگشت", "GroupAccess", new { id = Model.UserId }, new { @class = "btn btn-outline-success " })
+        </div>
+    </form>
+    <div>
+
+
+    </div>
+</div>
+

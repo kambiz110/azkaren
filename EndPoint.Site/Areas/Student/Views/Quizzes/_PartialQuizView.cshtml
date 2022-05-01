@@ -1,9 +1,10 @@
 ﻿@model Azmoon.Application.Service.Quiz.Dto.AttemtedQuizViewModel
 @* Timer *@
+<input id="minutes" type="hidden" value="@Model.Timer" />
 @if (Model.Timer != 0)
 {
 
-    
+
     <div id="clockdiv" class="p-2" style="display:none;">
 
         <div>
@@ -51,7 +52,7 @@
         <div class="card mb-3">
             <div class="card-header text-warning">
                 <i class="fas fa-question-circle"></i>
-                @Html.HiddenFor(model => model.Questions[i].Id)
+                @*@Html.HiddenFor(model => model.Questions[i].Id)*@
 
                 <span class="text-primary ml-1">سوال : @question.Id</span>
             </div>
@@ -66,17 +67,18 @@
                     var answer = question.Answers[j];
                     <div class="form-group mb-0">
                         <div class="mt-2">
-                            @Html.EditorFor(x => x.Questions[i].Answers[j].IsTrue)
+
+                            <input type="radio" name="@question.Answers[j].QuestionId" value="@answer.Id" />
                             <h6 class="d-inline-block mt-0 ml-1 quiz">@Html.Raw(answer.Text)</h6>
-                            @Html.HiddenFor(model => model.Questions[i].Answers[j].Id)
+
                         </div>
                     </div>
-                  
+
 
                 }
             </div>
             <div class="card-footer pb-3">
-                <div class="row text-white col-12 text-center center">
+                <div class="text-white col-12 text-center center">
                     <a id="prev" class="btn btn-primary col-4 ml-1 ">قبلی</a>
                     <a id="next" class="btn btn-primary col-4 ">بعدی</a>
                 </div>
@@ -87,3 +89,4 @@
 <button id="submit" type="button" class="btn btn-primary col-md-5 offset-md-3" data-toggle="modal" data-target="#btn" style="display:none">
     ثبت و پایان آزمون
 </button>
+

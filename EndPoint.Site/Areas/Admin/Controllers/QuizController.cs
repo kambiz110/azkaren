@@ -185,12 +185,17 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
                 return View(quizFilter.Data);
             }
            
-            return View();
+            return View(new CreatFilterDto {Id=0 });
         }
 
         [HttpPost]
         public ActionResult Access(CreatFilterDto dto)
         {
+            ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
+            if (String.IsNullOrEmpty(dto.UserList)&& dto.WorkPlaceId==null &&dto.TypeDarajeh==null)
+            {
+                return View(dto);
+            }
             var result = _quizFilterFacad.addQuizFilter.AddFilter(dto);
             if (!result.IsSuccess)
             {
@@ -201,7 +206,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
                     ViewBag.QuizId = model.Id;
                     ViewBag.QuizName = model.Name;
                 }
-                ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
+              
                 return View(dto);
             }
 
@@ -234,6 +239,13 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         public IActionResult apiSelect2(string search)
         {
             var model = _userFacad.GetUsers.apiSelectUser(search);
+
+            return Json(model);
+
+        }
+        public async Task< IActionResult> DeleteFilter(long  id , long quizId)
+        {
+            var model =await _quizFilterFacad.deleteQuizFilter.deleteFilterAsync(quizId,id);
 
             return Json(model);
 

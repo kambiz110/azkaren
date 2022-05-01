@@ -11,5 +11,6 @@ namespace Azmoon.Application.Interfaces.Filter
    public interface IGetFilter
     {
         ResultDto<CreatFilterDto> GetByQuizId(long id);
+        ResultDto GetAccessQuizById(long quizid , string username);
     }
 }

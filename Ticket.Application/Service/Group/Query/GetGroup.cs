@@ -10,6 +10,7 @@ using Azmoon.Application.Interfaces.Group;
 using Azmoon.Application.Service.Facad;
 using Azmoon.Application.Service.Group.Dto;
 using Azmoon.Common.ResultDto;
+using Microsoft.EntityFrameworkCore;
 
 namespace Azmoon.Application.Service.Group.Query
 {
@@ -97,6 +98,29 @@ namespace Azmoon.Application.Service.Group.Query
                 Message = "ناموفق"
             };
 
+        }
+
+        public ResultDto<GetGroupAccessDto> GroupAccess(string id)
+        {
+            var user = _context.Users.AsNoTracking().Where(p => p.Id == id)
+              .Include(o => o.WorkPlace)
+              .Include(p => p.GroupUsers).ThenInclude(p => p.Group).AsNoTracking()
+              .FirstOrDefault();
+            var model = new GetGroupAccessDto()
+            {
+                UserId = id,
+                FullName = user.FirstName + " " + user.LastName,
+                GroupName = user.WorkPlace!=null? user.WorkPlace.Name:"",
+                GroupIds = user.GroupUsers!=null?  user.GroupUsers.Select(p => p.GroupId).ToArray():null,
+                GroupNames = user.GroupUsers != null ? user.GroupUsers.Select(p => p.Group.Name).ToArray():null,
+            };
+            return new ResultDto<GetGroupAccessDto>
+            {
+                Data = model,
+                IsSuccess = true,
+                Message = "موفق"
+            };
+           
         }
 
         public ResultDto<List<GetGroupViewModel>> OnlyDirectChildren(long? parentId)

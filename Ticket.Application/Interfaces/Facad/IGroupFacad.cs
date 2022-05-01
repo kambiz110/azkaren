@@ -13,5 +13,7 @@ namespace Azmoon.Application.Interfaces.Facad
         IGetGroup GetGroup { get; }
         IGetGroupSelectListItem GetGroupSelectListItem { get; }
         IGetChildrenGroup GetChildrenGroup { get; }
+        IAddGroupInUser addGroupInUser { get; }
+        IDeleteGroupAccess deleteGroupAccess { get; }
     }
 }

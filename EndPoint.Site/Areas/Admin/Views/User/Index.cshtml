@@ -55,7 +55,7 @@
 
                         @Html.ActionLink("ویرایش", "Update", new { Id = item.Id }, new { @class = "btn btn-outline-info" })
 
-                        @Html.ActionLink("دسترسی", "Group", new { Id = item.Id }, new { @class = "btn btn-outline-danger" })
+                        @Html.ActionLink("دسترسی", "GroupAccess", new { Id = item.Id }, new { @class = "btn btn-outline-danger" })
                         @Html.ActionLink("بازنشانی رمز", "ResetPassword", new { userName = item.UserName }, new { @class = "btn btn-outline-info" })
                         @if (item.LockoutEnabled)
                         {

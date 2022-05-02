@@ -3,15 +3,35 @@
 @model PagingDto<List<UserShowAdminDto>>
 @addTagHelper *, LazZiya.TagHelpers
 
+<div class="row">
+    <div class="col-sm-4 col-xs-6">
+        <form asp-action="Index" method="get">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control float-right" placeholder="جستجو">
+
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                </div>
+                <button type="submit" class="btn btn-primary">جستجو</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-sm-4 col-xs-6">
+        <div class="form-group form-group-sm">
 
 
+            <form class="form-inline d-inline" asp-action="Index" method="post">
+                <button type="submit" name="search" value="clear" class="btn btn-default d-inline">
+                    پاک کن
+                </button>
+            </form>
 
-<p>
-    <a asp-area="" asp-controller="Account" asp-action="Create" class="btn btn-success">ایجاد کاربر</a>
-
-</p>
-<table class="table">
-    <thead>
+        </div>
+    </div>
+</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
         <tr>
 
 
@@ -27,7 +47,7 @@
             </th>
 
 
-            <th></th>
+            <th>عملیات</th>
         </tr>
     </thead>
     <tbody>
@@ -37,7 +57,7 @@
             {
                 <tr>
 
-            
+
 
                     <td>
                         @Html.DisplayFor(modelItem => item.FirstName)
@@ -53,7 +73,7 @@
 
                         @Html.ActionLink("نقش ها", "UserRoles", new { id = item.Id }, new { @class = "btn btn-outline-primary" })
 
-                        @Html.ActionLink("ویرایش", "Update", new { Id = item.Id }, new { @class = "btn btn-outline-info" })
+                        @Html.ActionLink("ویرایش", "UpdateUser", new { Id = item.Id }, new { @class = "btn btn-outline-info" })
 
                         @Html.ActionLink("دسترسی", "GroupAccess", new { Id = item.Id }, new { @class = "btn btn-outline-danger" })
                         @Html.ActionLink("بازنشانی رمز", "ResetPassword", new { userName = item.UserName }, new { @class = "btn btn-outline-info" })
@@ -106,4 +126,10 @@
                 gap-size="2">
         </paging>
     }
+}
+@section ScriptPagination{
+    <script src="~/lib/jquery/dist/jquery-3.1.1.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/lib/jquery/dist/popper.min.js"></script>
+
 }

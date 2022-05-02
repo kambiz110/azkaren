@@ -3,6 +3,8 @@ using Azmoon.Application.Interfaces.Quiz;
 using Azmoon.Application.Interfaces.QuizTemp;
 using Azmoon.Application.Service.Filter.Dto;
 using Azmoon.Application.Service.Quiz.Dto;
+using Azmoon.Application.Service.QuizTemp.Dto;
+using Azmoon.Application.Service.Result.Dto;
 using Azmoon.Common.ResultDto;
 using Azmoon.Domain.Entities;
 using DNTCaptcha.Core;
@@ -86,30 +88,30 @@ namespace EndPoint.Site.Areas.Student.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Submit(AttemtedQuizViewModel model)
-        {
-            return this.View();
-        }
+   
 
         [HttpPost]
-
-        public IActionResult Submit( IFormCollection foFormCollection , AttemtedQuizViewModel model)
+        [ValidateAntiForgeryToken]
+        public IActionResult Submit( IFormCollection foFormCollection )
         {
             HttpContext.Session.Remove("QuizTimer");
             List<KeyValuePair<string, string>> answer=new List<KeyValuePair<string, string>>();
+            var id = foFormCollection.Where(p => p.Key == "Id").FirstOrDefault().Value;
             foreach (var item in foFormCollection)
             {
-                if (item.Key!="Id" && item.Key!= "__RequestVerificationToken")
+               
+                if (item.Key.StartsWith("answer"))
                 {
-                    answer.Add(new KeyValuePair<string, string> (item.Key, item.Value));
+                    var Key = (item.Key).Split('_');
+                    answer.Add(new KeyValuePair<string, string> (Key[1], item.Value));
             
                 }
 
                
             }
-
-            return this.View();
+            DataResultQuizDto dto = new DataResultQuizDto {QuizId=Int64.Parse(id) , answer= answer ,username=User.Identity.Name};
+            var result = _resultQuiz.addResultQuiz.addResultQuiz(dto);
+            return Redirect("/Student/Quizzes/Index");
         }
 
         public IActionResult Results()
@@ -151,19 +153,33 @@ namespace EndPoint.Site.Areas.Student.Controllers
 
             if (quizid > 0)
             {
+                var QuizTemp = new AddQuizTempDto();
                 var quizModel = this.getQuiz.getQuiz.GetQuizByIdAsync(quizid).Result;
-                var quizTemp = _getQuizTemp.GetByUserNameWithQuizId(quizid, User.Identity.Name);
-                if (quizTemp.IsSuccess)
+                var getQuizTemp = _getQuizTemp.GetByUserNameWithQuizId(quizid, User.Identity.Name);
+                if (!getQuizTemp.IsSuccess && getQuizTemp.Message!= "Bad_Request")
                 {
+                  var resAddTemp = _addQuizStartTemp.Add(DateTime.Now, quizid, User.Identity.Name);
+                    if (resAddTemp.IsSuccess)
+                    {
+                        QuizTemp = resAddTemp.Data;
+                    }
+                    else
+                    {
+                        return Json(new ResultDto<string>
+                        {
+                            Data = "",
+                            IsSuccess = false,
+                            Message = "نا موفق"
+                        });
+                    }
+                }
+                else
+                {
+                    QuizTemp = getQuizTemp.Data;
+                }
+              
 
-                }
-                if (SessionHelper.GetObjectFromJson<DateTime>(HttpContext.Session, "QuizTimer") == DateTime.MinValue)
-                {
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "QuizTimer", DateTime.Now.AddMinutes(quizModel.Timer));
-                }
-               
-                var timer = SessionHelper.GetObjectFromJson<DateTime>(HttpContext.Session, "QuizTimer");
-                TimeSpan span = timer.Subtract(DateTime.Now);
+                TimeSpan span = QuizTemp.EndDate.AddMinutes(1).Subtract(DateTime.Now);
                 if (span.Minutes<1)
                 {
                     return Json(new ResultDto<string>

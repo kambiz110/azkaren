@@ -5,16 +5,16 @@
 {
 
 
-    <div id="clockdiv" class="p-2" style="display:none;">
-
-        <div>
-            <span class="minutes"></span>
-        </div>
-        <div>
-            <span class="seconds"></span>
-        </div>
-
+<div id="clockdiv" class="p-2" style="display:none;">
+    <div>
+        <span class="seconds"></span>
     </div>
+    <div>
+        <span class="minutes"></span>
+    </div>
+
+
+</div>
 }
 @* pagination *@
 
@@ -68,7 +68,7 @@
                     <div class="form-group mb-0">
                         <div class="mt-2">
 
-                            <input type="radio" name="@question.Answers[j].QuestionId" value="@answer.Id" />
+                            <input type="radio" name="answer_@question.Answers[j].QuestionId" value="@answer.Id" />
                             <h6 class="d-inline-block mt-0 ml-1 quiz">@Html.Raw(answer.Text)</h6>
 
                         </div>

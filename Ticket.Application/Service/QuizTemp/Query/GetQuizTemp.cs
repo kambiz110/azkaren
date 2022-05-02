@@ -60,12 +60,12 @@ namespace Azmoon.Application.Service.QuizTemp.Query
                 {
                     Data = null,
                     IsSuccess = false,
-                    Message = "خطا در ارسال "
+                    Message = "Bad_Request"
                 };
 
             }
-           
-            if (!_context.QuizStartTemps.Where(p => p.QuizId == quizId && p.UserName == username && p.RegesterAt < quiz.StartDate).Any())
+            var quizStartTemps = _context.QuizStartTemps.Where(p => p.QuizId == quizId && p.UserName == username && p.RegesterAt > quiz.StartDate).FirstOrDefault();
+            if (quizStartTemps==null)
             {
                 return new ResultDto<AddQuizTempDto>
                 {
@@ -74,21 +74,10 @@ namespace Azmoon.Application.Service.QuizTemp.Query
                     Message = "برای این آزمون در این بازه زمانی ثبت نشده است!"
                 };
             }
-            var quiztemp = _context.QuizStartTemps.AsNoTracking()
-            .Where(p => p.QuizId == quizId && p.UserName == username && p.RegesterAt < quiz.StartDate)
-            .FirstOrDefault();
-            if (quiztemp == null)
-            {
-                return new ResultDto<AddQuizTempDto>
-                {
-                    Data = null,
-                    IsSuccess = false,
-                    Message = "موجود  نمی باشد"
-                };
+        
+           
 
-            }
-
-            var result = _mapper.Map<AddQuizTempDto>(quiztemp);
+            var result = _mapper.Map<AddQuizTempDto>(quizStartTemps);
             return new ResultDto<AddQuizTempDto>
             {
                 Data = result,

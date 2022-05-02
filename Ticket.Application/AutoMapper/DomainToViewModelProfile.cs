@@ -32,10 +32,13 @@ namespace Azmoon.Application.AutoMapper
             CreateMap<WorkPlace, GetWorkPlaceViewModel>().ReverseMap();
             CreateMap<User, UserShowAdminDto>();
             CreateMap<User, RegisterUserDto>();
+            CreateMap<User, UpdateUserDto>().ReverseMap();
             CreateMap<Role, GetRoleDto>();
             CreateMap<Quiz, GetQuizDto>()
                 .ForMember(ds => ds.FilterStatus,
             src => src.MapFrom(src => src.QuizFilter!=null?true:false))
+                .ForMember(ds => ds.GroupName,
+            src => src.MapFrom(src => src.Group != null ? src.Group.Name : ""))
                 .ReverseMap();
             CreateMap<Quiz, QuizAssignViewModel>().ReverseMap();
             CreateMap<Quiz, GetQuizDetilesDto>().ReverseMap();

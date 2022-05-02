@@ -33,8 +33,8 @@
     {
         <span class="btn btn-danger mr-2 ml-2">کاربر فاقد دسترسی به دپارتمان می باشد!!!</span>
     }
-    <div>
-        @Html.ActionLink("تغییر و تخصیص دسترسی", "EditGroupAccess", new { id = Model.UserId }, new { @class = "btn btn-outline-success m-2" })
-
-    </div>
+<div class="row">
+    @Html.ActionLink("تغییر و تخصیص دسترسی", "EditGroupAccess", new { id = Model.UserId }, new { @class = "btn btn-outline-success m-2" })
+    <a asp-action="Index" class="btn btn-outline-primary m-2">بازگشت</a>
+</div>
 </div>

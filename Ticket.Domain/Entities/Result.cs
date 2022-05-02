@@ -13,6 +13,7 @@ namespace Azmoon.Domain.Entities
         public int MaxPoints { get; set; }
 
 
+        public string AuthorizationResult { get; set; }
         public string AnsweresInQuiz { get; set; }
         public DateTime StartQuiz { get; set; }
         public DateTime? EndQuiz { get; set; }

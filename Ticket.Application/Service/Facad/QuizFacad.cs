@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azmoon.Application.Interfaces.Contexts;
 using Azmoon.Application.Interfaces.Facad;
+using Azmoon.Application.Interfaces.Group;
 using Azmoon.Application.Interfaces.Quiz;
 using Azmoon.Application.Service.Quiz;
 using Azmoon.Application.Service.Quiz.Query;
@@ -16,10 +17,12 @@ namespace Azmoon.Application.Service.Facad
     {
         private readonly IDataBaseContext _context;
         private readonly IMapper _mapper;
-        public QuizFacad(IDataBaseContext context, IMapper mapper)
+        private readonly IGetChildrenGroup _getChildrenGroup;
+        public QuizFacad(IDataBaseContext context, IMapper mapper, IGetChildrenGroup getChildrenGroup)
         {
             _context = context;
             _mapper = mapper;
+            _getChildrenGroup = getChildrenGroup;
         }
 
         private IAddQuiz _addQuiz;
@@ -36,7 +39,7 @@ namespace Azmoon.Application.Service.Facad
         {
             get
             {
-                return _getQuiz = _getQuiz ?? new GetQuiz(_context, _mapper);
+                return _getQuiz = _getQuiz ?? new GetQuiz(_context, _mapper, _getChildrenGroup);
             }
         }
 

@@ -27,10 +27,14 @@ namespace Azmoon.Application.Service.User.Query
             _mapper = mapper;
         }
 
-        public PagingDto<List<UserShowAdminDto>> Exequte(int pageIndex , int pageSize)
+        public PagingDto<List<UserShowAdminDto>> Exequte(int pageIndex , int pageSize , string q)
         {
             //  var users = _userManager.Users.ToListAsync().Result;
             var users = _context.Users.AsQueryable();
+            if (!String.IsNullOrEmpty(q))
+            {
+                users = users.Where(p => p.FirstName.Contains(q) || p.LastName.Contains(q) || p.UserName.Contains(q)).AsQueryable();
+            }
             int rowsCount = 0;
             if (users != null)
             {

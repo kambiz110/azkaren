@@ -15,6 +15,7 @@ using Azmoon.Application.Service.Group.Dto;
 using Azmoon.Domain.Entities;
 using Azmoon.Application.Service.Quiz.Dto;
 using Azmoon.Application.Service.WorkPlace.Dto;
+using Azmoon.Application.Service.Result.Dto;
 
 namespace Azmoon.Application.AutoMapper
 {
@@ -26,7 +27,7 @@ namespace Azmoon.Application.AutoMapper
             CreateMap<AddRoleDto, Role>();
             CreateMap<CreateGroupDto, Group>();
 
-
+            CreateMap<AddResultQuizDto, Result>();
 
             CreateMap<AddQuestionViewModel, Question>();
 

@@ -10,7 +10,7 @@ namespace Azmoon.Application.Service.Result.Dto
     {
         public long Id { get; set; }
         public int Points { get; set; }
-
+        public string AuthorizationResult { get; set; }
         public int MaxPoints { get; set; }
         public string AnsweresInQuiz { get; set; }
         public string StudentId { get; set; }

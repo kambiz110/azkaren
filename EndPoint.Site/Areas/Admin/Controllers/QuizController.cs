@@ -51,7 +51,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var result = _quizFacad.getQuiz.GetQuizes(PageSize, PageNo, q, status);
+            var result = _quizFacad.getQuiz.GetQuizes(PageSize, PageNo, q, status ,User.Identity.Name);
             return View(result.Data);
         }
 

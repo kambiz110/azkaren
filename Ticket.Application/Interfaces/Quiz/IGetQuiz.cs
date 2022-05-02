@@ -10,7 +10,7 @@ namespace Azmoon.Application.Interfaces.Quiz
 {
    public interface IGetQuiz
     {
-        ResultDto<GetQuizWithPeger> GetQuizes(int PageSize, int PageNo, string searchKey, int status);
+        ResultDto<GetQuizWithPeger> GetQuizes(int PageSize, int PageNo, string searchKey, int status, string username);
         ResultDto<AddQuizDto> GetQuizById(long id);
         ResultDto<GetQuizDetilesDto> GetQuizDetailsById(long id);
         ResultDto<GetQuizDetWithQuestionPager> GetQuizDetWithQuestionPagerById(long id);

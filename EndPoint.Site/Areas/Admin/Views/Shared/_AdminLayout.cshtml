@@ -236,7 +236,7 @@
             await Html.RenderPartialAsync("_PartialFooter");
         }
     </div>
-
+    @RenderSection("ScriptPagination", false)
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
     <script src="~/lib/W3/w3.js"></script>

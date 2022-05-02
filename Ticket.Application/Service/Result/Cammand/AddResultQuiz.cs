@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azmoon.Common.Useful;
 
 namespace Azmoon.Application.Service.Result.Cammand
 {
@@ -22,50 +23,63 @@ namespace Azmoon.Application.Service.Result.Cammand
             _context = context;
             _mapper = mapper;
         }
-        public ResultDto<AddResultQuizDto> addResultQuiz(AnswerQuizStudendt dto)
+        public ResultDto<AddResultQuizDto> addResultQuiz(DataResultQuizDto dto)
         {
             var quiz = _context.Quizzes
                         .Where(p => p.Id == dto.QuizId)
                         .AsNoTracking()
                         .FirstOrDefault();
-            int TrueAnswer = 0;
-            int FalseAnswer = 0;
-            string answeresInQuiz = "";
-            foreach (var item in dto.questions)
+            var quizStartTemps = _context.QuizStartTemps.Where(p => p.QuizId == dto.QuizId && p.UserName == dto.username && p.RegesterAt > quiz.StartDate).FirstOrDefault();
+            if (dto.answer != null && dto.answer.Count() > 0)
             {
-                var answer = _context.Answers
-                        .Where(p => p.Id == item.AnswereId)
-                        .AsNoTracking()
-                        .FirstOrDefault();
+                var questiones = dto.answer.Select(p => new { key = Int64.Parse(p.Key) }).ToArray();
+                var answeres = dto.answer.Select(p => new { value = Int64.Parse(p.Value) }).ToArray();
 
-                if (answer.IsTrue)
+                int TrueAnswer = 0;
+                int FalseAnswer = 0;
+                string answeresInQuiz = "";
+
+
+
+                for (int i = 0; i < questiones.Length; i++)
                 {
-                    TrueAnswer++;
+
+                    var answer = _context.Answers
+                                                .Where(p => p.Id == answeres[i].value && p.QuestionId == questiones[i].key)
+                                                .AsNoTracking()
+                                                .FirstOrDefault();
+                    if (answer != null)
+                    {
+                        if (answer.IsTrue)
+                        {
+                            TrueAnswer++;
+                        }
+                        else
+                        {
+                            FalseAnswer++;
+                        }
+                        answeresInQuiz = answeresInQuiz + questiones[i].key + ":" + answeres[i].value + "|";
+                    }
                 }
-                else
-                {
-                    FalseAnswer++;
-                }
-                answeresInQuiz = answeresInQuiz + item.QuestionId + ":" + item.AnswereId + "|";
+                AddResultQuizDto resultDto = new AddResultQuizDto();
 
-            }
+                resultDto.Points = TrueAnswer;
+                resultDto.MaxPoints = quiz.MaxQuestion;
+                resultDto.QuizId = quiz.Id;
+                resultDto.StartQuiz = quizStartTemps.StartDate;
+                resultDto.EndQuiz = DateTime.Now;
+                resultDto.AuthorizationResult= answeresInQuiz.EncryptStringWithKey(dto.username+dto.QuizId.ToString());
+                resultDto.StudentId = _context.Users
+                            .Where(p => p.UserName == dto.username)
+                            .AsNoTracking()
+                            .FirstOrDefault().Id;
+                resultDto.AnsweresInQuiz = answeresInQuiz;
 
-            //////////////////////////////////////////////////////
-            AddResultQuizDto resultDto = new AddResultQuizDto();
 
-            resultDto.Points = TrueAnswer;
-            resultDto.MaxPoints = quiz.MaxQuestion;
-            resultDto.QuizId = quiz.Id;
-            resultDto.StartQuiz = dto.StartQuiz;
-            resultDto.EndQuiz = dto.EndQuiz;
-            resultDto.StudentId= _context.Users
-                        .Where(p => p.UserName == dto.StudentId)
-                        .AsNoTracking()
-                        .FirstOrDefault().Id;
-            resultDto.AnsweresInQuiz = answeresInQuiz;
-            var model = _mapper.Map<Domain.Entities.Result>(resultDto);
-            model.UpdatedAt = DateTime.Now;
-            if (model.Id > 0)
+                //var test = resultDto.AuthorizationResult.DecryptStringWithKey(dto.username + dto.QuizId.ToString());
+                var model = _mapper.Map<Domain.Entities.Result>(resultDto);
+
+      if (model.Id > 0)
             {
                 _context.Results.Update(model);
             }
@@ -85,9 +99,15 @@ namespace Azmoon.Application.Service.Result.Cammand
                     Message = "Success"
                 };
             }
+            }
+
+
+            //////////////////////////////////////////////////////
+           
+      
             return new ResultDto<AddResultQuizDto>
             {
-                Data = resultDto,
+                Data = null,
                 IsSuccess = false,
                 Message = "Warninge"
             };

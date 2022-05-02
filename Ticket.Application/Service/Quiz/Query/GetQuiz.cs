@@ -14,6 +14,7 @@ using Azmoon.Application.Service.Question.Dto;
 using Azmoon.Common.Useful;
 using Azmoon.Application.Service.Group.Query;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Azmoon.Application.Interfaces.Group;
 
 namespace Azmoon.Application.Service.Quiz.Query
 {
@@ -21,11 +22,12 @@ namespace Azmoon.Application.Service.Quiz.Query
     {
         private readonly IDataBaseContext _context;
         private readonly IMapper _mapper;
-
-        public GetQuiz(IDataBaseContext context, IMapper mapper)
+        private readonly IGetChildrenGroup _getChildrenGroup;
+        public GetQuiz(IDataBaseContext context, IMapper mapper, IGetChildrenGroup getChildrenGroup)
         {
             _context = context;
             _mapper = mapper;
+            _getChildrenGroup = getChildrenGroup;
         }
 
         public ResultDto<AddQuizDto> GetQuizById(long id)
@@ -110,15 +112,29 @@ namespace Azmoon.Application.Service.Quiz.Query
             };
         }
 
-        public ResultDto<GetQuizWithPeger> GetQuizes(int PageSize, int PageNo, string searchKey, int status)
+        public ResultDto<GetQuizWithPeger> GetQuizes(int PageSize, int PageNo, string searchKey, int status , string username)
         {
             int rowCount = 0;
-
-            var model = _context.Quizzes.Where(p => p.Status == status)
+            var user = _context.Users.Where(p => p.UserName == username)
+                .Include(p => p.GroupUsers)
+                .FirstOrDefault();
+            var groupIdes = _getChildrenGroup.Exequte(user.GroupUsers.Select(p=>p.GroupId).ToList()).Data;
+            var model = _context.Quizzes.Where(p => p.Status == status )
                 .AsNoTracking()
                 .OrderByDescending(p => p.StartDate)
                 .Include(p => p.QuizFilter)
+                .Include(p=>p.Group)
                 .AsQueryable();
+            if (user.GroupUsers!=null && user.GroupUsers.Count()>0)
+            {
+                model = model.Where(p => groupIdes.Contains(p.GroupId) || p.CreatorId == user.Id).AsQueryable();
+            }
+            else
+            {
+                model = model.Where(p => p.CreatorId == user.Id).AsQueryable();
+            }
+            
+
             if (!String.IsNullOrEmpty(searchKey))
             {
                 model = model.Where(p => p.Name.Contains(searchKey.Trim())).AsQueryable();

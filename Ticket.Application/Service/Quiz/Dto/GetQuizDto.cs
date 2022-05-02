@@ -13,6 +13,8 @@ namespace Azmoon.Application.Service.Quiz.Dto
         [Display(Name = "نام")]
         public string Name { get; set; }
 
+        [Display(Name = "دسته بندی")]
+        public string GroupName { get; set; }
         [Display(Name = "تاریخ و زمان شروع")]
         public DateTime StartDate { get; set; }
 

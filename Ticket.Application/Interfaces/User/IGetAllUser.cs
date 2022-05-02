@@ -12,7 +12,7 @@ namespace Azmoon.Application.Interfaces.User
 {
     public interface IGetAllUser
     {
-        PagingDto<List<UserShowAdminDto>> Exequte(int pageIndex, int pageSize);
+        PagingDto<List<UserShowAdminDto>> Exequte(int pageIndex, int pageSize , string q);
         ResultDto<List<Service.Filter.Dto.Result>> apiSelectUser(string search);
     }
 }

@@ -10,6 +10,6 @@ namespace Azmoon.Application.Interfaces.Result
 {
   public  interface IAddResultQuiz
     {
-        ResultDto<AddResultQuizDto>addResultQuiz(AnswerQuizStudendt dto);
+        ResultDto<AddResultQuizDto>addResultQuiz(DataResultQuizDto dto);
     }
 }

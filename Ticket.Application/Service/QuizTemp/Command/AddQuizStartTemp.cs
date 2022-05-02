@@ -46,12 +46,13 @@ namespace Azmoon.Application.Service.QuizTemp.Command
                     Message = "برای این آزمون در این بازه زمانی ثبت شده است!"
                 };
             }
+ 
             var temp = new Domain.Entities.QuizStartTemp
             {
                 UserName = userName,
                 QuizId = quizId,
                 StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddMinutes((double)quiz.Timer)
+                EndDate = DateTime.Now.AddMinutes(Convert.ToDouble(quiz.Timer))
 
             };
             _context.QuizStartTemps.Add(temp);
@@ -62,8 +63,8 @@ namespace Azmoon.Application.Service.QuizTemp.Command
                 return new ResultDto<AddQuizTempDto>
                 {
                     Data = result,
-                    IsSuccess = false,
-                    Message = "برای این آزمون در این بازه زمانی ثبت شده است!"
+                    IsSuccess = true,
+                    Message = "موفق"
                 };
             }
             return new ResultDto<AddQuizTempDto>

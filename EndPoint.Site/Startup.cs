@@ -43,6 +43,8 @@ using Azmoon.Application.Service.QuizTemp.Command;
 using EndPoint.Site.Helper.ActionFilter;
 using Azmoon.Application.Interfaces.WorkPlace;
 using Azmoon.Application.Service.WorkPlace.Query;
+using Azmoon.Application.Interfaces.Group;
+using Azmoon.Application.Service.Group.Query;
 
 namespace EndPoint.Site
 {
@@ -138,6 +140,7 @@ namespace EndPoint.Site
             services.AddScoped<Azmoon.Common.FileWork.IFileProvider, Azmoon.Common.FileWork.FileProvider>();
             services.AddTransient<IGetQuizTemp, GetQuizTemp>();
             services.AddTransient<IGetChildrenWorkPlace, GetChildrenWorkPlacees>();
+            services.AddTransient<IGetChildrenGroup, GetChildrenGroup>();
             services.AddTransient<IAddQuizStartTemp, AddQuizStartTemp>();
             //FacadeInject
             services.AddScoped<IGroupFacad, GroupFacad>();

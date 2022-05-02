@@ -18,6 +18,9 @@ using Azmoon.Application.Service.User.Dto;
 using Azmoon.Common.ResultDto;
 using Azmoon.Domain.Entities;
 using Azmoon.Application.Service.Group.Dto;
+using EndPoint.Site.Useful.Static;
+using DNTCaptcha.Core;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EndPoint.Site.Areas.Admin.Controllers
 {
@@ -43,9 +46,13 @@ namespace EndPoint.Site.Areas.Admin.Controllers
   
         }
 
-        public IActionResult Index(int pageIndex=1, int pageSize=10)
+        public IActionResult Index(int pageIndex=1, int pageSize= 10 , string q = "", string search = "")
         {
-            var model = _userFacad.GetUsers.Exequte(pageIndex, pageSize);
+            if (search == "clear")
+            {
+                return RedirectToAction("Index");
+            }
+            var model = _userFacad.GetUsers.Exequte(pageIndex, pageSize ,q);
             return View(model);
 
 
@@ -55,21 +62,28 @@ namespace EndPoint.Site.Areas.Admin.Controllers
             var model = _roleFacad.rolesInUser.Exequte(id).Data;
             return View(model);
         }
-        public IActionResult Update(string Id)
+        [HttpGet]
+        public IActionResult UpdateUser(string Id)
         {
+            ViewData["Darajeh"] = StaticList.listeDarajeh;
+            ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
             var user = _userManager.FindByIdAsync(Id).Result;
-            if (user==null)
+            if (user == null)
             {
                 return View("Index");
             }
-            var model = _mapper.Map<RegisterUserDto>(user);
-            model.personeli = Int64.Parse( user.UserName);
-            var workPlaceSelectListItem = _groupFacad.GetGroupSelectListItem.Exequte(null).Data;
-            TempData["workPlaceSelectListItem"] = workPlaceSelectListItem;
+            var model = _mapper.Map<UpdateUserDto>(user);
+            model.personeli = Int64.Parse(user.UserName);
+           
             return View(model);
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Update(IFormFile Image, RegisterUserDto dto, IFormCollection form , string profilePic)
+        [ValidateDNTCaptcha(
+      ErrorMessage = "عبارت امنیتی را به درستی وارد نمائید",
+      CaptchaGeneratorLanguage = Language.Persian,
+      CaptchaGeneratorDisplayMode = DisplayMode.NumberToWord)]
+        public IActionResult UpdateUser(IFormFile Image, UpdateUserDto dto, IFormCollection form , string profilePic)
         {
             ModelState.Remove("Password");
             ModelState.Remove("RePassword");
@@ -82,36 +96,31 @@ namespace EndPoint.Site.Areas.Admin.Controllers
 
                 var errorList = query.ToList();
                 ViewBag.Errors = errorList;
-                var workPlaceSelectListItem = _groupFacad.GetGroupSelectListItem.Exequte(null).Data;
-                TempData["workPlaceSelectListItem"] = workPlaceSelectListItem;
+                ViewData["Darajeh"] = StaticList.listeDarajeh;
+                ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
                 return View();
             }
             else
             {
-                var model = _userFacad.CreateUser.Register(dto, Image);
-                if (!model.IsSuccess)
+                var user = _userManager.FindByIdAsync(dto.Id).Result;
+                _mapper.Map(dto, user);
+               
+                var model = _userManager.UpdateAsync(user).Result;
+                if (!model.Succeeded)
                 {
-                    ModelState.AddModelError("ExistUser", model.Message);
-                    var query = from state in ModelState.Values
-                                from error in state.Errors
-                                select error.ErrorMessage;
+                    ModelState.AddModelError("ExistUser","");
+                    var query = from state in model.Errors
+                                from error in state.Description
+                                select error.ToString();
 
                     var errorList = query.ToList();
                     ViewBag.Errors = errorList;
-                    var workPlaceSelectListItem = _groupFacad.GetGroupSelectListItem.Exequte(null).Data;
-                    TempData["workPlaceSelectListItem"] = workPlaceSelectListItem;
-                    ViewBag.profilePic = profilePic;
+                    ViewData["Darajeh"] = StaticList.listeDarajeh;
+                    ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
                     return View(dto);
                 }
 
-                if (model.IsSuccess)
-                {
-              
-
-
-                    return RedirectToAction("Index");
-
-                }
+         
                 return RedirectToAction("Index");
             }
 
@@ -229,10 +238,6 @@ namespace EndPoint.Site.Areas.Admin.Controllers
         {
 
             var result = _groupFacad.deleteGroupAccess.delete(UserId, DeleteGroupAccess);
-            if (result.IsSuccess)
-            {
-
-            }
             var referer = HttpContext.Request.Headers["Referer"].ToString();
             return Redirect(referer);
         }

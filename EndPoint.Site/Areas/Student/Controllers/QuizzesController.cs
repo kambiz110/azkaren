@@ -20,6 +20,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EndPoint.Site.Areas.Student.Controllers
@@ -51,31 +52,42 @@ namespace EndPoint.Site.Areas.Student.Controllers
             return View(null);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [ValidateDNTCaptcha(
             ErrorMessage = "عبارت امنیتی را به درستی وارد نمائید",
             CaptchaGeneratorLanguage = Language.Persian,
             CaptchaGeneratorDisplayMode = DisplayMode.NumberToWord)]
         public ActionResult Index(PasswordInputViewModel dto)
         {
-            var result = getQuiz.getQuiz.GetQuizIdByPasswordAsync(dto.Password, dto.QuizId);
-            if (!result.IsSuccess)
+            if (ModelState.IsValid)
             {
-                dto.Error = "لطفا در وارد کردن رمز عبور آزمون دقت فرمایید";
-                return View(dto);
+                var result = getQuiz.getQuiz.GetQuizIdByPasswordAsync(dto.Password, dto.QuizId, User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());
+                if (!result.IsSuccess)
+                {
+                    dto.Error = "لطفا در وارد کردن رمز عبور و کد آزمون دقت فرمایید";
+                    return View(dto);
+                }
+                else
+                {
+                    return RedirectToAction("Start", new { password= dto.Password,Iquizidd = result.Data });
+                }
             }
 
-            return RedirectToAction("Start", new { Id = result.Data });
+            dto.Error = "لطفا در وارد کردن رمز عبور و کد آزمون دقت فرمایید";
+            return View(dto);
+
         }
         public IActionResult MyQuizzes(int pageIndex = 1, int pagesize = 10)
         {
 
-            var model = _resultQuiz.getResultQuiz.getResultByUserId(pageIndex, pagesize, 1, User.Identity.Name);
+            var model = _resultQuiz.getResultQuiz.getResultByUserId(pageIndex, pagesize, 1, User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             return View(model.Data);
         }
 
         [HttpPost]
-        [TypeFilter(typeof(SetAccessDataFilter))]
+        [TypeFilter(typeof(AccessUserActiveFilter))]
+        [TypeFilter(typeof(SetAccessFilter))]
         public IActionResult Start(string password, long quizid)
         {
             ViewBag.password = password;
@@ -88,28 +100,29 @@ namespace EndPoint.Site.Areas.Student.Controllers
             return View();
         }
 
-   
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Submit( IFormCollection foFormCollection )
+        public IActionResult Submit(IFormCollection foFormCollection)
         {
+            var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             HttpContext.Session.Remove("QuizTimer");
-            List<KeyValuePair<string, string>> answer=new List<KeyValuePair<string, string>>();
+            List<KeyValuePair<string, string>> answer = new List<KeyValuePair<string, string>>();
             var id = foFormCollection.Where(p => p.Key == "Id").FirstOrDefault().Value;
             foreach (var item in foFormCollection)
             {
-               
+
                 if (item.Key.StartsWith("answer"))
                 {
                     var Key = (item.Key).Split('_');
-                    answer.Add(new KeyValuePair<string, string> (Key[1], item.Value));
-            
+                    answer.Add(new KeyValuePair<string, string>(Key[1], item.Value));
+
                 }
 
-               
+
             }
-            DataResultQuizDto dto = new DataResultQuizDto {QuizId=Int64.Parse(id) , answer= answer ,username=User.Identity.Name};
+            DataResultQuizDto dto = new DataResultQuizDto { QuizId = Int64.Parse(id), answer = answer, username = User.Identity.Name ,Ip=ip };
             var result = _resultQuiz.addResultQuiz.addResultQuiz(dto);
             return Redirect("/Student/Quizzes/Index");
         }
@@ -142,23 +155,15 @@ namespace EndPoint.Site.Areas.Student.Controllers
         public IActionResult StartedQuizAjaxCall(string password, long quizid)
         {
             var userId = this._userManager.GetUserId(this.User);
-
-
-
-            if (!String.IsNullOrEmpty(password))
-            {
-                var Isvalid = getQuiz.getQuiz.GetQuizIdByPasswordAsync(password, quizid).IsSuccess;
-            }
-
-
+            var ip = Request.HttpContext.Connection.RemoteIpAddress .ToString();
             if (quizid > 0)
             {
                 var QuizTemp = new AddQuizTempDto();
                 var quizModel = this.getQuiz.getQuiz.GetQuizByIdAsync(quizid).Result;
                 var getQuizTemp = _getQuizTemp.GetByUserNameWithQuizId(quizid, User.Identity.Name);
-                if (!getQuizTemp.IsSuccess && getQuizTemp.Message!= "Bad_Request")
+                if (!getQuizTemp.IsSuccess && getQuizTemp.Message != "Bad_Request")
                 {
-                  var resAddTemp = _addQuizStartTemp.Add(DateTime.Now, quizid, User.Identity.Name);
+                    var resAddTemp = _addQuizStartTemp.Add(DateTime.Now, quizid, User.Identity.Name ,ip);
                     if (resAddTemp.IsSuccess)
                     {
                         QuizTemp = resAddTemp.Data;
@@ -177,10 +182,10 @@ namespace EndPoint.Site.Areas.Student.Controllers
                 {
                     QuizTemp = getQuizTemp.Data;
                 }
-              
+
 
                 TimeSpan span = QuizTemp.EndDate.AddMinutes(1).Subtract(DateTime.Now);
-                if (span.Minutes<1)
+                if (span.Minutes < 1)
                 {
                     return Json(new ResultDto<string>
                     {

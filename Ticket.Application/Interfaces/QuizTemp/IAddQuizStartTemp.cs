@@ -10,6 +10,6 @@ namespace Azmoon.Application.Interfaces.QuizTemp
 {
    public interface IAddQuizStartTemp
     {
-        ResultDto<AddQuizTempDto> Add(DateTime start , long quizId , string userName);
+        ResultDto<AddQuizTempDto> Add(DateTime start , long quizId , string userName, string ip);
     }
 }

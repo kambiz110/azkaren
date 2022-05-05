@@ -1,8 +1,21 @@
-﻿@model PasswordInputViewModel
+﻿
+@model PasswordInputViewModel
 @addTagHelper *, DNTCaptcha.Core
-@{ ViewData["Title"] = "_TakeQuizPartial"; }
+
 
 <form method="post" class="col-12 col-md-5 offset-md-1" asp-area="Student" asp-action="Index" asp-controller="Quizzes">
+    @if (Model != null && Model.Error != null && Model.Error!="")
+    {
+        <div class=" alert alert-danger">
+            <ul>
+              
+                    <li>@Model.Error</li>
+
+               
+            </ul>
+        </div>
+
+    }
     <div class="component">
         <div class="card">
             <div class="card-header text-warning" style="font-size: xx-large">
@@ -12,8 +25,14 @@
                 <h4 class="card-title">شرکت در آزمون</h4>
 
                 <div class="input-group">
+
+                    <input type="text" class="form-control" placeholder="کد آزمون..." asp-for="@Model.quizId">
+
+                </div>
+                <span asp-validation-for="@Model.quizId" class="text-danger"></span>
+                <div class="input-group mt-2">
                     <input type="text" class="form-control" placeholder="رمز آزمون..." asp-for="@Model.Password">
-                    <input type="hidden" asp-for="@Model.Error" value="emptyField">
+
                 </div>
                 <span asp-validation-for="@Model.Password" class="text-danger"></span>
             </div>
@@ -44,7 +63,5 @@
     </div>
 </form>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+
 

@@ -48,13 +48,14 @@ namespace Azmoon.Application.Service.Result.Query
             };
         }
 
-        public ResultDto<GetResutQuizWithPager> getResultByUserId(int PageSize, int PageNo, int status, string UserId)
+        public ResultDto<GetResutQuizWithPager> getResultByUserId( int PageNo, int PageSize, int status, string UserId)
         {
             var date = new GetResutQuizWithPager() { };
             int rowCount = 0;
-            var model = _context.Results.Where(p => p.Status == status)
+            var model = _context.Results.Where(p => p.Status == status )
                 .AsNoTracking()
                 .Include(p => p.Student)
+                .Include(p=>p.Quiz)
                 .AsQueryable();
             if (!String.IsNullOrEmpty(UserId))
             {
@@ -66,9 +67,11 @@ namespace Azmoon.Application.Service.Result.Query
 
             if (model != null)
             {
-                var result = _mapper.Map<List<GetResutQuizDto>>(model);
-                var paging = result.ToPaged(PageNo, PageSize, out rowCount).ToList();
-                date.ResultQuizDtos = paging;
+                
+                var paging = model.ToPaged(PageNo, PageSize, out rowCount).ToList();
+                var result = _mapper.Map<List<GetResutQuizDto>>(paging);
+                
+                date.ResultQuizDtos = result;
                 date.PagerDto = new PagerDto
                 {
                     PageNo = PageNo,

@@ -58,12 +58,12 @@
                                                 .Where(c => c.Type == ClaimTypes.Role)
                                                 .Select(c => c.Value).ToList(); }
 
-                    @if (roles.Contains("Administrator"))
+                    @if (roles.Contains("Admin"))
                     {
     <a class="dropdown-item" asp-area="Admin" asp-controller="Quiz" asp-action="Index">پنل کاربری</a> }
 else
 {
-<a class="dropdown-item" asp-area="Student" asp-controller="Quizzes" asp-action="MyQuizzes">ناحیه کاربری</a>}
+<a class="dropdown-item" asp-area="Student" asp-controller="Quizzes" asp-action="Index">ناحیه کاربری</a>}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" asp-controller="Account" asp-action="Logout">خروج</a>
                 </div>

@@ -79,7 +79,7 @@ namespace EndPoint.Site.Controllers
 
                         if (role.Count < 2 && role.Contains("User"))
                         {
-                            return Redirect("/Student/Quizzes/Index");
+                            return Redirect("/Student/Quizzes");
                         }
                         else
                         {
@@ -178,8 +178,12 @@ namespace EndPoint.Site.Controllers
 
         }
 
-        public IActionResult AccessDenied()
+        public IActionResult AccessDenied(string message)
         {
+            if (!String.IsNullOrEmpty(message))
+            {
+                ViewBag.message = message;
+            }
             return View();
         }
 

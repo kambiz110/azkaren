@@ -16,6 +16,7 @@ using Azmoon.Application.Service.User.Dto;
 using Azmoon.Application.Service.User.Command;
 using EndPoint.Site.Useful.Static;
 using EndPoint.Site.Useful.Ultimite;
+using System.Security.Claims;
 
 namespace EndPoint.Site.Areas.Client.Controllers
 {
@@ -60,7 +61,7 @@ namespace EndPoint.Site.Areas.Client.Controllers
             CaptchaGeneratorDisplayMode = DisplayMode.NumberToWord)]
         public ActionResult Index(PasswordInputViewModel dto)
         {
-            var result = _getQuiz.getQuiz.GetQuizIdByPasswordAsync(dto.Password ,dto.QuizId);
+            var result = _getQuiz.getQuiz.GetQuizIdByPasswordAsync(dto.Password ,dto.QuizId , User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());
             if (!result.IsSuccess)
             {
                 dto.Error = "لطفا در وارد کردن رمز عبور آزمون دقت فرمایید";

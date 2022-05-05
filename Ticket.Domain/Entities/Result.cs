@@ -22,5 +22,6 @@ namespace Azmoon.Domain.Entities
         public virtual Quiz Quiz { get; set; }
         public string StudentId { get; set; }
         public virtual User Student { get; set; }
+        public string Ip { get; set; }
     }
 }

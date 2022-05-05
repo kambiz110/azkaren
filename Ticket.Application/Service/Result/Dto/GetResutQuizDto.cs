@@ -10,6 +10,10 @@ namespace Azmoon.Application.Service.Result.Dto
    public class GetResutQuizDto
     {
         public long Id { get; set; }
+
+        [Display(Name = "نام آزمون")]
+        public string QuizName { get; set; }
+
         [Display(Name = "نمره")]
         public int Points { get; set; }
         [Display(Name = "تعداد سوال")]
@@ -21,7 +25,7 @@ namespace Azmoon.Application.Service.Result.Dto
         public string PhoneNumber { get; set; }
 
         public string StudentId { get; set; }
-        [Display(Name = "زمان شروع آزمون")]
+        [Display(Name = "تاریخ شرکت در آزمون")]
         public DateTime StartQuiz { get; set; }
         [Display(Name = "زمان پایان آزمون")]
         public DateTime? EndQuiz { get; set; }

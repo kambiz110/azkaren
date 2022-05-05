@@ -16,5 +16,9 @@ namespace EndPoint.Site.Models
         public string Password { get; set; }
 
         public string Error { get; set; }
+
+
+        [Required(ErrorMessage = "ورود این فیلد اجباری است.")]
+        public long quizId { get; set; }
     }
 }

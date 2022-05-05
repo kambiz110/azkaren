@@ -189,16 +189,24 @@ namespace Azmoon.Application.Service.Quiz.Query
             };
         }
 
-        public ResultDto<long> GetQuizIdByPasswordAsync(string password, long quizId)
+        public ResultDto<long> GetQuizIdByPasswordAsync(string password, long quizId , string userId)
         {
-            var model = _context.Quizzes.Where(p => p.Status == 1 && p.Id == quizId && p.Password == password.DecryptString())
+
+            var model = _context.Quizzes.Where(p => p.Status == 1 && p.Id == quizId &&p.StartDate<DateTime.Now && p.EndDate> DateTime.Now)
+                 .Include(p => p.Results.Where(p=>p.StudentId==userId))
            .AsNoTracking()
-           .FirstOrDefault();
-            if (model != null)
+           .AsQueryable();
+
+            if (!String.IsNullOrEmpty(password))
+            {
+                model= model.Where(p=>p.Password == password.EncryptString()).AsQueryable();
+            }
+            var Rmodel = model.FirstOrDefault();
+            if (Rmodel != null &&  Rmodel.Results.Count==0)
             {
                 return new ResultDto<long>
                 {
-                    Data = model.Id,
+                    Data= Rmodel.Id,
                     IsSuccess = true,
                     Message = "Success"
                 };

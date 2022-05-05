@@ -11,19 +11,16 @@ using System.Web.Mvc;
 
 namespace EndPoint.Site.Helper.ActionFilter
 {
-    public class SetAccessDataFilter : Microsoft.AspNetCore.Mvc.Filters.IActionFilter
+    public class SetAccessFilter : Microsoft.AspNetCore.Mvc.Filters.IActionFilter
     {
         private readonly IQuizFilterFacad _quizFilterFacad;
 
-        public SetAccessDataFilter(IQuizFilterFacad quizFilterFacad)
+        public SetAccessFilter(IQuizFilterFacad quizFilterFacad)
         {
             _quizFilterFacad = quizFilterFacad;
         }
 
-        public void OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext context)
-        {
-           
-        }
+
 
         public void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context)
         {
@@ -33,17 +30,22 @@ namespace EndPoint.Site.Helper.ActionFilter
                 var referer = context.HttpContext.Request.Headers["Referer"].ToString();
                 if (context.Controller is Microsoft.AspNetCore.Mvc.Controller controller)
                 {
-                  var username=  context.HttpContext.User.Identity.Name;
+                    var username = context.HttpContext.User.Identity.Name;
                     var quizId = (Int64.Parse(value.ToString()));
-                   
+
                     if (!_quizFilterFacad.getFilter.GetAccessQuizById(quizId, username).IsSuccess)
                     {
                         //controller.ViewData["authorized"] = "unauthorized";
-                        context.Result = controller.RedirectToAction("AccessDenied", "Account", new { area =""});
+                        context.Result = controller.RedirectToAction("AccessDenied", "Account", new { area = "" });
                     }
-                  
+
                 }
             }
         }
+        public void OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext context)
+        {
+
+        }
+
     }
 }

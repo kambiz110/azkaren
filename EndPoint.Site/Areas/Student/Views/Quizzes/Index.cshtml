@@ -1,34 +1,78 @@
-﻿@model PasswordInputViewModel
-@using Azmoon.Application.Service.Quiz.Dto
+﻿@using Azmoon.Application.Service.Quiz.Dto
 
+@model PasswordInputViewModel
+@addTagHelper *, DNTCaptcha.Core
 @{
 
     Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
 
 }
-@if (Model != null &&Model.Error != null)
-{
+
+
+
+
+
+<form method="post" class="col-12 col-md-5 offset-md-1" asp-area="Student" asp-action="Index" asp-controller="Quizzes">
+    @if (Model != null && Model.Error != null)
+    {
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">×</span>
         </button>
+        <strong>  @Model.Error</strong>
         <i class="fa fa-exclamation-circle"></i>
-        <strong>On no!</strong> @Model.Error
     </div>
-}
-
-<div class="row mt-5">
-    <partial name="_TakeQuizPartial">
-        <aside class="col-md-4 offset-1 d-none">
-            <div class="headline headline-md text-center">
-                <h4>Last Updates</h4>
-                <hr>
-                <ul id="updates" class="navbar-nav">
-                </ul>
+    }
+    <div class="component">
+        <div class="card">
+            <div class="card-header text-warning" style="font-size: xx-large">
+                <i class="fas fa-folder-open"></i>
             </div>
-        </aside>
-</div>
-@section Scripts {
+            <div class="card-body pt-0">
+                <h4 class="card-title">شرکت در آزمون</h4>
+
+                <div class="input-group">
+
+                    <input type="text" class="form-control" placeholder="کد آزمون..." asp-for="@Model.QuizId">
+
+                </div>
+                <span asp-validation-for="@Model.QuizId" class="text-danger"></span>
+                <div class="input-group mt-2">
+                    <input type="text" class="form-control" placeholder="رمز آزمون..." asp-for="@Model.Password">
+
+                </div>
+                <span asp-validation-for="@Model.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>عبارت امنیتی را وارد نمائید</label>
+                <dnt-captcha asp-captcha-generator-max="999"
+                             class="input-group"
+                             asp-captcha-generator-min="110"
+                             asp-captcha-generator-language="Persian"
+                             asp-captcha-generator-display-mode="NumberToWord"
+                             asp-use-relative-urls="true"
+                             asp-validation-error-message="عبارت امنیتی را به درستی وارد نمائید"
+                             asp-font-name="Tahoma"
+                             asp-font-size="16"
+                             asp-fore-color="#333333"
+                             asp-back-color="#F7F9B8"
+                             asp-text-box-class="form-control"
+                             asp-text-box-template="<div class='ml-auto'>{0}</div>"
+                             asp-validation-message-class="text-danger"
+                             asp-refresh-button-class="fas fa-redo btn-sm d-none"
+                             asp-use-noise="false"
+                             asp-dir="rtl" />
+            </div>
+            <div class="card-footer pb-3">
+                <button class="btn btn-outline-primary">ورود</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@*@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/Them/js/statusUpdates.js" asp-append-version="true"></script>
-}
+}*@

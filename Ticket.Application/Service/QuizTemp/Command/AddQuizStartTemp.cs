@@ -23,7 +23,7 @@ namespace Azmoon.Application.Service.QuizTemp.Command
             _mapper = mapper;
         }
 
-        public ResultDto<AddQuizTempDto> Add(DateTime start, long quizId, string userName)
+        public ResultDto<AddQuizTempDto> Add(DateTime start, long quizId, string userName ,string ip)
         {
             var quiz = _context.Quizzes.AsNoTracking()
                 .Where(p => p.Id == quizId && p.Status == 1 && p.StartDate <= DateTime.Now && p.EndDate > DateTime.Now)
@@ -49,6 +49,7 @@ namespace Azmoon.Application.Service.QuizTemp.Command
  
             var temp = new Domain.Entities.QuizStartTemp
             {
+                Ip=ip,
                 UserName = userName,
                 QuizId = quizId,
                 StartDate = DateTime.Now,

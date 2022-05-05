@@ -15,6 +15,7 @@ using Azmoon.Application.Service.Quiz.Dto;
 using Azmoon.Application.Service.WorkPlace.Dto;
 using Azmoon.Application.Service.Filter.Dto;
 using Azmoon.Application.Service.QuizTemp.Dto;
+using Azmoon.Application.Service.Result.Dto;
 
 namespace Azmoon.Application.AutoMapper
 {
@@ -47,6 +48,14 @@ namespace Azmoon.Application.AutoMapper
             CreateMap<Answer, GetAnswerDto>().ReverseMap(); 
             CreateMap<Answer, AddAnswerDto>().ReverseMap(); 
             CreateMap<QuizStartTemp, AddQuizTempDto>().ReverseMap(); 
+            CreateMap<Domain.Entities.Result, GetResutQuizDto>()
+                .ForMember(ds => ds.UserName,
+            src => src.MapFrom(src => src.Student != null ? src.Student.FirstName+" "+ src.Student.LastName : ""))
+                .ForMember(ds => ds.PhoneNumber,
+            src => src.MapFrom(src => src.Student != null ? src.Student.Phone : ""))
+                .ForMember(ds => ds.QuizName,
+            src => src.MapFrom(src => src.Quiz != null ? src.Quiz.Name : ""))
+                .ReverseMap(); 
 
 
 

@@ -14,6 +14,7 @@ namespace Azmoon.Application.Service.Result.Dto
         public int MaxPoints { get; set; }
         public string AnsweresInQuiz { get; set; }
         public string StudentId { get; set; }
+        public string Ip { get; set; }
         public DateTime StartQuiz { get; set; }
         public DateTime? EndQuiz { get; set; }
         public long QuizId { get; set; }

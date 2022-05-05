@@ -9,25 +9,28 @@
 
 @if (Model.ResultQuizDtos != null && Model.ResultQuizDtos.Count() > 0)
 {
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="thead-dark">
             <tr>
 
 
                 <th>
-                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).UserName)
+                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(0).QuizName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).PhoneNumber)
+                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(0).UserName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).MaxPoints)
+                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(0).PhoneNumber)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).Points)
+                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(0).MaxPoints)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).StartQuiz)
+                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(0).Points)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(0).StartQuiz)
                 </th>
 
             </tr>
@@ -39,6 +42,10 @@
                 {
                     <tr>
 
+                        <td>
+                            @item.QuizName
+
+                        </td>
                         <td>
                             @item.UserName
 
@@ -104,7 +111,7 @@ else
                 sr-text-next="بعدی"
                 gap-size="2">
         </paging>
-        }
+        
     </div>
 
 }

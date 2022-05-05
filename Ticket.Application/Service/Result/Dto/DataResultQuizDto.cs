@@ -11,5 +11,6 @@ namespace Azmoon.Application.Service.Result.Dto
         public IEnumerable<KeyValuePair<string, string>> answer { get; set; }
         public long QuizId { get; set; }
         public string username { get; set; }
+        public string Ip { get; set; }
     }
 }

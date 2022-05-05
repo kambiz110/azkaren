@@ -62,7 +62,7 @@ namespace Azmoon.Application.Service.Result.Cammand
                     }
                 }
                 AddResultQuizDto resultDto = new AddResultQuizDto();
-
+                resultDto.Ip = dto.Ip;
                 resultDto.Points = TrueAnswer;
                 resultDto.MaxPoints = quiz.MaxQuestion;
                 resultDto.QuizId = quiz.Id;

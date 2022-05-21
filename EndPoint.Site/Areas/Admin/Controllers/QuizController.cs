@@ -14,11 +14,18 @@ using EndPoint.Site.Useful.Ultimite;
 using Azmoon.Common.ResultDto;
 using Azmoon.Common.Useful;
 using Azmoon.Application.Service.Filter.Dto;
+using Stimulsoft.Base;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Mvc;
+//using Stimulsoft.Base;
+//using Stimulsoft.Report;
+//using Stimulsoft.Report.Mvc;
+
 
 namespace EndPoint.Site.Areas.Pnl.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Teacher")]
     public class QuizController : Controller
     {
         private readonly IQuizFacad _quizFacad;
@@ -33,6 +40,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
 
         public QuizController(IQuizFacad quizFacad, IDataBaseContext context, IQuestionFacad questionFacad, IResultQuizFacad resultQuizFacad, ILogger<QuizController> logger, IGroupFacad groupFacad, IWorkPlaceFacad workPlaceFacad, IUserFacad userFacad, IQuizFilterFacad quizFilterFacad)
         {
+             StiLicense.LoadFromString(Useful.Static.ReportConverServicese.StimulSoftKey);
             _quizFacad = quizFacad;
             _context = context;
             _questionFacad = questionFacad;
@@ -51,7 +59,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var result = _quizFacad.getQuiz.GetQuizes(PageSize, PageNo, q, status ,User.Identity.Name);
+            var result = _quizFacad.getQuiz.GetQuizes(PageSize, PageNo, q, status, User.Identity.Name);
             return View(result.Data);
         }
 
@@ -158,8 +166,9 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-        public ActionResult Result(int PageSize, int PageNo, string q, bool status, long guizId)
+        public ActionResult Result( string q, bool status, long guizId , int PageSize=20, int PageNo=1)
         {
+            ViewBag.guizId = guizId;
             var model = _context.Quizzes.Where(p => p.Id == guizId).FirstOrDefault();
             if (model != null)
             {
@@ -184,15 +193,15 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
             {
                 return View(quizFilter.Data);
             }
-           
-            return View(new CreatFilterDto {Id=0 });
+
+            return View(new CreatFilterDto { Id = 0 });
         }
 
         [HttpPost]
         public ActionResult Access(CreatFilterDto dto)
         {
             ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
-            if (String.IsNullOrEmpty(dto.UserList)&& dto.WorkPlaceId==null &&dto.TypeDarajeh==null)
+            if (String.IsNullOrEmpty(dto.UserList) && dto.WorkPlaceId == null && dto.TypeDarajeh == null)
             {
                 return View(dto);
             }
@@ -206,7 +215,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
                     ViewBag.QuizId = model.Id;
                     ViewBag.QuizName = model.Name;
                 }
-              
+
                 return View(dto);
             }
 
@@ -243,12 +252,46 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
             return Json(model);
 
         }
-        public async Task< IActionResult> DeleteFilter(long  id , long quizId)
+        public async Task<IActionResult> DeleteFilter(long id, long quizId)
         {
-            var model =await _quizFilterFacad.deleteQuizFilter.deleteFilterAsync(quizId,id);
+            var model = await _quizFilterFacad.deleteQuizFilter.deleteFilterAsync(quizId, id);
 
             return Json(model);
 
+        }
+
+
+        public IActionResult AuthorizeResultQuiz(long rezultId)
+        {
+            var referer = this.HttpContext.Request.Headers["Referer"].ToString();
+            var result = _resultQuizFacad.autorizResultIn.autorizationResultDb(rezultId);
+            return Json(result);
+      
+        }
+        public IActionResult QuizResultReportPrint()
+        {
+            var key = Useful.Static.ReportConverServicese.StimulSoftKey;
+            return View("QuizResultReportPrint");
+        }
+
+        public IActionResult GetReport(long quizId)
+        {
+            var model = _resultQuizFacad.getResultQuiz.getStimolReportQuizByQuizId(quizId ,User.Identity.Name);
+            StiReport report = new StiReport();
+            report.Load("wwwroot/Report/ReportQuiz.mrt");
+            var myEmployeesList = EndPoint.Site.Useful.Static.ReportConverServicese.GetEmploy();
+            report.RegData("QuizReport", model.Data.QuizReports);
+            report["Title_Quiz"] = model.Data.Name ?? string.Empty;
+            report["EndDate"] = model.Data.EndDate ?? string.Empty;
+            report["StartDate"] = model.Data.StartDate ?? string.Empty;
+            report["ReporNumber"] = model.Data.QuizNumber ?? string.Empty;
+           
+            return StiNetCoreViewer.GetReportResult(this, report);
+        }
+
+        public IActionResult ViewerEvent()
+        {
+            return StiNetCoreViewer.ViewerEventResult(this);
         }
 
     }

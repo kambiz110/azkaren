@@ -2,23 +2,30 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-
+    ViewData["Title"] = "دسترسی  ";
 }
 @if (ViewBag.message != null && ViewBag.message != "")
 {
-    <div class="col-12 text-center">
+<div class="col-md-6 offset-md-3 mt-md-5 mt-lg-5">
 
-        <div class="col-12 col-md-5 offset-md-2">
+    <div class="card p-2">
 
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <strong>  @ViewBag.message</strong>
-                <i class="fa fa-exclamation-circle"></i>
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <strong>  @ViewBag.message</strong>
+            <i class="fa fa-exclamation-circle"></i>
         </div>
+        <a class="btn btn-primary col-md-6 offset-md-3 btn-lg" asp-area="" asp-controller="Home" asp-action="Index"><span aria-hidden="true" class="fa fa-home"></span> صفحه اصلی </a>
+
+        @if (ViewBag.access != null && ViewBag.access != "" && ViewBag.access == "Encrypted")
+        {
+            <a class="btn btn-info col-md-6 offset-md-3 btn-lg mt-1" asp-area="Student" asp-controller="Quizzes" asp-action="Index"><span aria-hidden="true" class="fa fa-key"></span> آزمون با رمز ورودی </a>
+
+        }
     </div>
+</div>
 
 
 }

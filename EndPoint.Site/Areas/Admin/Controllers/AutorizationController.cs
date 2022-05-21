@@ -11,7 +11,7 @@ using Azmoon.Application.Service.Role.Dto;
 namespace EndPoint.Site.Areas.Administrator.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Teacher")]
     public class AutorizationController : Controller
     {
 

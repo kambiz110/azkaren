@@ -142,6 +142,7 @@ namespace EndPoint.Site
             services.AddTransient<IGetChildrenWorkPlace, GetChildrenWorkPlacees>();
             services.AddTransient<IGetChildrenGroup, GetChildrenGroup>();
             services.AddTransient<IAddQuizStartTemp, AddQuizStartTemp>();
+            services.AddTransient<IGetWorkplacFirstToEndParent, GetWorkplacFirstToEndParent>();
             //FacadeInject
             services.AddScoped<IGroupFacad, GroupFacad>();
             services.AddScoped<IWorkPlaceFacad, WorkPlaceFacad>();
@@ -166,7 +167,7 @@ namespace EndPoint.Site
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env )
         {
 
-            // Seed data on application startup
+            //Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataBaseContext>();
@@ -188,6 +189,7 @@ namespace EndPoint.Site
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseFastReport();
 
             app.UseRouting();
             app.UseSession();

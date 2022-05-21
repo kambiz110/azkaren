@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Azmoon.ElFinder;
 using Azmoon.ElFinder.Drivers.FileSystem;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EndPoint.Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Administrator,Teacher")]
     [Route("el-finder/file-system")]
     public class FileSystemController : Controller
     {

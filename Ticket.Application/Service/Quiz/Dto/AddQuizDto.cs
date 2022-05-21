@@ -19,6 +19,7 @@ namespace Azmoon.Application.Service.Quiz.Dto
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         public string Description { get; set; }
 
+
         [Display(Name = "زمان(دقیقه)")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         public int? Timer { get; set; }

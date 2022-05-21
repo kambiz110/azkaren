@@ -8,7 +8,7 @@
         {
 
             var tb = Model.Where(p => p.ParentId == item.Id).ToList().Count();
-            if (!item.IsChailren)
+            if (!item.IsChailren && tb==0)
             {
                 <li>
          

@@ -37,7 +37,8 @@ namespace EndPoint.Site.Controllers
 
             return View(new LoginDto
             {
-                ReturnUrl = returnUrl,
+               // ReturnUrl = returnUrl,
+                ReturnUrl = "/",
             });
         }
 
@@ -70,7 +71,7 @@ namespace EndPoint.Site.Controllers
                 {
                     var role = _userManager.GetRolesAsync(user).Result;
 
-                    if (login.ReturnUrl != "/")
+                    if (login.ReturnUrl != "/" && login.ReturnUrl != "/Student/Quizzes/Start")
                     {
                         return Redirect(login.ReturnUrl);
                     }
@@ -178,11 +179,15 @@ namespace EndPoint.Site.Controllers
 
         }
 
-        public IActionResult AccessDenied(string message)
+        public IActionResult AccessDenied(string message ,string access)
         {
             if (!String.IsNullOrEmpty(message))
             {
                 ViewBag.message = message;
+            }
+            if (!String.IsNullOrEmpty(access))
+            {
+                ViewBag.access = access;
             }
             return View();
         }

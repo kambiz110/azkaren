@@ -68,7 +68,8 @@ namespace Azmoon.Application.Service.Result.Cammand
                 resultDto.QuizId = quiz.Id;
                 resultDto.StartQuiz = quizStartTemps.StartDate;
                 resultDto.EndQuiz = DateTime.Now;
-                resultDto.AuthorizationResult= answeresInQuiz.EncryptStringWithKey(dto.username+dto.QuizId.ToString());
+
+                resultDto.AuthorizationResult= answeresInQuiz.ToEncodeAndHashMD5ForResultQuiz(dto.username+dto.QuizId.ToString()+ TrueAnswer.ToString());
                 resultDto.StudentId = _context.Users
                             .Where(p => p.UserName == dto.username)
                             .AsNoTracking()

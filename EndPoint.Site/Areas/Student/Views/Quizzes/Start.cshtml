@@ -1,9 +1,10 @@
 ﻿@model AttemtedQuizViewModel
 @using Azmoon.Application.Service.Quiz.Dto
 @{
-    ViewData["Title"] = "Start";
+
     Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
     var quizModel = ViewData["quizModel"] as GetQuizDetilesViewModel;
+    ViewData["Title"] = quizModel.Name??"آزمون";
 }
 <div class="center text-center col-12">
 

@@ -21,7 +21,7 @@ namespace Azmoon.Domain.Entities
         public int darajeh { get; set; }
         public long? WorkPlaceId { get; set; }
         public  WorkPlace WorkPlace { get; set; }
-        public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
+        public virtual ICollection<IdentityUserRole<string>> UserRoles { get; set; }
         public ICollection<GroupUser> GroupUsers { get; set; }
 
     }

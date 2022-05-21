@@ -35,6 +35,9 @@ namespace Azmoon.Persistence.Contexts
   .HasConstraintName("FK_Question_AnswerQuestions_onetomany")
   .OnDelete(DeleteBehavior.NoAction);
 
+
+
+
             modelBuilder.Entity<Quiz>()
                 .HasOne(p=>p.Passworddd)
                 .WithOne(p=>p.Quiz)
@@ -63,7 +66,6 @@ namespace Azmoon.Persistence.Contexts
         public DbSet<QuizStartTemp>QuizStartTemps  { get; set; }
         public DbSet<GroupUser> GroupUsers { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<User> UserRole { get; set; }
         public virtual DbSet<WorkPlace> WorkPlaces { get; set; }
         public virtual DbSet<QuizFilter> QuizFilters { get; set; }
         private void initUser(ModelBuilder modelBuilder)

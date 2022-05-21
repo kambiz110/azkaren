@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Azmoon.Persistence.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20220315061849_password")]
-    partial class password
+    [Migration("20220519100320_initDb")]
+    partial class initDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,6 +133,37 @@ namespace Azmoon.Persistence.Migrations
                     b.ToTable("Groups");
                 });
 
+            modelBuilder.Entity("Azmoon.Domain.Entities.GroupUser", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("GroupId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("RegesterAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GroupUsers");
+                });
+
             modelBuilder.Entity("Azmoon.Domain.Entities.Password", b =>
                 {
                     b.Property<long>("Id")
@@ -226,6 +257,9 @@ namespace Azmoon.Persistence.Migrations
                     b.Property<long?>("PasswordddId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("QuizFilterId")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("QuizId")
                         .HasColumnType("bigint");
 
@@ -255,6 +289,78 @@ namespace Azmoon.Persistence.Migrations
                     b.ToTable("Quizzes");
                 });
 
+            modelBuilder.Entity("Azmoon.Domain.Entities.QuizFilter", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("QuizId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("RegesterAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int?>("TypeDarajeh")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserNameOption")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkpalceOption")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId")
+                        .IsUnique();
+
+                    b.ToTable("QuizFilters");
+                });
+
+            modelBuilder.Entity("Azmoon.Domain.Entities.QuizStartTemp", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Ip")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("QuizId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("RegesterAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuizStartTemps");
+                });
+
             modelBuilder.Entity("Azmoon.Domain.Entities.Result", b =>
                 {
                     b.Property<long>("Id")
@@ -265,8 +371,14 @@ namespace Azmoon.Persistence.Migrations
                     b.Property<string>("AnsweresInQuiz")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AuthorizationResult")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("EndQuiz")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Ip")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaxPoints")
                         .HasColumnType("int");
@@ -286,8 +398,8 @@ namespace Azmoon.Persistence.Migrations
                     b.Property<byte>("Status")
                         .HasColumnType("tinyint");
 
-                    b.Property<long>("StudentId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -393,9 +505,27 @@ namespace Azmoon.Persistence.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int>("TypeDarajeh")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<long?>("WorkPlaceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("darajeh")
+                        .HasColumnType("int");
+
+                    b.Property<string>("melli")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name_father")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("tavalod")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -409,7 +539,38 @@ namespace Azmoon.Persistence.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("WorkPlaceId");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Azmoon.Domain.Entities.WorkPlace", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("RegesterAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("WorkPlaces");
                 });
 
             modelBuilder.Entity("Azmoon.Domain.Entities.persons", b =>
@@ -432,9 +593,6 @@ namespace Azmoon.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("name_father")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("password")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("personeli")
@@ -618,6 +776,23 @@ namespace Azmoon.Persistence.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("Azmoon.Domain.Entities.GroupUser", b =>
+                {
+                    b.HasOne("Azmoon.Domain.Entities.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Azmoon.Domain.Entities.User", "User")
+                        .WithMany("GroupUsers")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Azmoon.Domain.Entities.Password", b =>
                 {
                     b.HasOne("Azmoon.Domain.Entities.Quiz", "Quiz")
@@ -661,6 +836,17 @@ namespace Azmoon.Persistence.Migrations
                     b.Navigation("Group");
                 });
 
+            modelBuilder.Entity("Azmoon.Domain.Entities.QuizFilter", b =>
+                {
+                    b.HasOne("Azmoon.Domain.Entities.Quiz", "Quiz")
+                        .WithOne("QuizFilter")
+                        .HasForeignKey("Azmoon.Domain.Entities.QuizFilter", "QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+                });
+
             modelBuilder.Entity("Azmoon.Domain.Entities.Result", b =>
                 {
                     b.HasOne("Azmoon.Domain.Entities.Quiz", "Quiz")
@@ -669,11 +855,9 @@ namespace Azmoon.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Azmoon.Domain.Entities.persons", "Student")
+                    b.HasOne("Azmoon.Domain.Entities.User", "Student")
                         .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
 
                     b.Navigation("Quiz");
 
@@ -695,7 +879,22 @@ namespace Azmoon.Persistence.Migrations
                         .WithMany("Users")
                         .HasForeignKey("GroupId");
 
+                    b.HasOne("Azmoon.Domain.Entities.WorkPlace", "WorkPlace")
+                        .WithMany("Users")
+                        .HasForeignKey("WorkPlaceId");
+
                     b.Navigation("Group");
+
+                    b.Navigation("WorkPlace");
+                });
+
+            modelBuilder.Entity("Azmoon.Domain.Entities.WorkPlace", b =>
+                {
+                    b.HasOne("Azmoon.Domain.Entities.WorkPlace", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -740,7 +939,7 @@ namespace Azmoon.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Azmoon.Domain.Entities.User", null)
-                        .WithMany("Roles")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId1");
                 });
 
@@ -769,6 +968,8 @@ namespace Azmoon.Persistence.Migrations
 
                     b.Navigation("Questions");
 
+                    b.Navigation("QuizFilter");
+
                     b.Navigation("Quizzes");
 
                     b.Navigation("Results");
@@ -776,7 +977,14 @@ namespace Azmoon.Persistence.Migrations
 
             modelBuilder.Entity("Azmoon.Domain.Entities.User", b =>
                 {
-                    b.Navigation("Roles");
+                    b.Navigation("GroupUsers");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Azmoon.Domain.Entities.WorkPlace", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

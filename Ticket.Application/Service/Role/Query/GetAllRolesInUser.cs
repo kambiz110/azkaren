@@ -16,51 +16,65 @@ namespace Azmoon.Application.Service.Role.Query
     public class GetAllRolesInUser : IGetAllRolesInUser
     {
         private readonly UserManager<Domain.Entities.User> _userManger;
+        private readonly RoleManager<Domain.Entities.Role> _roleManger;
         private readonly IDataBaseContext _context;
 
-        public GetAllRolesInUser(UserManager<Domain.Entities.User> userManger, IDataBaseContext context)
+        public GetAllRolesInUser(UserManager<Domain.Entities.User> userManger, IDataBaseContext context, RoleManager<Domain.Entities.Role> roleManger)
         {
             _userManger = userManger;
             _context = context;
+            _roleManger = roleManger;
         }
 
         public ResultDto<RolesInUserDto> Exequte(string userId)
         {
             var user = _userManger.FindByIdAsync(userId + "").Result;
+          
             var roleNames = _userManger.GetRolesAsync(user).Result;
-            //var roles = _context..Where(p => p.UserId == userId).Include(p => p.Role).ToList();
-            //if (roles.Count() > 0 && roles != null)
-            //{
-            //    var model = new RolesInUserDto
-            //    {
-            //        UserId = user.Id,
-            //        FullName = $"{user.FirstName} {user.LastName}",
-            //        getShortRoles = new GetShortRolesForShowAdmin
-            //        {
-            //            RolesId = roles.Select(p => p.RoleId).ToList(),
-            //            RolesName = roleNames.ToList()
-            //        }
-            //    };
-            //    return new ResultDto<RolesInUserDto>
-            //    {
-            //        Data = model,
-            //        IsSuccess = true,
-            //        Message = "موفق"
-            //    };
-            //}
-            var model2 = new RolesInUserDto
+
+            List<Domain.Entities.Role> roless = new List<Domain.Entities.Role>();
+            foreach (var item in roleNames)
             {
-                FullName = $"{user.FirstName} {user.LastName}",
-                getShortRoles = null
-            };
-            return new ResultDto<RolesInUserDto>
+                roless.Add(_roleManger.FindByNameAsync(item).Result);
+            }
+            if (roless.Count() > 0 && roless != null)
             {
-                Data = model2,
-                IsSuccess = false,
-                Message = "ناموفق"
-            };
+                var model = new RolesInUserDto
+                {
+                    UserId = user.Id,
+                    FullName = $"{user.FirstName} {user.LastName}",
+                    getShortRoles = new GetShortRolesForShowAdmin
+                    {
+                        // RolesId = roles.Select(p => p.Id).ToList(),
+                        RolesId = roless.Select(p=>p.Id ).ToList(),
+                        RolesName = roleNames.ToList(),
+                    }
+                };
+                return new ResultDto<RolesInUserDto>
+                {
+                    Data = model,
+                    IsSuccess = true,
+                    Message = "موفق"
+                };
+            }
+            else
+            {
+                var model2 = new RolesInUserDto
+                {
+                    FullName = $"{user.FirstName} {user.LastName}",
+                    getShortRoles = null
+                };
+                return new ResultDto<RolesInUserDto>
+                {
+                    Data = model2,
+                    IsSuccess = false,
+                    Message = "ناموفق"
+                };
+            }
+
+
         }
 
-    
+
     }
 }

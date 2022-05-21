@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-    <title>پنل مدیریت | داشبورد </title>
+    <link href="~/Report/armSaas.ico" rel="icon" type="image/png">
+    <title>مدیریت آزمون ساع.س</title>
     <link href="~/assets/css/site.css" rel="stylesheet" />
     <link href="~/lib/W3/W3.CSS" rel="stylesheet" />
     <!-- Font Awesome Icons -->
@@ -36,11 +36,12 @@
                     <a asp-area="" asp-controller="home" asp-action="index" class="nav-link">خانه</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">خروج</a>
+                    <a asp-area="Student" asp-controller="Quizzes" asp-action="Index" class="nav-link">پنل کاربری</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">تماس</a>
+                    <a asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link">خروج</a>
                 </li>
+           
             </ul>
 
             <!-- SEARCH FORM -->

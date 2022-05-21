@@ -104,6 +104,9 @@
                         انتخاب
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(0).Id)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.Quizes.ElementAt(0).Name)
                     </th>
                     <th>
@@ -132,6 +135,9 @@
                             <tr>
                                 <td>
                                     <input name="posts[]" type="checkbox" class="checkthis" value="@item.Id" data-username="@item.Id" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
@@ -254,17 +260,15 @@
             if (test) {
 
                 console.log("val    : ", numberOfChecked.val());
-                if (linkk != "ResetPassword") {
+                if (linkk == "Result") {
 
-
-                    window.location.href = Aarea + '/' + controller + '/' + linkk + '/' + numberOfChecked.val();
+                 
+                    window.location.href = Aarea + '/' + controller + '/' + linkk + '?guizId=' + numberOfChecked.val();
                 }
                 else {
 
-                    var Checked = $('input:checkbox:checked');
-                    var userName = Checked.data("username");
-                    console.log("username  : ", userName);
-                    window.location.href = Aarea + '/' + controller + '/' + linkk + '/' + userName;
+                 
+                    window.location.href = Aarea + '/' + controller + '/' + linkk + '/' + numberOfChecked.val();
                 }
 
             }

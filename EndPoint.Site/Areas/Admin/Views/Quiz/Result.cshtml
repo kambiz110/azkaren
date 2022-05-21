@@ -26,7 +26,7 @@
         </form>
     </div>
 
-    <div class="col-sm-4 col-xs-6">
+    <div class="col-sm-4 col-xs-4">
         <div class="form-group form-group-sm">
 
 
@@ -36,8 +36,14 @@
                 </button>
             </form>
 
+            <form class="form-inline d-inline" asp-action="QuizResultReportPrint" method="get">
+                <button type="submit" name="quizId" value="@ViewBag.guizId" class="btn btn-info d-inline">
+                    گزارش چاپی
+                </button>
+            </form>
         </div>
     </div>
+
 </div>
 <div id="alertPanel"></div>
 @{
@@ -64,7 +70,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.ResultQuizDtos.ElementAt(1).StartQuiz)
                     </th>
-
+                    <th>
+                        اعتبارسنجی نتیجه
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -75,30 +83,34 @@
                         @foreach (var item in Model.ResultQuizDtos)
                         {
                             <tr>
-                              
+
                                 <td>
-                                  @item.UserName
+                                    @item.UserName
 
                                 </td>
                                 <td>
-                                  @item.PhoneNumber
+                                    @item.PhoneNumber
 
                                 </td>
 
                                 <td>
                                     @item.MaxPoints
-                                 
+
                                 </td>
                                 <td>
                                     @item.Points
-                                 
+
                                 </td>
                                 <td>
 
-                                 @item.StartQuiz.ToPersianDateStrFarsi()
+                                    @item.StartQuiz.ToPersianDateStrFarsi()
                                 </td>
-                         
 
+                                <td>
+
+
+                                    <a class="btn btn-outline-danger" data-result="@item.Id" data-action="AuthorizeResultQuiz" data-controller="Quiz" data-area="Admin">تست</a>
+                                </td>
 
                             </tr>
                         }
@@ -141,4 +153,74 @@
         </div>
     }
 }
+@section Styles  {
+    <link href="~/lib/SweetAlert/sweetalert2.css" rel="stylesheet" />
+    <link href="~/lib/select2/select2.css" rel="stylesheet" />
 
+}
+@section Scripts{
+    <script src="~/lib/SweetAlert/sweetalert2.js"></script>
+    <script src="~/lib/SweetAlert/polyfill.js.js"></script>
+    <script>
+        $(document).on("click", "a[data-action]", function (e) {
+            e.preventDefault();
+            var rezultId = $(this).data("result");
+            var linkk = $(this).data("action");
+            var controller = $(this).data("controller");
+            var area = $(this).data("area");
+            var Aarea = "";
+            if (area != "") {
+                Aarea = '/' + area;
+            }
+
+            var url = Aarea + '/' + controller + '/' + linkk;
+            console.log("url  : ", url);
+            console.log("rezultId  : ", rezultId);
+            if (rezultId > 0) {
+                console.log("test  : ", "ok");
+                $.getJSON(url, { rezultId: rezultId }, function (result, textStatus, jqXHR) {
+
+
+                })
+                    .done(function (result) {
+                        if (result.isSuccess) {
+                           
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                           
+
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+
+                        }
+
+
+                    })
+                    .fail(function (jqxhr, settings, ex) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    });
+            }
+
+          //  window.location.href = Aarea + '/' + controller + '/' + linkk + '?rezultId=' + rezultId;
+
+
+
+        });
+    </script>
+}

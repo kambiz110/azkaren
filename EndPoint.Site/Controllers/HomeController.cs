@@ -8,6 +8,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azmoon.Application.Interfaces;
 using Azmoon.Application.Service.Role.Dto;
+using FastReport.Web;
+using EndPoint.Site.Useful.Static;
+using System.IO;
+using Azmoon.Application.Interfaces.Facad;
+using EndPoint.Site.Useful.Ultimite;
+using Azmoon.Common.ResultDto;
 
 namespace EndPoint.Site.Controllers
 {
@@ -46,6 +52,18 @@ namespace EndPoint.Site.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-      
+
+
+        public IActionResult GetActiveQuiz(string name)
+        {
+
+            var viewHtml = this.RenderViewAsync("_PartialStudentActiveEventsAll", "", true);
+            return Json(new ResultDto<string>
+            {
+                Data = viewHtml,
+                IsSuccess = true,
+                Message = "موفق"
+            });
+        }
     }
 }

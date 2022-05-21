@@ -19,7 +19,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
 {
 
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Teacher")]
     public class AnswerController : Controller
     {
         private readonly ILogger<AnswerController> _logger;

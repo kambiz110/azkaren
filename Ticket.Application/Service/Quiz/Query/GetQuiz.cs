@@ -201,6 +201,19 @@ namespace Azmoon.Application.Service.Quiz.Query
             {
                 model= model.Where(p=>p.Password == password.EncryptString()).AsQueryable();
             }
+            else
+            {
+                var passmodel = model.Where(p=>p.Password!=null).FirstOrDefault();
+                if (passmodel != null && passmodel.Results.Count == 0)
+                {
+                    return new ResultDto<long>
+                    {
+                        Data = 0,
+                        IsSuccess = false,
+                        Message = "شما باید در قسمت آزمون های دارای رمز شرکت نمایید!!!"
+                    };
+                }
+            }
             var Rmodel = model.FirstOrDefault();
             if (Rmodel != null &&  Rmodel.Results.Count==0)
             {
@@ -215,7 +228,7 @@ namespace Azmoon.Application.Service.Quiz.Query
             {
 
                 IsSuccess = false,
-                Message = "Warninge"
+                Message = "شما یا در این آزمون شرکت نموده اید و یا اطلاعات و دسترسی لازم برای  این آزمون را ندارید!!"
             };
         }
         public ResultDto<GetQuizDetilesViewModel> GetQuizViewStartPageById(long id) {

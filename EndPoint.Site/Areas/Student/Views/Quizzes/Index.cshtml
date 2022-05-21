@@ -5,7 +5,7 @@
 @{
 
     Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
-
+    ViewData["Title"] = "آزمون رمز دار";
 }
 
 
@@ -29,16 +29,16 @@
                 <i class="fas fa-folder-open"></i>
             </div>
             <div class="card-body pt-0">
-                <h4 class="card-title">شرکت در آزمون</h4>
+                <h4 class="card-title">شرکت در آزمون رمز دار</h4>
 
                 <div class="input-group">
 
-                    <input type="text" class="form-control" placeholder="کد آزمون..." asp-for="@Model.QuizId">
+                    <input type="text" class="form-control" placeholder="شماره آزمون..." asp-for="@Model.QuizId">
 
                 </div>
                 <span asp-validation-for="@Model.QuizId" class="text-danger"></span>
                 <div class="input-group mt-2">
-                    <input type="text" class="form-control" placeholder="رمز آزمون..." asp-for="@Model.Password">
+                    <input type="password" class="form-control" placeholder="رمز آزمون..." asp-for="@Model.Password">
 
                 </div>
                 <span asp-validation-for="@Model.Password" class="text-danger"></span>

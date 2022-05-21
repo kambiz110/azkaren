@@ -1,4 +1,5 @@
 ﻿using Azmoon.Application.Interfaces.Result;
+using Azmoon.Application.Service.Result.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Azmoon.Application.Interfaces.Facad
     {
         IAddResultQuiz addResultQuiz { get; }
         IGetResultQuiz getResultQuiz { get; }
+        IAutorizResultInDb autorizResultIn { get; }
     }
 }

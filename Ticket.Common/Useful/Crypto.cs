@@ -11,6 +11,17 @@ namespace Azmoon.Common.Useful
     public static class Crypto
     {
         readonly private static string key = "dsmd#shr12jd94kfn@";
+        public static string ToEncodeAndHashMD5ForResultQuiz(this string Message, string key)
+        {
+            string Inkey = "jdgry&%125f*/";
+
+            var encrypted = EncodePassword(Message, key+ Inkey);
+            var md5 = new MD5CryptoServiceProvider();
+            var originalBytes = Encoding.Default.GetBytes(encrypted);
+            var encodedBytes = md5.ComputeHash(originalBytes);
+
+            return BitConverter.ToString(encodedBytes);
+        }
         public static string ToEncodeAndHashMD5(this string password)
         {
             string key = "MJK&*#-*+nvdtaq";

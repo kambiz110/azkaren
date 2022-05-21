@@ -84,7 +84,7 @@ namespace Azmoon.Application.Service.Facad
         {
             get
             {
-                return _DeleteRoleInUser = _DeleteRoleInUser ?? new DeleteRoleInUser(_context);
+                return _DeleteRoleInUser = _DeleteRoleInUser ?? new DeleteRoleInUser(_context, _userManger);
             }
         }
         private IGetChildrenUser _getChildrenUser;

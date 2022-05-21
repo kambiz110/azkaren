@@ -1,9 +1,7 @@
-﻿@{
-    this.ViewData["Title"] = "Home Page";
-}
+﻿@{ this.ViewData["Title"] = "صفحه نخست"; }
 
 <div class="page-hero bg-white text-primary" id="banner">
-    <partial name="_BublesAndCirclesPrtial" />
+    @*<partial name="_BublesAndCirclesPrtial" />*@
     <div class="container">
         <div class="row">
             <div class="col-12 mb-5">
@@ -13,101 +11,40 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div id="about" class="intro bg-light">
-   
-    <div class="blog-posts p-2">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="component">
-                        <div class="card mb-3">
-                            <div class="card-header text-primary" style="font-size: xx-large">
-                                <i class="fas fa-folder-plus"></i>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">ساخت آزمون </h4>
-                                <p class="card-text" style="display:none">
-                                    ایجاد آزمون اکنون با سامانه ما  کاربر پسند و ساده تر از همیشه است.
-                                    شما می توانید تمام آزمون های خود را در یک مکان ذخیره کنید، آنها را بر اساس دسته ها سفارش دهید و آنها را تغییر دهید.
-                                    ثبت نام به عنوان معلم به شما این فرصت را می دهد که گروه هایی ایجاد کنید، جایی که می توانید کارکنان را اضافه کنید.
-                                    معلمان می توانند رویدادها را ایجاد کنند و زمان شروع، مدت زمان و مسابقه را برای رویداد تنظیم کنند.
-                                    آنها همچنین می توانند انتخاب کنند که کدام گروه در آن رویداد شرکت کنند.
-                                    این عملکرد برای آزمایش پیشرفت فعلی دانش آموزان شما عالی است،
-                                    زیرا به محض شرکت در آزمون نتیجه آنها را دریافت خواهید کرد.
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                <a class="btn btn-outline-primary read">Read More</a>
-                            </div>
-                        </div>
-                    </div>
+        @(await Component.InvokeAsync("GetActiveQuiz"))
+        <div class="card-deck">
+            <div class="card col-sm-12 col-md-4 col-lg-4 col-xl-4 rounded">
+                <img class="card-img-top" src="~/assets/images/report-icon.png" />
+
+                <div class="card-body text-center">
+                    <h4 class="card-title font_W_titr">امکان گزارش گیری با تمام فرمت های رایج</h4>
+
+
+
                 </div>
-                <div class="col-md-3">
-                    <div class="component">
-                        <div class="card mb-3">
-                            <div class="card-header text-warning" style="font-size: xx-large">
-                                <i class="fas fa-folder-open"></i>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">امتحان کنید</h4>
-                                <p class="card-text" style="display:none">
-                                    برای استفاده از سامانه، کارکنان باید کاربر ثبت نام شده باشند.
-                                    اگر رمز عبور آزمون را بدانید می‌توانید از میانبر برای شرکت در مسابقه استفاده کنید.
-                                    اگر این کار را نکنید، می توانید از منو به آزمون ها و رویدادهای فعال خود دسترسی داشته باشید.
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                <a class="btn btn-outline-warning read">Read More</a>
-                            </div>
-                        </div>
-                    </div>
+
+            </div>
+            <div class="card col-sm-12 col-md-4 col-lg-4 col-xl-4 rounded">
+                <img class="card-img-top" src="~/assets/images/creatQuiz.png" />
+                <div class="card-body text-center">
+                    <h4 class="card-title font_W_titr">امکان ایجاد آزمون با تعیین سطح دسترسی</h4>
+
+
+
                 </div>
-                <div class="col-md-3">
-                    <div class="component">
-                        <div class="card mb-3">
-                            <div class="card-header text-danger" style="font-size: xx-large">
-                                <i class="fas fa-file-alt"></i>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">خروجی PDF</h4>
-                                <p class="card-text" style="display:none">
-                                    معلم می تواند هر آزمون را از صفحه جزئیات مسابقه چاپ کند.
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                <a class="btn btn-outline-danger read">Read More</a>
-                            </div>
-                        </div>
-                    </div>
+
+            </div>
+            <div class="card col-sm-12 col-md-4 col-lg-4 col-xl-4 rounded">
+                <img class="card-img-top" src="~/assets/images/filter-flat.png" />
+                <div class="card-body text-center">
+                    <h4 class="card-title ">امکان ایجاد فیلتر های متنوع</h4>
+
+
+
                 </div>
-                <div class="col-md-3">
-                    <div class="component">
-                        <div class="card mb-3">
-                            <div class="card-header text-info" style="font-size: xx-large">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title">دعوت کارکنان </h4>
-                                <p class="card-text" style="display:none">
-                                    مدرس می تواند از چند طریق کارکنان را دعوت کند.
-                                    می‌توانید گروهی از کارکنان‌ ایجاد کنید و پیامی را که حاوی رمز عبور آزمون است برایشان ارسال کنید.
-                                    همچنین می توانید رویداد مسابقه ایجاد کنید و آن را به یک گروه اختصاص دهید. به این ترتیب هر یک از کارکنان در گروه این را خواهد دید
-                                    رویداد در حساب خود به‌عنوان معلق است و با فعال شدن رویداد می‌تواند وارد مسابقه شود.
-                                </p>
-                            </div>
-                            <div class="card-footer">
-                                <a class="btn btn-outline-info read">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
 </div>
-
-
-
 

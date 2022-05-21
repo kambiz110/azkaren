@@ -142,7 +142,7 @@ namespace EndPoint.Site.Areas.Admin.Controllers
             string ip = HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString();
           var result =_userFacad.AddRoleToUser.Exequte(dto.Role, dto.Id, User.Identity.Name);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("UserRoles", new { id=dto.Id });
         }
         [HttpGet]
         public IActionResult UserRoles(string id)
@@ -153,11 +153,11 @@ namespace EndPoint.Site.Areas.Admin.Controllers
             return View(result);
         }
         [HttpGet]
-        [Route("Admin/User/DeleteRoleInUser/{UserId}/{RoleId}")]
-        public IActionResult DeleteRoleInUser(string UserId, string RoleId)
+        [Route("Admin/User/DeleteRoleInUser/{UserId}/{RolesName}")]
+        public IActionResult DeleteRoleInUser(string UserId, string RolesName)
         {
-            string ip = HttpContext.Request.HttpContext.Connection.RemoteIpAddress.ToString();
-            var result = _userFacad.DeleteRoleInUser.Exequte(UserId, RoleId, User.Identity.Name);
+           
+            var result = _userFacad.DeleteRoleInUser.Exequte(UserId, RolesName, User.Identity.Name);
             if (result.IsSuccess)
             {
 

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
@@ -69,7 +70,12 @@ namespace EndPoint.Site.Areas.Student.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Start", new { password= dto.Password,Iquizidd = result.Data });
+                    //  var routeValue = new RouteValueDictionary(new { action = "Start", controller = "Quizzes", password = dto.Password, Iquizidd = result.Data });
+                    ////  return RedirectToRoute(routeValue);
+                    //TempData["password"] = dto.Password;
+                    //TempData["Iquizid"] = result.Data.ToString();
+                   return RedirectToRoutePreserveMethod(null, new { controller = "Quizzes", action = "Start" });
+                  //  return RedirectToAction("Start", new { password= dto.Password,Iquizidd = result.Data });
                 }
             }
 
@@ -90,6 +96,7 @@ namespace EndPoint.Site.Areas.Student.Controllers
         [TypeFilter(typeof(SetAccessFilter))]
         public IActionResult Start(string password, long quizid)
         {
+
             ViewBag.password = password;
             ViewBag.quizid = quizid;
             var quizModel = this.getQuiz.getQuiz.GetQuizViewStartPageById(quizid);

@@ -1,7 +1,5 @@
 ﻿
-@{
-    ViewData["Title"] = "Student Page";
-}
+
 
 <!DOCTYPE html>
 <html>
@@ -9,24 +7,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>@this.ViewData["Title"] </title>
+    <title>سامانه آزمون ساع.س| @this.ViewData["Title"]</title>
 
-    <environment names="Development">
+
         <link href="~/Them/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/Them/img/favicon.ico" rel="icon" type="image/png">
+        <link href="~/Report/armSaas.ico" rel="icon" type="image/png">
 
         <link rel="stylesheet" href="~/Them/css/lazy.css" asp-append-version="true">
         <link rel="stylesheet" href="~/Them/css/demo.css" asp-append-version="true">
         <link rel="stylesheet" href="~/Them/lib/fontawesome/css/all.css" asp-append-version="true" />
-    </environment>
-    <environment names="Staging,Production">
+
+    @*<environment names="Staging,Production">
         <link href="~/Them/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/Them/img/favicon.ico" rel="icon" type="image/png">
+        <link href="~/Report/armSaas.ico" rel="icon" type="image/png">
 
         <link rel="stylesheet" href="~/Them/css/lazy.css" asp-append-version="true">
         <link rel="stylesheet" href="~/Them/css/demo.css" asp-append-version="true">
         <link rel="stylesheet" href="~/Them/lib/fontawesome/css/all.min.css" />
-    </environment>
+    </environment>*@
     @this.RenderSection("Styles", required: false)
 </head>
 <body class="index">
@@ -48,6 +46,11 @@
                     <ul class="navbar-nav ml-auto mx-2">
                         @RenderSection("Profile", required: false)
                         @RenderSection("Logout", required: false)
+                        <li class="nav-item">
+                            <a class="btn btn-outline-white ml-2" asp-area="" asp-controller="Home" asp-action="Index" >
+                                <i class="fas fa-home"></i>  صفحه نخست
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="btn btn-outline-white ml-2" asp-area="Student" asp-controller="Profile" asp-action="GetUserDitaels" title="Manage">
                                 <i class="fas fa-address-card"></i>  پروفایل

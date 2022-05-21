@@ -65,7 +65,7 @@ namespace Azmoon.Persistence.Seeding
             {
                 var role = await roleManager.FindByNameAsync(roleName);
 
-                if (!userManager.Users.Any(x => x.Roles.Any(x => x.RoleId == role.Id)))
+                if (!userManager.Users.Any(x => x.UserRoles.Any(x => x.RoleId == role.Id)))
                 {
                     var result = await userManager.CreateAsync(user, user.UserName == "admin@admin.com" ? adminpassword : userpassword);
 
@@ -78,7 +78,7 @@ namespace Azmoon.Persistence.Seeding
             }
             else
             {
-                if (!userManager.Users.Any(x => x.Roles.Count() == 0))
+                if (!userManager.Users.Any(x => x.UserRoles.Count() == 0))
                 {
                     var result = await userManager.CreateAsync(user, user.UserName== "admin@admin.com" ? adminpassword : userpassword);
                 }

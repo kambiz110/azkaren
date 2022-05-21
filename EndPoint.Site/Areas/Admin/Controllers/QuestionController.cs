@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace EndPoint.Site.Areas.Pnl.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Teacher")]
     public class QuestionController : Controller
     {
         private readonly ILogger<QuestionController> _logger;

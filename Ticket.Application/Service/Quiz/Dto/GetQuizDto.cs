@@ -9,6 +9,7 @@ namespace Azmoon.Application.Service.Quiz.Dto
 {
    public class GetQuizDto
     {
+        [Display(Name = "شماره آزمون")]
         public long Id { get; set; }
         [Display(Name = "نام")]
         public string Name { get; set; }

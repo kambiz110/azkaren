@@ -9,10 +9,13 @@ namespace Azmoon.Application.Service.Filter.Dto
 {
     public class QuizAssignViewModel 
     {
-        public string Id { get; set; }
+        [Display(Name = "شماره آزمون")]
+        public long Id { get; set; }
         [Display(Name = "نام آزمون")]
         public string Name { get; set; }
+        [Display(Name = "توضیحات")]
 
+        public string Description { get; set; }
         public string CreatorId { get; set; }
 
         public bool IsAssigned { get; set; }

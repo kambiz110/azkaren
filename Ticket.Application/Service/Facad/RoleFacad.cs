@@ -17,12 +17,14 @@ namespace Azmoon.Application.Service.Facad
         private readonly UserManager<Domain.Entities.User> _userManger;
         private readonly IMapper _mapper;
         private readonly IDataBaseContext _context;
+        private readonly RoleManager<Domain.Entities.Role> _roleManger;
 
-        public RoleFacad(UserManager<Domain.Entities.User> userManger, IMapper mapper, IDataBaseContext context)
+        public RoleFacad(UserManager<Domain.Entities.User> userManger, IMapper mapper, IDataBaseContext context, RoleManager<Domain.Entities.Role> roleManger)
         {
             _userManger = userManger;
             _mapper = mapper;
             _context = context;
+            _roleManger = roleManger;
         }
         private IGetAllRolesInUser _rolesInUser;
 
@@ -30,7 +32,7 @@ namespace Azmoon.Application.Service.Facad
         {
             get
             {
-                return _rolesInUser = _rolesInUser ?? new GetAllRolesInUser(_userManger, _context);
+                return _rolesInUser = _rolesInUser ?? new GetAllRolesInUser(_userManger, _context, _roleManger);
             }
         }
 

@@ -3,7 +3,7 @@
 @using EndPoint.Site.Useful.Ultimite
 @addTagHelper *, LazZiya.TagHelpers
 @{
-    ViewData["Title"] = "StudentActiveEventsAll";
+    ViewData["Title"] = "آزمون فعال";
     Layout = "~/Areas/Student/Views/Shared/_LayoutStudent.cshtml";
     int counter = 1;
 }
@@ -34,14 +34,17 @@
                         ردیف
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(1).Name)
+                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(0).Id)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(1).StartDate)
+                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(0).Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(0).StartDate)
 
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(1).EndDate)
+                        @Html.DisplayNameFor(model => model.Quizes.ElementAt(0).EndDate)
                     </th>
 
 
@@ -56,6 +59,9 @@
                             <tr class="table-active bg-white">
                                 <td>
                                     @counter
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => quiz.Id)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => quiz.Name)

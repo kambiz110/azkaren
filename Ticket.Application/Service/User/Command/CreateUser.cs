@@ -51,7 +51,7 @@ namespace Azmoon.Application.Service.User.Command
             }
             else
             {
-                var ExistUser = _context.Users.Where(p => p.UserName == dto.personeli.ToString() || p.melli == dto.melli).AsNoTracking().FirstOrDefault();
+                var ExistUser = _context.Users.AsNoTracking().Where(p => p.UserName == dto.personeli.ToString() || p.melli == dto.melli).AsNoTracking().FirstOrDefault();
        
                 if (ExistUser != null)
                 {
@@ -59,7 +59,7 @@ namespace Azmoon.Application.Service.User.Command
                     {
                         Data = null,
                         IsSuccess = false,
-                        Message = "کاربر با شماره پرسنلی وارد شده موجود می باشد!!!"
+                        Message = "کاربر با شماره پرسنلی و یا کد ملی وارد شده موجود می باشد!!!"
                     };
                 }
                
@@ -70,9 +70,9 @@ namespace Azmoon.Application.Service.User.Command
                 var result = _userManger.CreateAsync(user, dto.Password).Result;
                 if (result.Succeeded)
                 {
-                    _userManger.AddToRoleAsync(user, "User");
-                    var person = _mapper.Map<persons>(dto);
-                    _context.Persons.Add(person);
+                 var resultrole=   _userManger.AddToRoleAsync(user, "User").Result;
+                    //var person = _mapper.Map<persons>(dto);
+                    //_context.Persons.Add(person);
                    var savvved= _context.SaveChanges();
                   
                     return new ResultDto<Domain.Entities.User>

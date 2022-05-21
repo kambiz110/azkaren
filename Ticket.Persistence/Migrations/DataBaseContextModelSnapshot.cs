@@ -937,7 +937,7 @@ namespace Azmoon.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Azmoon.Domain.Entities.User", null)
-                        .WithMany("Roles")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId1");
                 });
 
@@ -977,7 +977,7 @@ namespace Azmoon.Persistence.Migrations
                 {
                     b.Navigation("GroupUsers");
 
-                    b.Navigation("Roles");
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("Azmoon.Domain.Entities.WorkPlace", b =>

@@ -47,7 +47,7 @@ namespace Azmoon.Application.Service.User.Query
                 .Include(p=>p.WorkPlace)
                 .FirstOrDefault();
 
-            var person = _context.Persons.Where(p=>p.personeli==user.UserName).FirstOrDefault();
+            //var person = _context.Persons.Where(p=>p.personeli==user.UserName).FirstOrDefault();
             var dto = new GetDitalesUserProfileDto {
             FirstName=user.FirstName,
             LastName=user.LastName,
@@ -56,7 +56,7 @@ namespace Azmoon.Application.Service.User.Query
                 Phone =user.Phone,
             WorkplaceName= user.WorkPlace.Name,
             TypeDarajeh = user.TypeDarajeh,
-                personId =person.Id,
+                personId = user.Id,
                 darajeh=user.darajeh,
                 WorkPlaceId=(long)user.WorkPlaceId,
            userId=user.Id

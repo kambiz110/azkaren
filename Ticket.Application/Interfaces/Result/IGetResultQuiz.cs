@@ -14,5 +14,6 @@ namespace Azmoon.Application.Interfaces.Result
         ResultDto<GetResutQuizWithPager> getResultWithPager(int PageSize, int PageNo, string searchKey, int status, long guizId);
         ResultDto<GetResutQuizWithPager> getResultByUserId(int PageSize, int PageNo,  int status, string UserId);
         ResultDto<AddResultQuizDto> getResultByQuizId(long id);
+        ResultDto<StimotReportQuizDto> getStimolReportQuizByQuizId(long id, string username);
     }
 }

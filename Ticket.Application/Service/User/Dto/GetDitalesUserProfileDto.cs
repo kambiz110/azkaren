@@ -12,7 +12,7 @@ namespace Azmoon.Application.Service.User.Dto
 
         public string userId { get; set; }
 
-        public long personId { get; set; }
+        public string personId { get; set; }
 
         [Display(Name = "نام")]
 

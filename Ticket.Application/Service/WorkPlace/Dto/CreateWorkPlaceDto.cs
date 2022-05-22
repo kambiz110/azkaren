@@ -17,7 +17,9 @@ namespace Azmoon.Application.Service.WorkPlace.Dto
         [Display(Name = "رده والد")]
         public long? ParentId { get; set; }
         public List<SelectListItem> Parentes { get; set; }
-
+        [Display(Name = "مقدار مرتب سازی")]
+        public int SortIndex { get; set; } = 0;
+        public string referer { get; set; }
 
     }
 }

@@ -35,7 +35,7 @@ namespace Azmoon.Application.Service.User.Dto
         [MobliPhon]
         public string Phone { get; set; }
 
-        [Display(Name = "درجه")]
+        [Display(Name = "درجه/رتبه")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         public int darajeh { get; set; }
 
@@ -75,6 +75,7 @@ namespace Azmoon.Application.Service.User.Dto
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         public long WorkPlaceId { get; set; }
 
+        public string WorkPlaceIdFake { get; set; } = "";
 
     }
 }

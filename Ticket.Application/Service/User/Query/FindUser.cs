@@ -46,12 +46,26 @@ namespace Azmoon.Application.Service.User.Query
             var user = _context.Users.Where(p => p.UserName == username)
                 .Include(p=>p.WorkPlace)
                 .FirstOrDefault();
-
+            var darajehName = "";
+            switch (user.TypeDarajeh)
+            {
+                case 0:
+                    darajehName = StaticList.listObjRotbeh().lstoption.Where(p=>p.value==user.darajeh).FirstOrDefault().text;
+                    break;
+                case 1:
+                    darajehName = StaticList.listObjDarajeh().lstoption.Where(p => p.value == user.darajeh).FirstOrDefault().text; 
+                    break;
+                case 2:
+                    darajehName = StaticList.listObjRotbehRoohani().lstoption.Where(p => p.value == user.darajeh).FirstOrDefault().text;
+                    break;
+                default:
+                    break;
+            }
             //var person = _context.Persons.Where(p=>p.personeli==user.UserName).FirstOrDefault();
             var dto = new GetDitalesUserProfileDto {
             FirstName=user.FirstName,
             LastName=user.LastName,
-            darajehName= StaticList.listeDarajeh.Where(p=>p.Value==user.darajeh).FirstOrDefault().Key,
+            darajehName= darajehName,
                 TypeDarajehName = StaticList.listTypeDarajeh.Where(p => p.Value == user.TypeDarajeh).FirstOrDefault().Key,
                 Phone =user.Phone,
             WorkplaceName= user.WorkPlace.Name,

@@ -72,12 +72,12 @@
                 <label asp-for="darajeh"></label>
                 <select class="form-control" asp-for="darajeh" searchable required>
                     <option value=""></option>
-                    @foreach (var std in ViewData["Darajeh"] as List<KeyValuePair<string, int>>)
+                    @*@foreach (var std in ViewData["Darajeh"] as List<KeyValuePair<string, int>>)
                     {
 
                         <option value=@std.Value.ToString() darajText="@std.Key">@std.Key</option>
 
-                    }
+                    }*@
 
                 </select>
                 <span asp-validation-for="darajeh" class="text-danger"></span>
@@ -204,5 +204,119 @@
                     })
                 });
         }
+
+                function getDarajeh(type) {
+            $.getJSON('/Account/GetDarajeh', { type: type }, function (result, textStatus, jqXHR) {
+
+
+            })
+                .done(function (result) {
+                    if (result.isSuccess) {
+                        $("#darajeh option").each(function () {
+                            $(this).remove();
+                        });
+                        $.each(result.data.lstoption, function (i, item) {
+                           // console.log("item : ", item);
+                            $('#darajeh').append($('<option>', {
+                                value: item.value,
+                                text: item.text
+                            }));
+                        });
+                        $("#darajeh option").each(function () {
+                            if ($(this).val() == type) {
+                                console.log("item", $(this).val());
+                            }
+
+                        });
+
+                    }
+
+
+
+                })
+                .fail(function (jqxhr, settings, ex) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                });
+        }
+        function getDarajehAfterPost(type ,selectdrajeh) {
+            $.getJSON('/Account/GetDarajeh', { type: type }, function (result, textStatus, jqXHR) {
+
+
+            })
+                .done(function (result) {
+                    if (result.isSuccess) {
+                        //console.log("datatt : ", result.data.lstoption);
+                        $("#darajeh option").each(function () {
+                            $(this).remove();
+                        });
+                        $.each(result.data.lstoption, function (i, item) {
+                            // console.log("item : ", item);
+                            $('#darajeh').append($('<option>', {
+                                value: item.value,
+                                text: item.text
+                            }));
+                        });
+                        $("#darajeh option").each(function () {
+                            if ($(this).val() == selectdrajeh) {
+                                console.log("item", $(this).val());
+                                $('#darajeh option[value='+selectdrajeh+']').attr('selected', 'selected');
+                                $("#darajeh option[value="+selectdrajeh+"]").prop('selected', true);
+                            }
+
+                        });
+
+                    }
+
+
+
+                })
+                .fail(function (jqxhr, settings, ex) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                });
+        }
+        $('#TypeDarajeh').on('click', 'option', function () {
+            $('#darajeh').removeAttr('disabled');
+            var $this = $(this).val();
+
+            if ($this == 1 || $this == 0 || $this == 2) {
+
+                $('#darajeh').removeAttr('disabled');
+                $('#darajeh').css('display', 'block');
+                getDarajeh($this);
+            }
+
+        });
+        $(document).ready(function () {
+
+            $('#darajeh').attr('disabled', true);
+            $('#darajeh').prop('disabled', true);
+            var $this2 = $('#TypeDarajeh').find(":selected");
+            if ($this2.val() != 'NULL' || $this2.val() != '') {
+                var bbb = '@Html.Raw(Json.Serialize(Model))';
+                var model = '@(Model !=null ? Model.darajeh : 0)';
+
+                if (model != 0) {
+                    $('#darajeh').removeAttr('disabled');
+                    $('#darajeh').css('display', 'block');
+                    getDarajehAfterPost($this2.val(), model);
+
+
+
+
+                }
+
+            }
+
+        });
     </script>
 }

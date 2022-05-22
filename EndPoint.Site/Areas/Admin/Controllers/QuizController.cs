@@ -40,7 +40,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
 
         public QuizController(IQuizFacad quizFacad, IDataBaseContext context, IQuestionFacad questionFacad, IResultQuizFacad resultQuizFacad, ILogger<QuizController> logger, IGroupFacad groupFacad, IWorkPlaceFacad workPlaceFacad, IUserFacad userFacad, IQuizFilterFacad quizFilterFacad)
         {
-             StiLicense.LoadFromString(Useful.Static.ReportConverServicese.StimulSoftKey);
+            // StiLicense.LoadFromString("6vJhGtLLLz2GNviWmUTrhSqnOItdDwjBylQzQcAOiHkcgIvwL0jnpsDqRpWg5FI5kt2G7A0tYIcUygBh1sPs7koivWV0htru4Pn2682yhdY3+9jxMCVTKcKAjiEjgJzqXgLFCpe62hxJ7/VJZ9Hq5l39md0pyydqd5Dc1fSWhCtYqC042BVmGNkukYJQN0ufCozjA/qsNxzNMyEql26oHE6wWE77pHutroj+tKfOO1skJ52cbZklqPm8OiH/9mfU4rrkLffOhDQFnIxxhzhr2BL5pDFFCZ7axXX12y/4qzn5QLPBn1AVLo3NVrSmJB2KiwGwR4RL4RsYVxGScsYoCZbwqK2YrdbPHP0t5vOiLjBQ+Oy6F4rNtDYHn7SNMpthfkYiRoOibqDkPaX+RyCany0Z+uz8bzAg0oprJEn6qpkQ56WMEppdMJ9/CBnEbTFwn1s/9s8kYsmXCvtI4iQcz+RkUWspLcBzlmj0lJXWjTKMRZz+e9PmY11Au16wOnBU3NHvRc9T/Zk0YFh439GKd/fRwQrk8nJevYU65ENdAOqiP5po7Vnhif5FCiHRpxgF");
             _quizFacad = quizFacad;
             _context = context;
             _questionFacad = questionFacad;
@@ -270,7 +270,7 @@ namespace EndPoint.Site.Areas.Pnl.Controllers
         }
         public IActionResult QuizResultReportPrint()
         {
-            var key = Useful.Static.ReportConverServicese.StimulSoftKey;
+            //var key = Useful.Static.ReportConverServicese.StimulSoftKey;
             return View("QuizResultReportPrint");
         }
 

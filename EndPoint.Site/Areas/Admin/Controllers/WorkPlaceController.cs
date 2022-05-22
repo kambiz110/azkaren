@@ -42,8 +42,8 @@ namespace EndPoint.Site.Areas.Admin.Controllers
             // ViewData["ParentWorkPlace"] = _workPlaceFacad.GetWorkPlaceSelectListItem.Exequte(parentId);
             CreateWorkPlaceDto dto = new CreateWorkPlaceDto();
             dto.Parentes = _workPlaceFacad.GetWorkPlaceSelectListItem.Exequte(parentId).Data;
-
-
+            var referer = HttpContext.Request.Headers["Referer"].ToString();
+            dto.referer = referer;
             return View(dto);
         }
         [HttpPost]
@@ -58,7 +58,7 @@ namespace EndPoint.Site.Areas.Admin.Controllers
             var result = _workPlaceFacad.CreateWork.Exequte(placeDto);
             if (result.IsSuccess)
             {
-                return RedirectToAction("Index");
+                return Redirect(placeDto.referer);
             }
             ViewData["ParentWorkPlace"] = new SelectList(_context.WorkPlaces.Where(p => p.Status != 3), "Id", "Name");
             return View(placeDto);
@@ -74,6 +74,8 @@ namespace EndPoint.Site.Areas.Admin.Controllers
             }).FirstOrDefault();
            // ViewData["ParentWorkPlace"] = new SelectList(_context.WorkPlaces.Where(p => p.Status != 3), "Id", "Name");
             model.Parentes = _workPlaceFacad.GetWorkPlaceSelectListItem.Exequte(model.ParentId).Data;
+            var referer = HttpContext.Request.Headers["Referer"].ToString();
+            model.referer = referer;
             return View("Create", model);
         }
     }

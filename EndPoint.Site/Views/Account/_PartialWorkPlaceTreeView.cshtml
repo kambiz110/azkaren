@@ -4,7 +4,7 @@
 {
     void RenderCategoryRow(long? parentId)
     {
-        foreach (var item in Model.Where(p => p.ParentId == parentId).ToList())
+        foreach (var item in Model.Where(p => p.ParentId == parentId).OrderBy(p=>p.SortIndex).ToList())
         {
 
             var tb = Model.Where(p => p.ParentId == item.Id).ToList().Count();

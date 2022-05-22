@@ -33,7 +33,6 @@ namespace Azmoon.Application.Service.Quiz.Dto
         public DateTime? EndDate { get; set; }
 
         [Display(Name = "رمز آزمون")]
-        [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         public string Password { get; set; }
 
         [Display(Name = "دسته بندی ")]

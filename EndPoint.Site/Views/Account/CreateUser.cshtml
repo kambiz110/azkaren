@@ -28,171 +28,183 @@
             </div>
 
         }
-    <form asp-action="CreateUser" class="shadow p-3 mb-5 bg-body rounded">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="CreateUser" class="shadow p-3 mb-5 bg-body rounded">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <input type="hidden" asp-for="Id" class="form-control" />
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="FirstName"></label>
-                    <input asp-for="FirstName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
-                    
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="LastName"></label>
-                    <input asp-for="LastName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
-                    
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="melli"></label>
-                    <input asp-for="melli" class="form-control" type="number" pattern="^[0-9]{10}$" required />
-                   
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="personeli"></label>
-                    <input asp-for="personeli" type="number" class="form-control" pattern="(^40)?(\d{9}$)" required />
-                   
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="TypeDarajeh"></label>
-                    <select class="form-control" asp-for="TypeDarajeh" required>
-                        <option value="">انتخاب...</option>
-                        @foreach (var std3 in ViewData["listTypeDarajeh"] as List<KeyValuePair<string, int>>)
-                        {
-                            <option value=@std3.Value.ToString()>@std3.Key</option>
+            <input type="hidden" asp-for="Id" class="form-control" />
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
 
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="melli"></label>
+                        <input asp-for="melli" class="form-control" type="number" pattern="^[0-9]{10}$" required />
+
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="personeli"></label>
+                        <input asp-for="personeli" type="number" class="form-control" pattern="(^40)?(\d{9}$)" required />
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="TypeDarajeh"></label>
+                        <select class="form-control" asp-for="TypeDarajeh" required>
+                            <option value="">انتخاب...</option>
+                            @foreach (var std3 in ViewData["listTypeDarajeh"] as List<KeyValuePair<string, int>>)
+                            {
+                                <option value=@std3.Value.ToString()>@std3.Key</option>
+
+                            }
+
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="darajeh"></label>
+                        <select class="form-control" asp-for="darajeh" searchable required>
+                            <option value="">انتخاب...</option>
+                            @*@foreach (var std in ViewData["Darajeh"] as List<KeyValuePair<string, int>>)
+                            {
+                                <option value="@std.Value" darajText="@std.Key">@std.Key</option>
+
+                            }*@
+
+                        </select>
+                        <span asp-validation-for="darajeh" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="name_father"></label>
+                        <input asp-for="name_father" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
+
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Phone"></label>
+                        <input asp-for="Phone" class="form-control" type="number" pattern="(^09)?(\d{11})$" placeholder="مثال : 09123654789" required />
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row mt-3">
+                <div class="col-md-6 col-sm-12">
+                    <label asp-for="WorkPlaceId"></label>
+                    <div class="input-group">
+
+                        <div class="input-group-prepend" id="select-WorkPlaceId">
+                            <span class="input-group-text cursor-pointer"><i class='fas far fa-eye' style='font-size: 24px; color: red; padding-left: 16px;'></i></span>
+                        </div>
+                        @{
+
+                            if (Model!=null)
+                            {
+                                <input type="text" value="@Model.WorkPlaceIdFake" id="WorkPlaceIdFake" class="form-control" name="WorkPlaceIdFake" />
+                            }
+                            else
+                            {
+                                <input type="text" id="WorkPlaceIdFake" name="WorkPlaceIdFake"  class="form-control" placeholder="انتخاب ... " />
+
+                            }
                         }
 
-                    </select>
+                        <input type="hidden" asp-for="WorkPlaceId" />
 
-                </div>
-            </div>
-
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="darajeh"></label>
-                    <select class="form-control" asp-for="darajeh" searchable required>
-                        <option value="">انتخاب...</option>
-                        @foreach (var std in ViewData["Darajeh"] as List<KeyValuePair<string, int>>)
-                        {
-                            <option value="@std.Value" darajText="@std.Key">@std.Key</option>
-
-                        }
-
-                    </select>
-                    <span asp-validation-for="darajeh" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="name_father"></label>
-                    <input asp-for="name_father" class="form-control" pattern="^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$" required />
-          
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="Phone"></label>
-                    <input asp-for="Phone" class="form-control" type="number" pattern="(^09)?(\d{11})$" placeholder="مثال : 09123654789" required />
-    
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="row mt-3">
-            <div class="col-md-6 col-sm-12">
-                <label asp-for="WorkPlaceId"></label>
-                <div class="input-group">
-
-                    <div class="input-group-prepend" id="select-WorkPlaceId">
-                        <span class="input-group-text cursor-pointer"><i class='fas far fa-eye' style='font-size: 24px; color: red; padding-left: 16px;'></i></span>
                     </div>
-                    <input type="text" id="WorkPlaceIdFake" class="form-control" placeholder="انتخاب ... " />
-                    <input type="hidden" asp-for="WorkPlaceId"/>
-
                 </div>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <label asp-for="tavalod"></label>
-                <div class="input-group">
+                <div class="col-md-6 col-sm-12">
+                    <label asp-for="tavalod"></label>
+                    <div class="input-group">
 
-                    <div class="input-group-prepend">
-                        <span class="input-group-text cursor-pointer mb-2" id="date5" data-mdpersiandatetimepicker="" data-mdpersiandatetimepicker-group="rangeSelector1" data-todate="" data-original-title="" title=""><i class='fas fa-calendar-alt' style='font-size:24px;color:forestgreen'></i></span>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text cursor-pointer mb-2" id="date5" data-mdpersiandatetimepicker="" data-mdpersiandatetimepicker-group="rangeSelector1" data-todate="" data-original-title="" title=""><i class='fas fa-calendar-alt' style='font-size:24px;color:forestgreen'></i></span>
+                        </div>
+                        <input asp-for="tavalod" type="hidden" />
+                        <input type="text" id="StartDateFake" @*value="@Model.tavalod"*@ class="form-control" aria-label="date5" aria-describedby="date5" placeholder="انتخاب ... " />
+
                     </div>
-                    <input asp-for="tavalod" type="hidden" />
-                    <input type="text" id="StartDateFake" @*value="@Model.tavalod"*@ class="form-control" aria-label="date5" aria-describedby="date5" placeholder="انتخاب ... " />
-           
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="Password"></label>
+                        <input asp-for="Password" class="form-control" type="password" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label asp-for="RePassword"></label>
+                        <input asp-for="RePassword" class="form-control" type="password" />
+
+                    </div>
                 </div>
             </div>
-          
-
-
-
-
-
-
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" type="password" />
-                </div>
+            <div class="form-group">
+                <label>عبارت را محاسبه و وارد نمائید</label>
+                <dnt-captcha asp-captcha-generator-max="999"
+                             class="input-group"
+                             asp-captcha-generator-min="110"
+                             asp-captcha-generator-language="Persian"
+                             asp-captcha-generator-display-mode="NumberToWord"
+                             asp-use-relative-urls="true"
+                             asp-validation-error-message="عبارت را محاسبه و وارد نمائید"
+                             asp-font-name="Tahoma"
+                             asp-font-size="16"
+                             asp-fore-color="#333333"
+                             asp-back-color="#F7F9B8"
+                             asp-text-box-class="form-control"
+                             asp-text-box-template="<div class='ml-auto'>{0}</div>"
+                             asp-validation-message-class="text-danger"
+                             asp-refresh-button-class="fas fa-redo btn-sm d-none"
+                             asp-use-noise="false"
+                             asp-dir="rtl" />
             </div>
-            <div class="col-md-6 col-sm-12">
-                <div class="form-group">
-                    <label asp-for="RePassword"></label>
-                    <input asp-for="RePassword" class="form-control" type="password" />
+            <div class="col-12 text-center mt-5">
 
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>عبارت را محاسبه و وارد نمائید</label>
-            <dnt-captcha asp-captcha-generator-max="999"
-                         class="input-group"
-                         asp-captcha-generator-min="110"
-                         asp-captcha-generator-language="Persian"
-                         asp-captcha-generator-display-mode="NumberToWord"
-                         asp-use-relative-urls="true"
-                         asp-validation-error-message="عبارت را محاسبه و وارد نمائید"
-                         asp-font-name="Tahoma"
-                         asp-font-size="16"
-                         asp-fore-color="#333333"
-                         asp-back-color="#F7F9B8"
-                         asp-text-box-class="form-control"
-                         asp-text-box-template="<div class='ml-auto'>{0}</div>"
-                         asp-validation-message-class="text-danger"
-                         asp-refresh-button-class="fas fa-redo btn-sm d-none"
-                         asp-use-noise="false"
-                         asp-dir="rtl" />
-        </div>
-        <div class="col-12 text-center mt-5">
+                <input type="submit" id="createusersubmit" value="ثبت نام" class="btn btn-success col-6" />
 
-            <input type="submit" id="createusersubmit" value="ثبت نام" class="btn btn-success col-6" />
+                <p class="text-muted">حساب کاربری دارید؟ <a asp-action="Login" class="font-weight-medium ml-1">وارد شوید</a></p>
+            </div> <!-- end col -->
 
-            <p class="text-muted">حساب کاربری دارید؟ <a asp-action="Login" class="font-weight-medium ml-1">وارد شوید</a></p>
-        </div> <!-- end col -->
-
-    </form>
+        </form>
     </div>
 </div>
 
@@ -278,6 +290,7 @@
 
                     $('#WorkPlaceId').val($(this).val());
                     $('#WorkPlaceIdFake').attr('placeholder', $(this).data('name'));
+                    $('#WorkPlaceIdFake').val($(this).data('name'));
                     $('#TreeViewModal').modal('hide');
                 }
             });
@@ -316,5 +329,118 @@
                     })
                 });
         }
+        function getDarajeh(type) {
+            $.getJSON('/Account/GetDarajeh', { type: type }, function (result, textStatus, jqXHR) {
+
+
+            })
+                .done(function (result) {
+                    if (result.isSuccess) {
+                        $("#darajeh option").each(function () {
+                            $(this).remove();
+                        });
+                        $.each(result.data.lstoption, function (i, item) {
+                           // console.log("item : ", item);
+                            $('#darajeh').append($('<option>', {
+                                value: item.value,
+                                text: item.text
+                            }));
+                        });
+                        $("#darajeh option").each(function () {
+                            if ($(this).val() == type) {
+                                console.log("item", $(this).val());
+                            }
+                            
+                        });
+
+                    }
+
+
+
+                })
+                .fail(function (jqxhr, settings, ex) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                });
+        }
+        function getDarajehAfterPost(type ,selectdrajeh) {
+            $.getJSON('/Account/GetDarajeh', { type: type }, function (result, textStatus, jqXHR) {
+
+
+            })
+                .done(function (result) {
+                    if (result.isSuccess) {
+                        //console.log("datatt : ", result.data.lstoption);
+                        $("#darajeh option").each(function () {
+                            $(this).remove();
+                        });
+                        $.each(result.data.lstoption, function (i, item) {
+                            // console.log("item : ", item);
+                            $('#darajeh').append($('<option>', {
+                                value: item.value,
+                                text: item.text
+                            }));
+                        });
+                        $("#darajeh option").each(function () {
+                            if ($(this).val() == selectdrajeh) {
+                                console.log("item", $(this).val());
+                                $('#darajeh option[value='+selectdrajeh+']').attr('selected', 'selected');
+                                $("#darajeh option[value="+selectdrajeh+"]").prop('selected', true);
+                            }
+
+                        });
+
+                    }
+
+
+
+                })
+                .fail(function (jqxhr, settings, ex) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'اطلاعات و مقادیر وارد شده نادرست می باشد دقت فرمائید!!',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                });
+        }
+        $('#TypeDarajeh').on('click', 'option', function () {
+            $('#darajeh').removeAttr('disabled');
+            var $this = $(this).val();
+
+            if ($this == 1 || $this == 0 || $this == 2) {
+
+                $('#darajeh').removeAttr('disabled');
+                $('#darajeh').css('display', 'block');
+                getDarajeh($this);
+            }
+
+        });
+        $(document).ready(function () {
+
+            $('#darajeh').attr('disabled', true);
+            $('#darajeh').prop('disabled', true);
+            var $this2 = $('#TypeDarajeh').find(":selected");
+            if ($this2.val() != 'NULL' || $this2.val() != '') {
+                var bbb = '@Html.Raw(Json.Serialize(Model))';
+                var model = '@(Model !=null ? Model.darajeh : 0)';
+                
+                if (model != 0) {
+                    $('#darajeh').removeAttr('disabled');
+                    $('#darajeh').css('display', 'block');
+                    getDarajehAfterPost($this2.val(), model);
+      
+               
+                  
+                 
+                }
+
+            }
+
+        });
     </script>
 }

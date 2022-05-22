@@ -11,6 +11,7 @@ namespace Azmoon.Domain.Entities
         public string Name { get; set; }
         public long? ParentId { get; set; }
         public WorkPlace Parent { get; set; }
+        public int SortIndex { get; set; }
         public  ICollection<User> Users { get; set; }
     }
 }

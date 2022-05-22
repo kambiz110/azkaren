@@ -12,7 +12,7 @@ namespace Azmoon.Application.Service.WorkPlace.Dto
         public long Id { get; set; }
         [Display(Name = "نام رده")]
         public string Name { get; set; }
-      
+        public int SortIndex { get; set; }
         public long? ParentId { get; set; }
         [Display(Name = "وضعیت فرزند")]
         public bool IsChailren { get; set; } = false;

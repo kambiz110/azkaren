@@ -13,6 +13,7 @@ using Azmoon.Application.Service.User.Dto;
 using Azmoon.Common.ResultDto;
 using Azmoon.Domain.Entities;
 using EndPoint.Site.Useful.Static;
+using EndPoint.Site.Models;
 
 namespace EndPoint.Site.Controllers
 {
@@ -203,14 +204,56 @@ namespace EndPoint.Site.Controllers
                 Message = "موفق"
             });
         }
+
+        public IActionResult GetDarajeh(int type)
+        {
+            if (type==1)
+            {
+                var model = StaticList.listObjDarajeh();
+                return Json(new ResultDto<Listoption>
+                {
+                    Data = model,
+                    IsSuccess = true,
+                    Message = "موفق"
+                });
+            }
+            if (type == 0)
+            {
+                var model = StaticList.listObjRotbeh();
+                return Json(new ResultDto<Listoption>
+                {
+                    Data = model,
+                    IsSuccess = true,
+                    Message = "موفق"
+                });
+            }
+            if (type == 2)
+            {
+                var model = StaticList.listObjRotbehRoohani();
+                return Json(new ResultDto<Listoption>
+                {
+                    Data = model,
+                    IsSuccess = true,
+                    Message = "موفق"
+                });
+            }
+
+
+            return Json(new ResultDto<Listoption>
+            {
+                Data = null,
+                IsSuccess = false,
+                Message = "ناموفق"
+            });
+        }
         [HttpGet]
         public IActionResult CreateUser()
         {
 
-            ViewData["Darajeh"] = StaticList.listeDarajeh;
+           // ViewData["Darajeh"] = StaticList.listeDarajeh;
             ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
 
-            return View();
+            return View(null);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -236,7 +279,7 @@ namespace EndPoint.Site.Controllers
                 ViewBag.Errors = errorList;
                 ViewData["Darajeh"] = StaticList.listeDarajeh;
                 ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
-                return View();
+                return View(dto);
             }
             else
             {
@@ -253,7 +296,7 @@ namespace EndPoint.Site.Controllers
                     ViewBag.Errors = errorList;
                     //var workPlaceSelectListItem = _workPlaceFacad.GetWorkPlaceSelectListItem.Exequte(null).Data;
                     //TempData["workPlaceSelectListItem"] = workPlaceSelectListItem;
-                    ViewData["Darajeh"] = StaticList.listeDarajeh;
+                   // ViewData["Darajeh"] = StaticList.listeDarajeh;
                     ViewData["listTypeDarajeh"] = StaticList.listTypeDarajeh;
                     return View();
                 }

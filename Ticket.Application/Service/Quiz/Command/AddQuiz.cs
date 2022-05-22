@@ -26,7 +26,7 @@ namespace Azmoon.Application.Service.Quiz
         {
             var user = _context.Users.Where(p => p.UserName == userName).FirstOrDefault();
             var model = _mapper.Map<Domain.Entities.Quiz>(dto);
-            model.Password = dto.Password.EncryptString();
+            model.Password = model.Password!=null? dto.Password.EncryptString():null;
             model. CreatorId = user.Id;
             model.UpdatedAt = DateTime.Now;
             if (model.Id > 0)

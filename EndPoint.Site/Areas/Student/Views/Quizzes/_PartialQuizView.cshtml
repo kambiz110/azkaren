@@ -48,7 +48,7 @@
 {
     var question = Model.Questions[i];
 
-    <div id="@question.Id" class="component" style="display:none">
+    <div id="@question.Id" data-quizid="@(i+1)" class="component" style="display:none">
         <div class="card mb-3">
             <div class="card-header text-warning">
                 <i class="fas fa-question-circle"></i>
@@ -68,7 +68,7 @@
                     <div class="form-group mb-0">
                         <div class="mt-2">
 
-                            <input type="radio" name="answer_@question.Answers[j].QuestionId" value="@answer.Id" />
+                            <input type="radio" name="answer_@question.Answers[j].QuestionId" value="@answer.Id" style=" width: 20px; height: 20px;"/>
                             <h6 class="d-inline-block mt-0 ml-1 quiz">@Html.Raw(answer.Text)</h6>
 
                         </div>

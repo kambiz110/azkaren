@@ -1,4 +1,5 @@
 ﻿@model Azmoon.Application.Service.Quiz.Dto.AttemtedQuizViewModel
+
 @* Timer *@
 <input id="minutes" type="hidden" value="@Model.Timer" />
 @if (Model.Timer != 0)
@@ -86,7 +87,11 @@
         </div>
     </div>}
 <input id="quizId" type="hidden" asp-for="@Model.Id" value="@Model.Id" />
-<button id="submit" type="button" class="btn btn-primary col-md-5 offset-md-3" data-toggle="modal" data-target="#btn" style="display:none">
-    ثبت و پایان آزمون
-</button>
+
+    <button id="submit" type="button" class="btn btn-primary col-md-6" data-toggle="modal" data-target="#btn" style="display:none">
+        ثبت و پایان آزمون
+    </button>
+
+
+
 

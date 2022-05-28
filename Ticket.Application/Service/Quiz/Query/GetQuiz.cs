@@ -247,7 +247,7 @@ namespace Azmoon.Application.Service.Quiz.Query
                         Id = model.Id,
                         Name = model.Name,
                         Timer = (int)model.Timer,
-                        QuestionCount = model.Questions.Count()
+                        QuestionCount = model.MaxQuestion
                     },
                     IsSuccess=true
                 };

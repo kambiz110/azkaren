@@ -29,9 +29,7 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>
-                        ردیف
-                    </th>
+                 
                     <th>
                         @Html.DisplayNameFor(model => model.Quizes.ElementAt(0).Id)
                     </th>
@@ -58,9 +56,7 @@
                         @foreach (var quiz in Model.Quizes)
                         {
                             <tr class="table-active bg-white">
-                                <td>
-                                    @counter
-                                </td>
+                                
                                 <td>
                                     @Html.DisplayFor(modelItem => quiz.Id)
                                 </td>

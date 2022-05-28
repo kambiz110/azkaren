@@ -318,5 +318,43 @@ namespace EndPoint.Site.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+
+
+          
+            return View(null);
+        }
+
+
+        [ValidateAntiForgeryToken]
+        [ValidateDNTCaptcha(
+       ErrorMessage = "عبارت امنیتی را به درستی وارد نمائید",
+       CaptchaGeneratorLanguage = Language.Persian,
+       CaptchaGeneratorDisplayMode = DisplayMode.NumberToWord)]
+        public IActionResult ForgotPassword(ForgotPasswordDto dto)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+                return Json(new ResultDto<string>
+                {
+                    Data = "",
+                    IsSuccess = true,
+                    Message = "موفق"
+                });
+            }
+
+            return Json(new ResultDto<string>
+            {
+                Data = "",
+                IsSuccess = false,
+                Message = "نا موفق"
+            });
+        }
     }
 }

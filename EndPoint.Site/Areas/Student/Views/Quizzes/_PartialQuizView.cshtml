@@ -51,12 +51,12 @@
 
     <div id="@question.Id" data-quizid="@(i+1)" class="component" style="display:none">
         <div class="card mb-3">
-            <div class="card-header text-warning">
+            @* <div class="card-header text-warning">
                 <i class="fas fa-question-circle"></i>
-                @*@Html.HiddenFor(model => model.Questions[i].Id)*@
+               @Html.HiddenFor(model => model.Questions[i].Id)
 
-                <span class="text-primary ml-1">سوال : @question.Id</span>
-            </div>
+            <span class="text-primary ml-1">سوال : @question.Id</span>
+              </div>*@
 
             <div class="card-title text-center m-1">
                 <h4 class="quiz">@Html.Raw(question.Text)</h4>
@@ -69,7 +69,7 @@
                     <div class="form-group mb-0">
                         <div class="mt-2">
 
-                            <input type="radio" name="answer_@question.Answers[j].QuestionId" value="@answer.Id" style=" width: 20px; height: 20px;"/>
+                            <input type="radio" name="answer_@question.Answers[j].QuestionId" value="@answer.Id" style=" width: 20px; height: 20px;" />
                             <h6 class="d-inline-block mt-0 ml-1 quiz">@Html.Raw(answer.Text)</h6>
 
                         </div>

@@ -19,6 +19,7 @@ namespace Azmoon.Application.Interfaces.Facad
         IGetChildrenUser GetChildrenUser { get; }
         IRegisterUser RegisterUser { get; }
         IUpdateProfile updateProfile { get; }
+        IForgotPasswordService forgotPassword { get; }
  
 
 

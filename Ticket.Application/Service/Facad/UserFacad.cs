@@ -111,5 +111,13 @@ namespace Azmoon.Application.Service.Facad
                 return _updateProfile = _updateProfile ?? new UpdateProfile(_context, _mapper);
             }
         }
+        private IForgotPasswordService _forgotPassword;
+        public IForgotPasswordService forgotPassword
+        {
+            get
+            {
+                return _forgotPassword = _forgotPassword ?? new ForgotPasswordService(_context);
+            }
+        }
     }
 }

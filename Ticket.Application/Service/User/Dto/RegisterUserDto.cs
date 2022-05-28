@@ -17,7 +17,6 @@ namespace Azmoon.Application.Service.User.Dto
         [Display(Name = "نام")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         [RegularExpression(@"^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$", ErrorMessage = " {0}  را به فارسی وارد نمائید")]
-
         public string FirstName { get; set; }
 
         [Display(Name = "نام خانوادگی")]
@@ -30,7 +29,7 @@ namespace Azmoon.Application.Service.User.Dto
         [RegularExpression(@"^(?:[a-zA-Z\s,=%$#&_\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDCF\uFDF0-\uFDFF\uFE70-\uFEFF]|(?:\uD802[\uDE60-\uDE9F]|\uD83B[\uDE00-\uDEFF])){3,15}$", ErrorMessage = " {0}  را به فارسی وارد نمائید")]
         public string name_father { get; set; }
 
-        [Display(Name = "تلفن")]
+        [Display(Name = "تلفن همراه")]
         [Required(ErrorMessage = " {0}  را وارد نمائید ")]
         [MobliPhon]
         public string Phone { get; set; }

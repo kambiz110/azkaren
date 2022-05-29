@@ -131,7 +131,7 @@ namespace EndPoint.Site.Areas.Student.Controllers
             }
             DataResultQuizDto dto = new DataResultQuizDto { QuizId = Int64.Parse(id), answer = answer, username = User.Identity.Name ,Ip=ip };
             var result = _resultQuiz.addResultQuiz.addResultQuiz(dto);
-            return Redirect("/Student/Quizzes/Index");
+            return Redirect("/Student/Quizzes/MyQuizzes");
         }
 
         public IActionResult Results()

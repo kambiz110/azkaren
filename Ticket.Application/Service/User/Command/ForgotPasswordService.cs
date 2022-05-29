@@ -38,9 +38,12 @@ namespace Azmoon.Application.Service.User.Command
                     Data=ExistUser.Id
                 };
             }
-            return new ResultDto<string> { 
-            IsSuccess=false
+            return new ResultDto<string>
+            {
+                IsSuccess = false,
+                Message = "کاربر با مشخصات وارد شده یافت نگردید."
             };
+
         }
     }
 }

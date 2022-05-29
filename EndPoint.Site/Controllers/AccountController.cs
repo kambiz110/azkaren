@@ -14,6 +14,7 @@ using Azmoon.Common.ResultDto;
 using Azmoon.Domain.Entities;
 using EndPoint.Site.Useful.Static;
 using EndPoint.Site.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EndPoint.Site.Controllers
 {
@@ -337,23 +338,94 @@ namespace EndPoint.Site.Controllers
        CaptchaGeneratorDisplayMode = DisplayMode.NumberToWord)]
         public IActionResult ForgotPassword(ForgotPasswordDto dto)
         {
-
-
+     
             if (ModelState.IsValid)
             {
+                var model = _userFacad.forgotPassword.forgotPassword(dto);
+                if (model.IsSuccess)
+                {
+                    var viewHtml = this.RenderViewAsync("_PartialChangePassword", model, true);
+                    return Json(new ResultDto<string>
+                    {
+                        Data = viewHtml,
+                        IsSuccess = true,
+                        Message = "موفق"
+                    });
+                }
+
                 return Json(new ResultDto<string>
                 {
                     Data = "",
-                    IsSuccess = true,
-                    Message = "موفق"
+                    IsSuccess = false,
+                    Message = model.Message
                 });
             }
-
+            string messages = string.Join("\n ", ModelState.Values
+                                      .SelectMany(x => x.Errors)
+                                      .Select(x => x.ErrorMessage));
             return Json(new ResultDto<string>
             {
                 Data = "",
                 IsSuccess = false,
-                Message = "نا موفق"
+                Message = messages
+            });
+        }
+        public IActionResult ResetPassword(RessetPassInForgotPassdto dto)
+        {
+
+            if (ModelState.IsValid)
+            {
+
+                var user = _userManager.FindByIdAsync(dto.userId).Result;
+                _signInManager.SignOutAsync();
+               
+                if (user!=null)
+                {
+                    var result2 = _userManager.RemovePasswordAsync(user).Result;
+                    if (result2.Succeeded)
+                    {
+
+                        var result3 = _userManager.AddPasswordAsync(user, dto.Password).Result;
+                        if (result3.Succeeded)
+                        {
+
+                            var result = _signInManager.PasswordSignInAsync(user, dto.Password, false, true).Result;
+                            if (result.Succeeded == true)
+                            {
+                                return Json(new ResultDto<string>
+                                {
+                                    Data = "/Home/Index",
+                                    IsSuccess = true,
+                                    Message = "موفق"
+                                });
+                            }
+                                return Json(new ResultDto<string>
+                            {
+                                Data = "/Home/Index",
+                                IsSuccess = true,
+                                Message = "موفق"
+                            });
+                        }
+                    }
+                }
+                return Json(new ResultDto<string>
+                {
+                    Data = "",
+                    IsSuccess = false,
+                    Message = "کاربر یافت نشد!!!"
+                });
+
+            }
+
+            string messages = string.Join("\n ", ModelState.Values
+                                             .SelectMany(x => x.Errors)
+                                             .Select(x => x.ErrorMessage));
+
+            return Json(new ResultDto<string>
+            {
+                Data = messages,
+                IsSuccess = false,
+                Message = messages
             });
         }
     }
